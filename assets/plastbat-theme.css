@@ -126,14 +126,6 @@ textarea,
   border-top: 0 !important;
   position: relative;
 }
-.footer:before {
-  content: '';
-  display: block;
-  height: 28px;
-  background:
-    radial-gradient(30px 18px at 30px 28px,#fff 98%,transparent 100%) 0 0/120px 28px repeat-x,
-    radial-gradient(22px 14px at 72px 28px,#fff 98%,transparent 100%) 0 0/120px 28px repeat-x;
-}
 .footer h2, .footer a, .footer p, .footer small { color: var(--plastbat-espresso) !important; }
 
 .plastbat-section-soft { background: var(--plastbat-cream-100) !important; }

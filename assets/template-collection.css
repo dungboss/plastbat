@@ -48,6 +48,32 @@
   margin: 0;
 }
 
+/* Keep product-card content within its grid column on narrow screens. */
+.collection .product-grid .grid__item,
+.collection .product-grid .card__content,
+.collection .product-grid .card__information,
+.collection .product-grid .card__heading {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.collection .product-grid .card__content,
+.collection .product-grid .card__information {
+  box-sizing: border-box;
+}
+
+/* Standard cards remove their default side padding; restore equal gutters for product details. */
+.collection .product-grid .card--standard > .card__content .card__information {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.collection .product-grid .card__heading,
+.collection .product-grid .card__heading a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .collection__title.title-wrapper {
   margin-bottom: 2.5rem;
 }

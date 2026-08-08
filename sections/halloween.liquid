@@ -1,0 +1,2025 @@
+{% comment %}
+  PLASTBAT UNIVERSAL OPTIONS V5 — RELATED FIX
+  File: sections/plastbat-universal-options-v5-related-fix.liquid
+
+  Recognized Shopify product option names:
+  - Chair Color / Choose Chair Color  -> color swatches, label "Choose Chair Color"
+  - Size / Choose Size                -> dropdown, label "Choose Size"
+  - Color / Colour                    -> color swatches, label "Color"
+  - Number of Slots / Slots           -> dropdown, label "Choose Number of Slots"
+  - Bow Color / Bow Colour            -> color swatches, label "Choose Bow Color"
+  - Any other Shopify option          -> normal dropdown using its own name
+
+  ADD PERSONALIZATION:
+  Enabled per product by either:
+  - Product metafield custom.enable_personalization = true
+  OR
+  - product tag: pp-personalization
+
+  Product metafields for personalization (optional):
+  custom.personalization_required
+  custom.personalization_label
+  custom.personalization_placeholder
+  custom.personalization_max_chars
+
+  PRICE:
+  Prices are NEVER hard-coded here.
+  Variant choices/prices/stock come from the Shopify product listing.
+  Any selection that changes price must be a Shopify variant option.
+{% endcomment %}
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'PUV2Form-' | append: section.id
+
+  assign show_chair_color = section.settings.show_chair_color
+  assign show_size = section.settings.show_size
+  assign show_color = section.settings.show_color
+  assign show_slots = section.settings.show_slots
+  assign show_bow_color = section.settings.show_bow_color
+  assign show_other_options = section.settings.show_other_options
+
+
+  assign show_personalization = section.settings.personalization_default
+  if product.tags contains 'pp-personalization'
+    assign show_personalization = true
+  endif
+  if product.metafields.custom.enable_personalization != blank
+    assign show_personalization = product.metafields.custom.enable_personalization.value
+  endif
+
+  assign personalization_required = false
+  if product.metafields.custom.personalization_required != blank
+    assign personalization_required = product.metafields.custom.personalization_required.value
+  endif
+
+  assign personalization_label = section.settings.personalization_label
+  if product.metafields.custom.personalization_label != blank
+    assign personalization_label = product.metafields.custom.personalization_label.value
+  endif
+
+  assign personalization_placeholder = section.settings.personalization_placeholder
+  if product.metafields.custom.personalization_placeholder != blank
+    assign personalization_placeholder = product.metafields.custom.personalization_placeholder.value
+  endif
+
+  assign personalization_max = section.settings.personalization_max
+  if product.metafields.custom.personalization_max_chars != blank
+    assign personalization_max = product.metafields.custom.personalization_max_chars.value
+  endif
+
+  if current_variant.compare_at_price > current_variant.price
+    assign initial_save = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price
+  else
+    assign initial_save = 0
+  endif
+%}
+
+<section
+  id="PUV2-{{ section.id }}"
+  class="puv2 color-{{ section.settings.color_scheme }}"
+  style="
+    --puv2-accent-custom: {{ section.settings.accent_color }};
+    --puv2-soft-custom: {{ section.settings.soft_background }};
+    --puv2-border-custom: {{ section.settings.border_color }};
+    --puv2-radius: {{ section.settings.corner_radius }}px;
+  "
+>
+  <div class="page-width puv2__wrap">
+    <div class="puv2__grid">
+
+      <!-- LEFT GALLERY -->
+      <div class="puv2-gallery{% if section.settings.sticky_gallery %} puv2-gallery--sticky{% endif %}">
+        <div class="puv2-gallery__stage">
+          {% if product.media.size > 0 %}
+            {% for media in product.media %}
+              <div
+                class="puv2-gallery__panel{% if forloop.first %} is-active{% endif %}"
+                data-puv2-media-index="{{ forloop.index0 }}"
+                data-puv2-media-id="{{ media.id }}"
+                {% unless forloop.first %}hidden{% endunless %}
+              >
+                {% case media.media_type %}
+                  {% when 'image' %}
+                    {{
+                      media.preview_image
+                      | image_url: width: 1600
+                      | image_tag:
+                        loading: 'eager',
+                        widths: '480,720,960,1200,1600',
+                        sizes: '(min-width: 990px) 54vw, 100vw',
+                        class: 'puv2-gallery__image',
+                        alt: media.alt | default: product.title
+                    }}
+                  {% when 'video' %}
+                    {{ media | video_tag: controls: true, image_size: '1200x', class: 'puv2-gallery__media' }}
+                  {% when 'external_video' %}
+                    {{ media | external_video_tag: class: 'puv2-gallery__media' }}
+                  {% when 'model' %}
+                    {{ media | model_viewer_tag: image_size: '1200x', reveal: 'interaction', toggleable: true, class: 'puv2-gallery__media' }}
+                  {% else %}
+                    {{
+                      media.preview_image
+                      | image_url: width: 1600
+                      | image_tag: class: 'puv2-gallery__image', alt: media.alt | default: product.title
+                    }}
+                {% endcase %}
+              </div>
+            {% endfor %}
+
+            {% if product.media.size > 1 %}
+              <button class="puv2-gallery__arrow puv2-gallery__arrow--prev" type="button" data-puv2-prev aria-label="Previous image">‹</button>
+              <button class="puv2-gallery__arrow puv2-gallery__arrow--next" type="button" data-puv2-next aria-label="Next image">›</button>
+              <span class="puv2-gallery__counter"><b data-puv2-current>1</b> / {{ product.media.size }}</span>
+            {% endif %}
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'puv2-gallery__placeholder' }}
+          {% endif %}
+        </div>
+
+        {% if product.media.size > 1 %}
+          <div class="puv2-gallery__thumbs">
+            {% for media in product.media %}
+              <button
+                type="button"
+                class="puv2-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                data-puv2-thumb="{{ forloop.index0 }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+                {{
+                  media.preview_image
+                  | image_url: width: 220
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'puv2-gallery__thumb-image',
+                    alt: media.alt | default: product.title
+                }}
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- RIGHT INFO -->
+      <div class="puv2-info">
+        {% if section.settings.eyebrow != blank %}
+          <div class="puv2-eyebrow">{{ section.settings.eyebrow | escape }}</div>
+        {% endif %}
+
+        <h1 class="puv2-title">{{ product.title }}</h1>
+
+        <div class="puv2-status">
+          <span class="puv2-stock{% unless current_variant.available %} is-out{% endunless %}" data-puv2-stock>
+            <i></i>
+            <span data-puv2-stock-text>
+              {% if current_variant.available %}
+                {{ section.settings.in_stock_text | escape }}
+              {% else %}
+                {{ section.settings.sold_out_text | escape }}
+              {% endif %}
+            </span>
+          </span>
+        </div>
+
+        <div class="puv2-price-row" aria-live="polite">
+          <span class="puv2-price" data-puv2-price>{{ current_variant.price | money }}</span>
+
+          <span
+            class="puv2-compare{% unless current_variant.compare_at_price > current_variant.price %} is-hidden{% endunless %}"
+            data-puv2-compare
+          >
+            {% if current_variant.compare_at_price > current_variant.price %}
+              {{ current_variant.compare_at_price | money }}
+            {% endif %}
+          </span>
+
+          <span
+            class="puv2-sale{% if initial_save == 0 %} is-hidden{% endif %}"
+            data-puv2-sale
+          >
+            SAVE {{ initial_save }}%
+          </span>
+        </div>
+
+        {% if section.settings.short_benefit != blank %}
+          <p class="puv2-benefit">{{ section.settings.short_benefit | escape }}</p>
+        {% endif %}
+
+        {% form 'product', product, id: product_form_id, class: 'puv2-form' %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-puv2-variant-id>
+
+          <!-- UNIVERSAL SHOPIFY LISTING OPTIONS WITH INDIVIDUAL ON/OFF CONTROLS -->
+          {% unless product.has_only_default_variant %}
+            <div class="puv2-options">
+              {% for option in product.options_with_values %}
+                {% assign option_down = option.name | downcase | strip %}
+                {% assign option_label = option.name %}
+                {% assign option_kind = 'dropdown' %}
+                {% assign option_enabled = show_other_options %}
+
+                {% if option_down contains 'chair' and option_down contains 'color' %}
+                  {% assign option_label = section.settings.chair_color_label %}
+                  {% assign option_kind = 'swatch' %}
+                  {% assign option_enabled = show_chair_color %}
+                {% elsif option_down contains 'chair' and option_down contains 'colour' %}
+                  {% assign option_label = section.settings.chair_color_label %}
+                  {% assign option_kind = 'swatch' %}
+                  {% assign option_enabled = show_chair_color %}
+                {% elsif option_down == 'size' or option_down contains 'choose size' %}
+                  {% assign option_label = section.settings.size_label %}
+                  {% assign option_kind = 'dropdown' %}
+                  {% assign option_enabled = show_size %}
+                {% elsif option_down contains 'slot' %}
+                  {% assign option_label = section.settings.slots_label %}
+                  {% assign option_kind = 'dropdown' %}
+                  {% assign option_enabled = show_slots %}
+                {% elsif option_down contains 'bow' and option_down contains 'color' %}
+                  {% assign option_label = section.settings.bow_color_label %}
+                  {% assign option_kind = 'swatch' %}
+                  {% assign option_enabled = show_bow_color %}
+                {% elsif option_down contains 'bow' and option_down contains 'colour' %}
+                  {% assign option_label = section.settings.bow_color_label %}
+                  {% assign option_kind = 'swatch' %}
+                  {% assign option_enabled = show_bow_color %}
+                {% elsif option_down == 'color' or option_down == 'colour' or option_down contains 'choose color' or option_down contains 'choose colour' %}
+                  {% assign option_label = section.settings.color_label %}
+                  {% assign option_kind = 'swatch' %}
+                  {% assign option_enabled = show_color %}
+                {% endif %}
+
+                {% if option_enabled %}
+                  <fieldset
+                    class="puv2-option"
+                    data-puv2-option-index="{{ forloop.index0 }}"
+                    data-puv2-option-name="{{ option.name | escape }}"
+                  >
+                    <legend class="puv2-label">{{ option_label | escape }}</legend>
+
+                    {% if option_kind == 'swatch' %}
+                      <div class="puv2-swatches">
+                        {% for option_value in option.values %}
+                          {% assign value_name = option_value | strip %}
+                          {% assign value_handle = value_name | handleize %}
+                          <label class="puv2-swatch">
+                            <input
+                              type="radio"
+                              name="PUV2-{{ section.id }}-option-{{ option.position }}"
+                              value="{{ option_value | escape }}"
+                              data-puv2-option-value
+                              {% if option_value.selected %}checked{% endif %}
+                            >
+                            <span
+                              class="puv2-swatch__dot puv2-color--{{ value_handle }}"
+                              {% if option_value.swatch.color != blank %}
+                                style="background: {{ option_value.swatch.color }};"
+                              {% endif %}
+                            ></span>
+                            <span class="puv2-swatch__name">{{ option_value }}</span>
+                            <span class="puv2-swatch__check" aria-hidden="true">✓</span>
+                          </label>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      <div class="puv2-select-wrap">
+                        <select
+                          class="puv2-select"
+                          data-puv2-option-select
+                          data-puv2-option-position="{{ forloop.index0 }}"
+                          aria-label="{{ option_label | escape }}"
+                        >
+                          {% for option_value in option.values %}
+                            <option
+                              value="{{ option_value | escape }}"
+                              data-puv2-base-label="{{ option_value | escape }}"
+                              {% if option_value.selected %}selected{% endif %}
+                            >
+                              {{ option_value }}{% if option_value.variant != blank %} ({{ option_value.variant.price | money }}){% endif %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        <span class="puv2-select-arrow" aria-hidden="true">⌄</span>
+                      </div>
+                    {% endif %}
+                  </fieldset>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endunless %}
+
+          <!-- ADD PERSONALIZATION -->
+          {% if show_personalization %}
+            <div class="puv2-personalization">
+              <div class="puv2-personalization__head">
+                <label class="puv2-label" for="PUV2Personalization-{{ section.id }}">
+                  {{ personalization_label | escape }}
+                </label>
+                <span class="puv2-badge">
+                  {% if personalization_required %}
+                    {{ section.settings.required_text | escape }}
+                  {% else %}
+                    {{ section.settings.optional_text | escape }}
+                  {% endif %}
+                </span>
+              </div>
+
+              <div class="puv2-personalization__input-wrap">
+                <input
+                  id="PUV2Personalization-{{ section.id }}"
+                  class="puv2-personalization__input"
+                  type="text"
+                  name="properties[{{ personalization_label | escape }}]"
+                  maxlength="{{ personalization_max }}"
+                  placeholder="{{ personalization_placeholder | escape }}"
+                  data-puv2-personalization
+                  {% if personalization_required %}required{% endif %}
+                >
+                <span class="puv2-char-count">
+                  <span data-puv2-char-count>0</span>/{{ personalization_max }}
+                </span>
+              </div>
+
+              {% if section.settings.personalization_help != blank %}
+                <p class="puv2-help">{{ section.settings.personalization_help | escape }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="puv2-buy">
+            <div class="puv2-qty">
+              <button type="button" data-puv2-minus aria-label="Decrease quantity">−</button>
+              <input type="number" name="quantity" value="1" min="1" max="99" data-puv2-qty aria-label="Quantity">
+              <button type="button" data-puv2-plus aria-label="Increase quantity">+</button>
+            </div>
+
+            <button
+              class="puv2-atc"
+              type="submit"
+              name="add"
+              data-puv2-atc
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              <span data-puv2-atc-text>
+                {% if current_variant.available %}
+                  {{ section.settings.add_to_cart_text | escape }}
+                {% else %}
+                  {{ section.settings.sold_out_text | escape }}
+                {% endif %}
+              </span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          {% if section.settings.checkout_note != blank %}
+            <p class="puv2-checkout-note">🔒 {{ section.settings.checkout_note | escape }}</p>
+          {% endif %}
+        {% endform %}
+
+        {% if section.settings.show_trust %}
+          <div class="puv2-trust">
+            <div><span>✦</span><strong>{{ section.settings.trust_1 | escape }}</strong></div>
+            <div><span>↗</span><strong>{{ section.settings.trust_2 | escape }}</strong></div>
+            <div><span>♡</span><strong>{{ section.settings.trust_3 | escape }}</strong></div>
+          </div>
+        {% endif %}
+
+        <div class="puv2-accordions">
+          <details class="puv2-accordion" {% if section.settings.open_description %}open{% endif %}>
+            <summary>
+              <span>{{ section.settings.description_heading | escape }}</span>
+              <span class="puv2-plus" aria-hidden="true"></span>
+            </summary>
+            <div class="puv2-accordion__content rte">
+              {% if section.settings.description_body != blank %}
+                {{ section.settings.description_body }}
+              {% else %}
+                {{ product.description }}
+              {% endif %}
+            </div>
+          </details>
+
+          {% if section.settings.details_text != blank %}
+            <details class="puv2-accordion">
+              <summary>
+                <span>{{ section.settings.details_heading | escape }}</span>
+                <span class="puv2-plus" aria-hidden="true"></span>
+              </summary>
+              <div class="puv2-accordion__content rte">{{ section.settings.details_text }}</div>
+            </details>
+          {% endif %}
+
+          {% if section.settings.shipping_text != blank %}
+            <details class="puv2-accordion">
+              <summary>
+                <span>{{ section.settings.shipping_heading | escape }}</span>
+                <span class="puv2-plus" aria-hidden="true"></span>
+              </summary>
+              <div class="puv2-accordion__content rte">{{ section.settings.shipping_text }}</div>
+            </details>
+          {% endif %}
+
+          {% if section.settings.personalization_info != blank %}
+            <details class="puv2-accordion">
+              <summary>
+                <span>{{ section.settings.personalization_info_heading | escape }}</span>
+                <span class="puv2-plus" aria-hidden="true"></span>
+              </summary>
+              <div class="puv2-accordion__content rte">{{ section.settings.personalization_info }}</div>
+            </details>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .shopify-section:has(#PUV2-{{ section.id }}) { overflow: visible !important; }
+
+  #PUV2-{{ section.id }} {
+    --puv2-theme:
+      {% if section.settings.use_theme_colors %}
+        rgb(var(--color-button, 118, 88, 69))
+      {% else %}
+        var(--puv2-accent-custom)
+      {% endif %};
+    --puv2-dark: color-mix(in srgb, var(--puv2-theme) 68%, #34271f 32%);
+    --puv2-accent: color-mix(in srgb, var(--puv2-theme) 70%, #bd8a63 30%);
+    --puv2-text: color-mix(in srgb, rgb(var(--color-foreground, 78,59,48)) 78%, #513e33 22%);
+    --puv2-muted: #8e7e73;
+    --puv2-bg: rgb(var(--color-background, 250,247,242));
+    --puv2-soft: color-mix(in srgb, var(--puv2-soft-custom) 56%, #fff 44%);
+    --puv2-border: color-mix(in srgb, var(--puv2-border-custom) 72%, #e7ddd5 28%);
+
+    color: var(--puv2-text);
+    background: var(--puv2-bg);
+    font-family: var(--font-body-family, inherit);
+    line-height: 1.5;
+  }
+
+  #PUV2-{{ section.id }} * { box-sizing: border-box; }
+  #PUV2-{{ section.id }} .is-hidden { display: none !important; }
+
+  #PUV2-{{ section.id }} .puv2__wrap {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #PUV2-{{ section.id }} .puv2__grid {
+    display: grid;
+    grid-template-columns: minmax(0,1.04fr) minmax(420px,.96fr);
+    gap: clamp(34px,4.2vw,66px);
+    align-items: start;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery { min-width:0; align-self:start; }
+
+  #PUV2-{{ section.id }} .puv2-gallery--sticky {
+    position: sticky;
+    top: {{ section.settings.sticky_top }}px;
+    height: max-content;
+    z-index: 2;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__stage {
+    position:relative;
+    aspect-ratio:1/1;
+    overflow:hidden;
+    border:1px solid var(--puv2-border);
+    border-radius:calc(var(--puv2-radius) + 2px);
+    background:var(--puv2-soft);
+    box-shadow:0 18px 48px rgba(65,47,35,.06);
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__panel { width:100%; height:100%; }
+
+  #PUV2-{{ section.id }} .puv2-gallery__image,
+  #PUV2-{{ section.id }} .puv2-gallery__media,
+  #PUV2-{{ section.id }} .puv2-gallery__placeholder {
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:contain;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__arrow {
+    position:absolute;
+    top:50%;
+    z-index:4;
+    width:46px;
+    height:46px;
+    transform:translateY(-50%);
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(75,55,43,.13);
+    border-radius:999px;
+    background:rgba(255,255,255,.95);
+    color:#4b392e;
+    font-size:30px;
+    cursor:pointer;
+    box-shadow:0 8px 24px rgba(58,42,32,.12);
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__arrow--prev { left:15px; }
+  #PUV2-{{ section.id }} .puv2-gallery__arrow--next { right:15px; }
+
+  #PUV2-{{ section.id }} .puv2-gallery__counter {
+    position:absolute;
+    right:14px;
+    bottom:14px;
+    z-index:4;
+    padding:7px 11px;
+    border:1px solid rgba(85,65,53,.12);
+    border-radius:999px;
+    background:rgba(255,255,255,.94);
+    color:#594539;
+    font-size:13px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__thumbs {
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:10px;
+    margin-top:12px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__thumb {
+    padding:0;
+    aspect-ratio:1/1;
+    overflow:hidden;
+    border:1px solid var(--puv2-border);
+    border-radius:10px;
+    background:#fff;
+    cursor:pointer;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__thumb.is-active { border:2px solid var(--puv2-accent); }
+  #PUV2-{{ section.id }} .puv2-gallery__thumb-image { width:100%; height:100%; object-fit:cover; display:block; }
+
+  #PUV2-{{ section.id }} .puv2-info { min-width:0; padding-top:3px; }
+
+  #PUV2-{{ section.id }} .puv2-eyebrow {
+    display:inline-flex;
+    align-items:center;
+    min-height:30px;
+    padding:6px 12px;
+    margin-bottom:14px;
+    border:1px solid var(--puv2-border);
+    border-radius:999px;
+    background:rgba(255,255,255,.55);
+    color:var(--puv2-dark);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  #PUV2-{{ section.id }} .puv2-title {
+    margin:0;
+    color:var(--puv2-dark);
+    font-family:var(--font-heading-family,inherit);
+    font-size:clamp(35px,3.15vw,48px);
+    line-height:1.04;
+    letter-spacing:-.034em;
+    font-weight:800;
+  }
+
+  #PUV2-{{ section.id }} .puv2-status { margin-top:14px; }
+
+  #PUV2-{{ section.id }} .puv2-stock {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#25864d;
+    font-size:14px;
+    font-weight:750;
+  }
+
+  #PUV2-{{ section.id }} .puv2-stock i {
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 0 4px rgba(37,134,77,.11);
+  }
+
+  #PUV2-{{ section.id }} .puv2-stock.is-out { color:#a64b3d; }
+
+  #PUV2-{{ section.id }} .puv2-price-row {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    margin-top:20px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-price {
+    color:var(--puv2-dark);
+    font-size:34px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:-.02em;
+  }
+
+  #PUV2-{{ section.id }} .puv2-compare {
+    color:#a69a91;
+    font-size:17px;
+    text-decoration:line-through;
+  }
+
+  #PUV2-{{ section.id }} .puv2-sale {
+    display:inline-flex;
+    align-items:center;
+    min-height:30px;
+    padding:6px 10px;
+    border:1px solid rgba(204,99,63,.15);
+    border-radius:999px;
+    background:#fff3ee;
+    color:#c05b3d;
+    font-size:12px;
+    font-weight:800;
+  }
+
+  #PUV2-{{ section.id }} .puv2-benefit {
+    margin:14px 0 0;
+    color:var(--puv2-muted);
+    font-size:16px;
+    line-height:1.55;
+  }
+
+  #PUV2-{{ section.id }} .puv2-form { margin-top:26px; }
+
+  #PUV2-{{ section.id }} .puv2-option {
+    margin:0 0 19px;
+    padding:0;
+    border:0;
+  }
+
+  #PUV2-{{ section.id }} .puv2-label {
+    display:block;
+    margin:0 0 9px;
+    padding:0;
+    color:var(--puv2-dark);
+    font-size:17px;
+    line-height:1.3;
+    font-weight:800;
+  }
+
+  #PUV2-{{ section.id }} .puv2-select-wrap { position:relative; }
+
+  #PUV2-{{ section.id }} .puv2-select {
+    width:100%;
+    height:58px;
+    padding:0 50px 0 16px;
+    border:1.5px solid #a2968d;
+    border-radius:12px;
+    outline:0;
+    background:#fff;
+    color:#40342d;
+    font:inherit;
+    font-size:16px;
+    appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
+  }
+
+  #PUV2-{{ section.id }} .puv2-select:focus {
+    border-color:var(--puv2-accent);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--puv2-accent) 20%,transparent);
+  }
+
+  #PUV2-{{ section.id }} .puv2-select-arrow {
+    position:absolute;
+    right:17px;
+    top:50%;
+    transform:translateY(-55%);
+    pointer-events:none;
+    color:#453a33;
+    font-size:21px;
+    font-weight:800;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatches {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch {
+    position:relative;
+    min-height:60px;
+    padding:9px 10px;
+    border:1px solid var(--puv2-border);
+    border-radius:12px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#625248;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch input {
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch:has(input:checked) {
+    border-color:var(--puv2-accent);
+    box-shadow:0 0 0 1px var(--puv2-accent);
+    background:#fffaf6;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch__dot {
+    flex:0 0 27px;
+    width:27px;
+    height:27px;
+    border:1px solid rgba(58,43,34,.18);
+    border-radius:999px;
+    background:#ddd;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch__name {
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch__check {
+    display:none;
+    margin-left:auto;
+    flex:0 0 19px;
+    width:19px;
+    height:19px;
+    place-items:center;
+    border-radius:999px;
+    background:var(--puv2-accent);
+    color:#fff;
+    font-size:11px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch:has(input:checked) .puv2-swatch__check { display:grid; }
+
+  /* COLOR FALLBACKS */
+  #PUV2-{{ section.id }} .puv2-color--red { background:#ed292d; }
+  #PUV2-{{ section.id }} .puv2-color--orange { background:#f28a18; }
+  #PUV2-{{ section.id }} .puv2-color--yellow { background:#ffda1d; }
+  #PUV2-{{ section.id }} .puv2-color--beige { background:#eadab3; }
+  #PUV2-{{ section.id }} .puv2-color--gold { background:#d39c12; }
+  #PUV2-{{ section.id }} .puv2-color--brown { background:#995d3b; }
+  #PUV2-{{ section.id }} .puv2-color--green { background:#0da952; }
+  #PUV2-{{ section.id }} .puv2-color--blue { background:#1766d4; }
+  #PUV2-{{ section.id }} .puv2-color--light-blue { background:#8bc8f3; }
+  #PUV2-{{ section.id }} .puv2-color--navy { background:#272b95; }
+  #PUV2-{{ section.id }} .puv2-color--grey,
+  #PUV2-{{ section.id }} .puv2-color--gray { background:#8b8e90; }
+  #PUV2-{{ section.id }} .puv2-color--purple { background:#9c4fd1; }
+  #PUV2-{{ section.id }} .puv2-color--light-purple { background:#bc83e7; }
+  #PUV2-{{ section.id }} .puv2-color--black { background:#050607; }
+  #PUV2-{{ section.id }} .puv2-color--white { background:#fff; }
+  #PUV2-{{ section.id }} .puv2-color--turquoise { background:#42ccc7; }
+  #PUV2-{{ section.id }} .puv2-color--olive { background:#777d0a; }
+  #PUV2-{{ section.id }} .puv2-color--light-pink { background:#f3b2c1; }
+  #PUV2-{{ section.id }} .puv2-color--pink { background:#ee83aa; }
+  #PUV2-{{ section.id }} .puv2-color--cyan { background:#16d8df; }
+
+  #PUV2-{{ section.id }} .puv2-personalization {
+    margin:3px 0 19px;
+    padding:17px;
+    border:1px solid var(--puv2-border);
+    border-radius:15px;
+    background:rgba(255,255,255,.44);
+  }
+
+  #PUV2-{{ section.id }} .puv2-personalization__head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-personalization__head .puv2-label { margin:0; }
+
+  #PUV2-{{ section.id }} .puv2-badge {
+    flex:0 0 auto;
+    padding:5px 9px;
+    border:1px solid var(--puv2-border);
+    border-radius:999px;
+    background:#fffaf6;
+    color:#907e72;
+    font-size:11px;
+    font-weight:800;
+  }
+
+  #PUV2-{{ section.id }} .puv2-personalization__input-wrap { position:relative; }
+
+  #PUV2-{{ section.id }} .puv2-personalization__input {
+    width:100%;
+    height:58px;
+    padding:0 62px 0 16px;
+    border:1px solid var(--puv2-border);
+    border-radius:12px;
+    outline:0;
+    background:#fff;
+    color:#40342d;
+    font:inherit;
+    font-size:16px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-personalization__input:focus {
+    border-color:var(--puv2-accent);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--puv2-accent) 20%,transparent);
+  }
+
+  #PUV2-{{ section.id }} .puv2-char-count {
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#a3958b;
+    font-size:12px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-help {
+    margin:8px 0 0;
+    color:#9a8c82;
+    font-size:12px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-buy {
+    display:grid;
+    grid-template-columns:122px minmax(0,1fr);
+    gap:12px;
+    margin-top:20px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-qty {
+    height:58px;
+    display:grid;
+    grid-template-columns:1fr 42px 1fr;
+    align-items:center;
+    overflow:hidden;
+    border:1px solid var(--puv2-border);
+    border-radius:13px;
+    background:#fff;
+  }
+
+  #PUV2-{{ section.id }} .puv2-qty button {
+    height:100%;
+    border:0;
+    background:transparent;
+    color:var(--puv2-dark);
+    font-size:20px;
+    cursor:pointer;
+  }
+
+  #PUV2-{{ section.id }} .puv2-qty input {
+    width:100%;
+    padding:0;
+    border:0;
+    outline:0;
+    background:transparent;
+    text-align:center;
+    color:var(--puv2-dark);
+    font-size:16px;
+    font-weight:800;
+    -moz-appearance:textfield;
+  }
+
+  #PUV2-{{ section.id }} .puv2-qty input::-webkit-outer-spin-button,
+  #PUV2-{{ section.id }} .puv2-qty input::-webkit-inner-spin-button {
+    margin:0;
+    -webkit-appearance:none;
+  }
+
+  #PUV2-{{ section.id }} .puv2-atc {
+    min-height:58px;
+    padding:0 20px;
+    border:0;
+    border-radius:13px;
+    background:var(--puv2-dark);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    font:inherit;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(63,45,35,.12);
+  }
+
+  #PUV2-{{ section.id }} .puv2-atc:disabled { opacity:.52; cursor:not-allowed; }
+
+  #PUV2-{{ section.id }} .puv2-checkout-note {
+    margin:9px 0 0;
+    text-align:center;
+    color:#9a8c82;
+    font-size:12px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-trust {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+    margin-top:20px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-trust > div {
+    min-height:82px;
+    padding:12px 8px;
+    border:1px solid var(--puv2-border);
+    border-radius:13px;
+    background:rgba(255,255,255,.45);
+    display:grid;
+    place-items:center;
+    align-content:center;
+    gap:5px;
+    text-align:center;
+  }
+
+  #PUV2-{{ section.id }} .puv2-trust span { color:var(--puv2-accent); font-size:20px; }
+  #PUV2-{{ section.id }} .puv2-trust strong { font-size:12px; line-height:1.25; }
+
+  #PUV2-{{ section.id }} .puv2-accordions {
+    margin-top:26px;
+    border-top:1px solid var(--puv2-border);
+  }
+
+  #PUV2-{{ section.id }} .puv2-accordion { border-bottom:1px solid var(--puv2-border); }
+
+  #PUV2-{{ section.id }} .puv2-accordion summary {
+    min-height:58px;
+    padding:0 2px;
+    list-style:none;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    color:var(--puv2-dark);
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+  }
+
+  #PUV2-{{ section.id }} .puv2-accordion summary::-webkit-details-marker { display:none; }
+
+  #PUV2-{{ section.id }} .puv2-plus {
+    position:relative;
+    width:18px;
+    height:18px;
+    flex:0 0 auto;
+  }
+
+  #PUV2-{{ section.id }} .puv2-plus::before,
+  #PUV2-{{ section.id }} .puv2-plus::after {
+    content:'';
+    position:absolute;
+    left:50%;
+    top:50%;
+    background:currentColor;
+    transform:translate(-50%,-50%);
+  }
+
+  #PUV2-{{ section.id }} .puv2-plus::before { width:15px; height:1.5px; }
+  #PUV2-{{ section.id }} .puv2-plus::after { width:1.5px; height:15px; }
+  #PUV2-{{ section.id }} .puv2-accordion[open] .puv2-plus::after { display:none; }
+
+  #PUV2-{{ section.id }} .puv2-accordion__content {
+    padding:0 2px 20px;
+    color:#796a60;
+    font-size:15px;
+    line-height:1.65;
+  }
+
+  @media (max-width:989px) {
+    #PUV2-{{ section.id }} .puv2__grid { grid-template-columns:1fr; gap:26px; }
+    #PUV2-{{ section.id }} .puv2-gallery--sticky { position:static; }
+    #PUV2-{{ section.id }} .puv2-title { font-size:clamp(30px,8vw,40px); }
+    #PUV2-{{ section.id }} .puv2-gallery__thumbs { grid-template-columns:repeat(5,minmax(0,1fr)); }
+  }
+
+  @media (max-width:580px) {
+    #PUV2-{{ section.id }} .puv2__wrap { padding-top:16px; padding-bottom:24px; }
+
+    #PUV2-{{ section.id }} .puv2-gallery__thumbs {
+      display:flex;
+      overflow-x:auto;
+      gap:8px;
+      scrollbar-width:none;
+    }
+
+    #PUV2-{{ section.id }} .puv2-gallery__thumbs::-webkit-scrollbar { display:none; }
+
+    #PUV2-{{ section.id }} .puv2-gallery__thumb {
+      width:64px;
+      flex:0 0 64px;
+    }
+
+    #PUV2-{{ section.id }} .puv2-swatches { grid-template-columns:repeat(2,minmax(0,1fr)); }
+
+    #PUV2-{{ section.id }} .puv2-buy {
+      grid-template-columns:108px minmax(0,1fr);
+      gap:9px;
+    }
+  }
+
+  /* =========================================================
+     V4 — PLASTBAT REFERENCE PALETTE
+     Matched to the supplied Capybara product-page reference:
+     warm off-white page, deep cocoa title, cool ivory inputs,
+     soft taupe borders and restrained caramel accents.
+     ========================================================= */
+
+  #PUV2-{{ section.id }} {
+    --puv2-dark: #54433d;
+    --puv2-accent: #bd8d68;
+    --puv2-text: #62534c;
+    --puv2-muted: #948a85;
+    --puv2-bg: #f7f7f6;
+    --puv2-soft: #f7f9fd;
+    --puv2-border: #e0d7d1;
+    background: #f7f7f6;
+    color: #62534c;
+  }
+
+  #PUV2-{{ section.id }} .puv2__wrap {
+    background: #f7f7f6;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__stage {
+    background: #f7f9fd;
+    border-color: #e0d7d1;
+    box-shadow: 0 18px 46px rgba(84, 67, 61, .045);
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__arrow {
+    background: rgba(255, 255, 255, .96);
+    border-color: #e6ded9;
+    color: #54433d;
+    box-shadow: 0 7px 20px rgba(84, 67, 61, .10);
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__counter {
+    background: rgba(247, 249, 253, .96);
+    border-color: #e0d7d1;
+    color: #54433d;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__thumb {
+    background: #f7f9fd;
+    border-color: #e0d7d1;
+  }
+
+  #PUV2-{{ section.id }} .puv2-gallery__thumb.is-active {
+    border-color: #bd8d68;
+    box-shadow: inset 0 0 0 1px #bd8d68;
+  }
+
+  #PUV2-{{ section.id }} .puv2-eyebrow {
+    min-height: 31px;
+    padding: 7px 12px;
+    background: #f7f9fa;
+    border-color: #e0d7d1;
+    color: #68584f;
+    font-size: 11.5px;
+    letter-spacing: .105em;
+  }
+
+  #PUV2-{{ section.id }} .puv2-title {
+    max-width: 18ch;
+    color: #54433d;
+    font-size: clamp(36px, 3.05vw, 48px);
+    line-height: 1.07;
+    font-weight: 760;
+    letter-spacing: -.035em;
+    text-wrap: balance;
+  }
+
+  #PUV2-{{ section.id }} .puv2-stock {
+    color: #377b58;
+  }
+
+  #PUV2-{{ section.id }} .puv2-stock.is-out {
+    color: #a4483d;
+  }
+
+  #PUV2-{{ section.id }} .puv2-price {
+    color: #54433d;
+    font-size: 32px;
+    font-weight: 850;
+  }
+
+  #PUV2-{{ section.id }} .puv2-compare {
+    color: #948a85;
+  }
+
+  #PUV2-{{ section.id }} .puv2-sale {
+    min-height: 28px;
+    padding: 6px 10px;
+    background: #f5f0ee;
+    border-color: #e8dbd4;
+    color: #a25945;
+    font-size: 11.5px;
+    letter-spacing: .025em;
+  }
+
+  #PUV2-{{ section.id }} .puv2-benefit {
+    max-width: 52ch;
+    color: #948a85;
+    font-size: 15.5px;
+    line-height: 1.62;
+  }
+
+  #PUV2-{{ section.id }} .puv2-label {
+    color: #54433d;
+    font-size: 16.5px;
+    font-weight: 800;
+  }
+
+  #PUV2-{{ section.id }} .puv2-select {
+    height: 58px;
+    background: #f7f9fd;
+    border: 1.35px solid #948880;
+    color: #483a35;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  #PUV2-{{ section.id }} .puv2-select:hover {
+    border-color: #786a63;
+  }
+
+  #PUV2-{{ section.id }} .puv2-select:focus {
+    border-color: #bd8d68;
+    box-shadow: 0 0 0 3px rgba(189, 141, 104, .14);
+  }
+
+  #PUV2-{{ section.id }} .puv2-select-arrow {
+    color: #54433d;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch {
+    background: #f7f9fd;
+    border-color: #e0d7d1;
+    color: #62534c;
+    box-shadow: none;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch:hover {
+    border-color: #c9bab0;
+    background: #fafbfe;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch:has(input:checked) {
+    background: #fbf6f2;
+    border-color: #bd8d68;
+    box-shadow: inset 0 0 0 1px #bd8d68;
+  }
+
+  #PUV2-{{ section.id }} .puv2-swatch__check {
+    background: #bd8d68;
+  }
+
+  /* Personalization becomes lighter and more like the reference page,
+     instead of looking like a separate heavy card. */
+  #PUV2-{{ section.id }} .puv2-personalization {
+    margin: 12px 0 20px;
+    padding: 19px 0 0;
+    border: 0;
+    border-top: 1px solid #e0d7d1;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  #PUV2-{{ section.id }} .puv2-personalization__head {
+    margin-bottom: 12px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-badge {
+    background: #f7f9fa;
+    border-color: #e0d7d1;
+    color: #948a85;
+  }
+
+  #PUV2-{{ section.id }} .puv2-personalization__input {
+    min-height: 64px;
+    background: #f7f9fd;
+    border: 1.35px solid #e0d7d1;
+    color: #483a35;
+    border-radius: 12px;
+  }
+
+  #PUV2-{{ section.id }} .puv2-personalization__input:focus {
+    border-color: #bd8d68;
+    box-shadow: 0 0 0 3px rgba(189, 141, 104, .14);
+  }
+
+  #PUV2-{{ section.id }} .puv2-char-count,
+  #PUV2-{{ section.id }} .puv2-help {
+    color: #948a85;
+  }
+
+  #PUV2-{{ section.id }} .puv2-qty {
+    background: #f7f9fd;
+    border-color: #e0d7d1;
+  }
+
+  #PUV2-{{ section.id }} .puv2-qty button,
+  #PUV2-{{ section.id }} .puv2-qty input {
+    color: #54433d;
+  }
+
+  #PUV2-{{ section.id }} .puv2-atc {
+    background: #876b58;
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(84, 67, 61, .13);
+  }
+
+  #PUV2-{{ section.id }} .puv2-atc:hover:not(:disabled) {
+    background: #765b49;
+    transform: translateY(-1px);
+  }
+
+  #PUV2-{{ section.id }} .puv2-checkout-note {
+    color: #948a85;
+  }
+
+  #PUV2-{{ section.id }} .puv2-trust > div {
+    background: #f7f9fa;
+    border-color: #e0d7d1;
+  }
+
+  #PUV2-{{ section.id }} .puv2-trust span {
+    color: #bd8d68;
+  }
+
+  #PUV2-{{ section.id }} .puv2-trust strong {
+    color: #62534c;
+  }
+
+  #PUV2-{{ section.id }} .puv2-accordions {
+    border-top-color: #e0d7d1;
+  }
+
+  #PUV2-{{ section.id }} .puv2-accordion {
+    border-bottom-color: #e0d7d1;
+  }
+
+  #PUV2-{{ section.id }} .puv2-accordion summary {
+    color: #54433d;
+  }
+
+  #PUV2-{{ section.id }} .puv2-accordion__content {
+    color: #80736c;
+  }
+
+  @media (max-width: 580px) {
+    #PUV2-{{ section.id }} .puv2-title {
+      max-width: none;
+      line-height: 1.08;
+    }
+  }
+
+
+  /* ==========================================================
+     RELATED / FEATURED COLLECTION CARD FIX
+     Prevent title text from floating over the image.
+     Keep text and price centered in the lower information box.
+     ========================================================== */
+  .pb-related-center .card > .card__content > .card__information,
+  .pb-related-center .product-card__info,
+  .pb-related-center .product-item__info {
+    min-height: 108px;
+    padding: 14px 14px 16px !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+    box-sizing: border-box;
+    text-align: center !important;
+    position: static !important;
+    z-index: auto !important;
+  }
+
+  .pb-related-center .card__heading,
+  .pb-related-center .card__heading.h5,
+  .pb-related-center .product-card__title,
+  .pb-related-center .product-item__title {
+    width: 100%;
+    margin: 0 0 8px !important;
+    color: #594235 !important;
+    font-size: 15px !important;
+    line-height: 1.28 !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    position: static !important;
+    transform: none !important;
+  }
+
+  .pb-related-center .card__heading a,
+  .pb-related-center .product-card__title a,
+  .pb-related-center .product-item__title a {
+    display: -webkit-box;
+    width: 100%;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-align: center !important;
+    text-decoration: none;
+    position: static !important;
+  }
+
+  .pb-related-center .card__inner .card__information,
+  .pb-related-center .card__inner .card__heading,
+  .pb-related-center .card__inner .card__heading a {
+    position: absolute !important;
+    inset: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  .pb-related-center .card-information,
+  .pb-related-center .price,
+  .pb-related-center .price__container,
+  .pb-related-center .product-card__price,
+  .pb-related-center .product-item__price {
+    width: 100%;
+    margin: 0 !important;
+    color: #594235;
+    text-align: center !important;
+  }
+
+  .pb-related-center .price__container {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center !important;
+    gap: 6px;
+  }
+
+  .pb-related-center .price-item,
+  .pb-related-center .price-item--regular,
+  .pb-related-center .price-item--sale,
+  .pb-related-center .product-card__price,
+  .pb-related-center .product-item__price {
+    font-size: 17px !important;
+    line-height: 1.2 !important;
+    font-weight: 750 !important;
+  }
+
+  .pb-related-center .price--on-sale .price-item--regular {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    opacity: .55;
+  }
+
+  @media (max-width: 749px) {
+    .pb-related-center .card > .card__content > .card__information,
+    .pb-related-center .product-card__info,
+    .pb-related-center .product-item__info {
+      min-height: 98px;
+      padding: 12px 10px 14px !important;
+    }
+
+    .pb-related-center .card__heading,
+    .pb-related-center .card__heading.h5,
+    .pb-related-center .product-card__title,
+    .pb-related-center .product-item__title {
+      margin-bottom: 7px !important;
+      font-size: 13.5px !important;
+    }
+
+    .pb-related-center .price-item,
+    .pb-related-center .price-item--regular,
+    .pb-related-center .price-item--sale,
+    .pb-related-center .product-card__price,
+    .pb-related-center .product-item__price {
+      font-size: 15px !important;
+    }
+  }
+
+</style>
+
+<script>
+(() => {
+  const root = document.getElementById('PUV2-{{ section.id }}');
+  if (!root) return;
+
+  /* Current products are expected to use normal Shopify variant counts.
+     The UI itself is rendered from product.options_with_values. */
+  const variants = [
+    {% for variant in product.variants %}
+      {
+        id: {{ variant.id | json }},
+        options: {{ variant.options | json }},
+        available: {{ variant.available | json }},
+        price: {{ variant.price | money | json }},
+        compare: {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}""{% endif %},
+        save: {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}{% else %}0{% endif %},
+        mediaId: {% if variant.featured_media %}{{ variant.featured_media.id | json }}{% else %}null{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  /* Gallery */
+  const panels = Array.from(root.querySelectorAll('[data-puv2-media-index]'));
+  const thumbs = Array.from(root.querySelectorAll('[data-puv2-thumb]'));
+  const currentEl = root.querySelector('[data-puv2-current]');
+  let currentIndex = 0;
+
+  function showMedia(index) {
+    if (!panels.length) return;
+    index = Math.max(0, Math.min(index, panels.length - 1));
+    currentIndex = index;
+
+    panels.forEach((panel, i) => {
+      const active = i === index;
+      panel.hidden = !active;
+      panel.classList.toggle('is-active', active);
+    });
+
+    thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === index));
+    if (currentEl) currentEl.textContent = String(index + 1);
+  }
+
+  thumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => showMedia(Number(thumb.dataset.puv2Thumb || 0)));
+  });
+
+  root.querySelector('[data-puv2-prev]')?.addEventListener('click', () => {
+    showMedia(currentIndex <= 0 ? panels.length - 1 : currentIndex - 1);
+  });
+
+  root.querySelector('[data-puv2-next]')?.addEventListener('click', () => {
+    showMedia(currentIndex >= panels.length - 1 ? 0 : currentIndex + 1);
+  });
+
+  function showMediaById(mediaId) {
+    if (!mediaId) return;
+    const index = panels.findIndex(panel => String(panel.dataset.puv2MediaId) === String(mediaId));
+    if (index >= 0) showMedia(index);
+  }
+
+  /* Variant engine */
+  const variantId = root.querySelector('[data-puv2-variant-id]');
+  const priceEl = root.querySelector('[data-puv2-price]');
+  const compareEl = root.querySelector('[data-puv2-compare]');
+  const saleEl = root.querySelector('[data-puv2-sale]');
+  const stockEl = root.querySelector('[data-puv2-stock]');
+  const stockText = root.querySelector('[data-puv2-stock-text]');
+  const atc = root.querySelector('[data-puv2-atc]');
+  const atcText = root.querySelector('[data-puv2-atc-text]');
+
+  const addText = {{ section.settings.add_to_cart_text | json }};
+  const soldText = {{ section.settings.sold_out_text | json }};
+  const unavailableText = {{ section.settings.unavailable_text | json }};
+  const inStockText = {{ section.settings.in_stock_text | json }};
+
+  const initialSelectedOptions = {{ current_variant.options | json }};
+
+  function selectedOptions() {
+    const wanted = Array.isArray(initialSelectedOptions) ? [...initialSelectedOptions] : [];
+
+    Array.from(root.querySelectorAll('[data-puv2-option-index]')).forEach(group => {
+      const index = Number(group.dataset.puv2OptionIndex || 0);
+      const checked = group.querySelector('[data-puv2-option-value]:checked');
+      const select = group.querySelector('[data-puv2-option-select]');
+      const value = checked ? checked.value : (select ? select.value : '');
+
+      if (value) wanted[index] = value;
+    });
+
+    return wanted;
+  }
+
+  function findVariantForOptions(wanted) {
+    if (!variants.length) return null;
+
+    return variants.find(variant =>
+      variant.options.length === wanted.length &&
+      variant.options.every((value, index) => value === wanted[index])
+    ) || null;
+  }
+
+  function findVariant() {
+    return findVariantForOptions(selectedOptions());
+  }
+
+  function refreshDropdownPrices() {
+    const current = selectedOptions();
+
+    root.querySelectorAll('[data-puv2-option-select]').forEach(select => {
+      const group = select.closest('[data-puv2-option-index]');
+      if (!group) return;
+
+      const optionIndex = Number(group.dataset.puv2OptionIndex || 0);
+
+      Array.from(select.options).forEach(optionEl => {
+        const baseLabel = optionEl.dataset.puv2BaseLabel || optionEl.value;
+        const candidate = [...current];
+        candidate[optionIndex] = optionEl.value;
+        const candidateVariant = findVariantForOptions(candidate);
+
+        if (candidateVariant) {
+          optionEl.textContent = `${baseLabel} (${candidateVariant.price})${candidateVariant.available ? '' : ' — ' + soldText}`;
+        } else {
+          optionEl.textContent = `${baseLabel} — ${unavailableText}`;
+        }
+      });
+    });
+  }
+
+  function renderVariant(variant) {
+    if (!variant) {
+      if (variantId) variantId.value = '';
+      if (atc) atc.disabled = true;
+      if (atcText) atcText.textContent = unavailableText;
+      if (stockEl) stockEl.classList.add('is-out');
+      if (stockText) stockText.textContent = unavailableText;
+      return;
+    }
+
+    if (variantId) variantId.value = variant.id;
+    if (priceEl) priceEl.textContent = variant.price;
+
+    if (compareEl) {
+      compareEl.textContent = variant.compare || '';
+      compareEl.classList.toggle('is-hidden', !variant.compare);
+    }
+
+    if (saleEl) {
+      saleEl.textContent = `SAVE ${variant.save}%`;
+      saleEl.classList.toggle('is-hidden', !variant.save);
+    }
+
+    if (stockEl) stockEl.classList.toggle('is-out', !variant.available);
+    if (stockText) stockText.textContent = variant.available ? inStockText : soldText;
+    if (atc) atc.disabled = !variant.available;
+    if (atcText) atcText.textContent = variant.available ? addText : soldText;
+
+    showMediaById(variant.mediaId);
+
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('variant', variant.id);
+      history.replaceState({}, '', url);
+    } catch (e) {}
+  }
+
+  root.querySelectorAll('[data-puv2-option-value]').forEach(input => {
+    input.addEventListener('change', () => {
+      renderVariant(findVariant());
+      refreshDropdownPrices();
+    });
+  });
+
+  root.querySelectorAll('[data-puv2-option-select]').forEach(select => {
+    select.addEventListener('change', () => {
+      renderVariant(findVariant());
+      refreshDropdownPrices();
+    });
+  });
+
+  /* Personalization counter */
+  const personalization = root.querySelector('[data-puv2-personalization]');
+  const charCount = root.querySelector('[data-puv2-char-count]');
+
+  function updateCharCount() {
+    if (personalization && charCount) {
+      charCount.textContent = String(personalization.value.length);
+    }
+  }
+
+  personalization?.addEventListener('input', updateCharCount);
+  updateCharCount();
+
+  /* Quantity */
+  const qty = root.querySelector('[data-puv2-qty]');
+
+  function clampQty(value) {
+    return Math.min(99, Math.max(1, parseInt(value || '1', 10) || 1));
+  }
+
+  root.querySelector('[data-puv2-minus]')?.addEventListener('click', () => {
+    if (qty) qty.value = clampQty(Number(qty.value) - 1);
+  });
+
+  root.querySelector('[data-puv2-plus]')?.addEventListener('click', () => {
+    if (qty) qty.value = clampQty(Number(qty.value) + 1);
+  });
+
+  qty?.addEventListener('change', () => { qty.value = clampQty(qty.value); });
+
+  refreshDropdownPrices();
+  renderVariant(findVariant());
+})();
+</script>
+
+
+<script>
+  (() => {
+    const relatedLabels = [
+      'you may also like',
+      'you might also like',
+      'related products',
+      'trending now',
+      'featured collection'
+    ];
+
+    const markRelatedSection = () => {
+      const headings = document.querySelectorAll('h1, h2, h3, h4, .title, .section-heading');
+      headings.forEach((heading) => {
+        const label = (heading.textContent || '').trim().toLowerCase().replace(/\s+/g, ' ');
+        if (!relatedLabels.some((target) => label === target || label.includes(target))) return;
+
+        const section = heading.closest('.shopify-section')
+          || heading.closest('section')
+          || heading.parentElement;
+
+        if (section) section.classList.add('pb-related-center');
+      });
+    };
+
+    markRelatedSection();
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', markRelatedSection, { once: true });
+    }
+
+    const observer = new MutationObserver(markRelatedSection);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    window.setTimeout(() => observer.disconnect(), 8000);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Plastbat Options V5",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Universal options"
+    },
+    {
+      "type": "paragraph",
+      "content": "Reads Chair Color, Size, Color, Number of Slots and Bow Color directly from each product's Shopify options. Personalization can be enabled per product with metafield custom.enable_personalization or tag pp-personalization."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use theme colors",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Custom accent color",
+      "default": "#B88461"
+    },
+    {
+      "type": "color",
+      "id": "soft_background",
+      "label": "Soft background",
+      "default": "#F7F1EB"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#E4D9CF"
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 6,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_gallery",
+      "label": "Sticky product gallery",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "sticky_top",
+      "label": "Sticky top offset",
+      "min": 60,
+      "max": 180,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "header",
+      "content": "Product info"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Personalized • Made to order"
+    },
+    {
+      "type": "textarea",
+      "id": "short_benefit",
+      "label": "Short benefit line",
+      "default": "Choose the options available for this product and create the version that fits you best."
+    },
+    {
+      "type": "text",
+      "id": "in_stock_text",
+      "label": "In-stock text",
+      "default": "Available to order"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Sold-out text",
+      "default": "Sold out"
+    },
+    {
+      "type": "text",
+      "id": "unavailable_text",
+      "label": "Unavailable text",
+      "default": "UNAVAILABLE"
+    },
+    {
+      "type": "header",
+      "content": "Option ON / OFF"
+    },
+    {
+      "type": "paragraph",
+      "content": "Leave all needed option types ON. An option only appears when that option exists in the current Shopify product listing."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_chair_color",
+      "label": "Enable Choose Chair Color",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "chair_color_label",
+      "label": "Chair Color label",
+      "default": "Choose Chair Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size",
+      "label": "Enable Choose Size",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "size_label",
+      "label": "Size label",
+      "default": "Choose Size"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color",
+      "label": "Enable Color",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "color_label",
+      "label": "Color label",
+      "default": "Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_slots",
+      "label": "Enable Number of Slots",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "slots_label",
+      "label": "Slots label",
+      "default": "Choose Number of Slots"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bow_color",
+      "label": "Enable Choose Bow Color",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bow_color_label",
+      "label": "Bow Color label",
+      "default": "Choose Bow Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_other_options",
+      "label": "Enable other listing options",
+      "info": "Keeps options such as Type Of Tray or other Shopify variant options visible.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Add personalization"
+    },
+    {
+      "type": "checkbox",
+      "id": "personalization_default",
+      "label": "Enable Add Personalization",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "personalization_label",
+      "label": "Default label",
+      "default": "Add Personalization"
+    },
+    {
+      "type": "text",
+      "id": "personalization_placeholder",
+      "label": "Default placeholder",
+      "default": "Enter your personalization"
+    },
+    {
+      "type": "range",
+      "id": "personalization_max",
+      "label": "Default max characters",
+      "min": 5,
+      "max": 100,
+      "step": 1,
+      "default": 25
+    },
+    {
+      "type": "text",
+      "id": "required_text",
+      "label": "Required badge",
+      "default": "REQUIRED"
+    },
+    {
+      "type": "text",
+      "id": "optional_text",
+      "label": "Optional badge",
+      "default": "OPTIONAL"
+    },
+    {
+      "type": "text",
+      "id": "personalization_help",
+      "label": "Helper text",
+      "default": "Please double-check spelling and capitalization before adding to cart."
+    },
+    {
+      "type": "header",
+      "content": "Purchase"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to cart text",
+      "default": "ADD TO CART"
+    },
+    {
+      "type": "text",
+      "id": "checkout_note",
+      "label": "Checkout note",
+      "default": "Secure checkout • Your selected options are saved with your order"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust",
+      "label": "Show trust cards",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust item 1",
+      "default": "Made to order"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust item 2",
+      "default": "Fast shipping"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust item 3",
+      "default": "Personalization support"
+    },
+    {
+      "type": "header",
+      "content": "Product accordions"
+    },
+    {
+      "type": "text",
+      "id": "description_heading",
+      "label": "Description heading",
+      "default": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "description_body",
+      "label": "Description text"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_description",
+      "label": "Open description by default",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "details_heading",
+      "label": "Details heading",
+      "default": "Product details"
+    },
+    {
+      "type": "richtext",
+      "id": "details_text",
+      "label": "Product details",
+      "default": "<p>• Made to order<br>• Multiple product options may be available<br>• Lightweight and durable construction<br>• Carefully made for gifting and decor</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_heading",
+      "label": "Shipping heading",
+      "default": "Shipping & returns"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_text",
+      "label": "Shipping text",
+      "default": "<p>Each piece is made to order. Add your current processing time, delivery estimate and return policy here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "personalization_info_heading",
+      "label": "Personalization info heading",
+      "default": "Personalization"
+    },
+    {
+      "type": "richtext",
+      "id": "personalization_info",
+      "label": "Personalization info",
+      "default": "<p>Enter personalization exactly as you want it to appear and review spelling before checkout.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Plastbat Options V5"
+    }
+  ]
+}
+{% endschema %}

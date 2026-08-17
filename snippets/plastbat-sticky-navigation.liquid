@@ -14,6 +14,12 @@
   if request.path contains '/pages/contact'
     assign is_contact = true
   endif
+
+  comment
+    Collections shown in the "Collection" dropdown. Empty collections are skipped
+    so the menu never links to a blank listing page.
+  endcomment
+  assign nav_collections_limit = 12
 -%}
 
 <nav class="pb-global-nav" aria-label="Main navigation">
@@ -27,7 +33,33 @@
       <div class="pb-global-nav__mobile-panel">
         <ul class="pb-global-nav__mobile-menu" role="list">
           <li><a href="{{ routes.root_url }}" class="pb-global-nav__link{% if is_home %} is-active{% endif %}"{% if is_home %} aria-current="page"{% endif %}>Home</a></li>
-          <li><a href="/collections/all" class="pb-global-nav__link{% if is_collection %} is-active{% endif %}"{% if is_collection %} aria-current="page"{% endif %}>Collection</a></li>
+          <li>
+            <details class="pb-global-nav__mobile-group"{% if is_collection %} open{% endif %}>
+              <summary class="pb-global-nav__link pb-global-nav__mobile-group-toggle{% if is_collection %} is-active{% endif %}">
+                Collection
+                {%- render 'plastbat-nav-caret' -%}
+              </summary>
+              <ul class="pb-global-nav__mobile-submenu" role="list">
+                <li>
+                  <a href="/collections/all" class="pb-global-nav__dropdown-link{% if collection.handle == 'all' %} is-active{% endif %}">
+                    All products
+                  </a>
+                </li>
+                {%- for nav_collection in collections limit: nav_collections_limit -%}
+                  {%- if nav_collection.all_products_count > 0 -%}
+                    <li>
+                      <a
+                        href="{{ nav_collection.url }}"
+                        class="pb-global-nav__dropdown-link{% if collection.handle == nav_collection.handle %} is-active{% endif %}"
+                      >
+                        {{ nav_collection.title | escape }}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </details>
+          </li>
           <li><a href="/pages/contact" class="pb-global-nav__link{% if is_contact %} is-active{% endif %}"{% if is_contact %} aria-current="page"{% endif %}>Contact</a></li>
         </ul>
       </div>
@@ -39,7 +71,39 @@
 
     <ul class="pb-global-nav__menu pb-global-nav__desktop-menu" role="list">
       <li><a href="{{ routes.root_url }}" class="pb-global-nav__link{% if is_home %} is-active{% endif %}"{% if is_home %} aria-current="page"{% endif %}>Home</a></li>
-      <li><a href="/collections/all" class="pb-global-nav__link{% if is_collection %} is-active{% endif %}"{% if is_collection %} aria-current="page"{% endif %}>Collection</a></li>
+      <li class="pb-global-nav__item pb-global-nav__item--has-menu">
+        <a
+          href="/collections/all"
+          class="pb-global-nav__link{% if is_collection %} is-active{% endif %}"
+          {% if is_collection %}aria-current="page"{% endif %}
+          aria-haspopup="true"
+        >
+          Collection
+          {%- render 'plastbat-nav-caret' -%}
+        </a>
+        <div class="pb-global-nav__dropdown">
+          <ul class="pb-global-nav__dropdown-list" role="list">
+            <li>
+              <a href="/collections/all" class="pb-global-nav__dropdown-link{% if collection.handle == 'all' %} is-active{% endif %}">
+                All products
+              </a>
+            </li>
+            {%- for nav_collection in collections limit: nav_collections_limit -%}
+              {%- if nav_collection.all_products_count > 0 -%}
+                <li>
+                  <a
+                    href="{{ nav_collection.url }}"
+                    class="pb-global-nav__dropdown-link{% if collection.handle == nav_collection.handle %} is-active{% endif %}"
+                  >
+                    <span class="pb-global-nav__dropdown-title">{{ nav_collection.title | escape }}</span>
+                    <span class="pb-global-nav__dropdown-count">{{ nav_collection.all_products_count }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </li>
       <li><a href="/pages/contact" class="pb-global-nav__link{% if is_contact %} is-active{% endif %}"{% if is_contact %} aria-current="page"{% endif %}>Contact</a></li>
     </ul>
 

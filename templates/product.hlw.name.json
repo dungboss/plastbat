@@ -211,7 +211,7 @@
         "sticky_gallery": true,
         "sticky_top": 90,
         "eyebrow": "Personalized • Made to order",
-        "short_benefit": "Choose the options available for this product and create the version that fits you best.",
+        "short_benefit": "Choose your favorite options and create a Halloween piece that feels uniquely yours — made to match your spooky-season style.",
         "in_stock_text": "Available to order",
         "sold_out_text": "Sold out",
         "unavailable_text": "UNAVAILABLE",
@@ -243,11 +243,11 @@
         "description_body": "<p>Bring a touch of spooky-season charm to your Halloween with a unique creation designed to make the occasion feel a little more fun and special. With a playful balance of cute, festive, and spooky-inspired details, it’s a great way to celebrate the season and add a bit of personality to your Halloween collection.</p><p>Whether you’re treating yourself or searching for something special for a friend, family member, coworker, or fellow Halloween lover, this piece makes a fun choice for the spooky season. Perfect for Halloween celebrations, fall gifting, birthdays, or simply because, it’s a charming little addition for anyone who loves creative and one-of-a-kind finds.</p>",
         "open_description": false,
         "details_heading": "Product details",
-        "details_text": "<p>• Made to order<br/>• Multiple product options may be available<br/>• Lightweight and durable construction<br/>• Carefully made for gifting and decor</p>",
+        "details_text": "<p>Each Halloween piece is <strong>made to order</strong> with care, with different styles or product options available depending on the design. Created to be lightweight, durable, and easy to enjoy throughout the season, these pieces are thoughtfully made to add a fun Halloween touch to your space or make a unique gift for someone who loves spooky-season decor.</p>",
         "shipping_heading": "Shipping & returns",
         "shipping_text": "<p>Each item is made to order with care, so please allow <strong>7–9 business days for processing and production</strong> before your order ships. Once shipped, delivery typically takes <strong>3–7 business days</strong>, depending on your location and the shipping carrier.</p><p>We accept returns and exchanges within <strong>7 days of delivery</strong>. Items must be returned in their original condition, and return shipping costs are the responsibility of the customer. If your item arrives damaged or defective, please contact us as soon as possible so we can make it right.</p><p>Because production begins shortly after an order is placed, changes or cancellations can only be requested within <strong>24 hours of purchase</strong>. If you have any questions about your order, feel free to reach out — we’re always happy to help.</p>",
         "personalization_info_heading": "Personalization",
-        "personalization_info": "<p>Enter personalization exactly as you want it to appear and review spelling before checkout.</p>",
+        "personalization_info": "<p>Please complete all required personalization fields, such as <strong>Name, Color, Style, or other available options</strong>, and double-check your selections carefully before placing your order.</p><p>For personalized text, please use <strong>standard English letters and numbers only</strong>. Avoid special characters or emojis unless otherwise stated, as they may not display clearly on the finished product.</p><p>When selecting product characteristics or design options, please choose the options that best match your preferences and personalization details.</p><p>Please note that actual product colors may vary slightly from the images shown on our website due to lighting conditions during photography, screen settings, and differences between digital displays and the physical product.</p>",
         "padding_top": 24,
         "padding_bottom": 24
       }

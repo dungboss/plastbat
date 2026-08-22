@@ -1,0 +1,121 @@
+/* Plastbat floating contact bubbles — rendered from layout/theme.liquid */
+.pb-contact-bubbles {
+  position: fixed;
+  right: 16px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 9998; /* just below the sticky nav (9999) */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.pb-contact-bubble {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(39, 56, 61, 0.22);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.pb-contact-bubble:hover,
+.pb-contact-bubble:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(39, 56, 61, 0.28);
+  outline: none;
+}
+
+.pb-contact-bubble:focus-visible {
+  outline: 2px solid #7d563d;
+  outline-offset: 3px;
+}
+
+.pb-contact-bubble__icon {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+
+.pb-contact-bubble--messenger {
+  background: linear-gradient(145deg, #0a7cff 0%, #a334fa 100%);
+}
+
+.pb-contact-bubble--email {
+  background: linear-gradient(145deg, #c99b6b 0%, #8d6041 100%);
+}
+
+.pb-contact-bubble--email .pb-contact-bubble__icon {
+  width: 25px;
+  height: 25px;
+}
+
+/* Label slides out on hover / keyboard focus. */
+.pb-contact-bubble__label {
+  position: absolute;
+  right: calc(100% + 10px);
+  white-space: nowrap;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #27383d;
+  color: #fff;
+  font-family: 'Nunito', var(--font-body-family), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.pb-contact-bubble:hover .pb-contact-bubble__label,
+.pb-contact-bubble:focus-visible .pb-contact-bubble__label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media screen and (max-width: 749px) {
+  .pb-contact-bubbles {
+    right: 12px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    gap: 8px;
+  }
+
+  .pb-contact-bubble {
+    width: 46px;
+    height: 46px;
+  }
+
+  .pb-contact-bubble__icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  /* Labels are hover-only affordances; hide them on touch. */
+  .pb-contact-bubble__label {
+    display: none;
+  }
+
+  /* Clear the product page sticky add-to-cart bar. */
+  .pb-contact-bubbles--lifted {
+    bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-contact-bubble,
+  .pb-contact-bubble__label {
+    transition: none;
+  }
+
+  .pb-contact-bubble:hover,
+  .pb-contact-bubble:focus-visible {
+    transform: none;
+  }
+}

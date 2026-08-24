@@ -186,7 +186,7 @@
         "heading_uppercase": true,
         "show_viewall": true,
         "viewall_text": "VIEW ALL",
-        "viewall_link": "",
+        "viewall_link": "shopify://collections",
         "viewall_color": "#2962ff",
         "viewall_size": 12,
         "collection": "best-sellers",

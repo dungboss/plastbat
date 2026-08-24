@@ -1,1 +1,487 @@
-{"sections":{"hero":{"type":"plastbat-hero","name":"Plastbat hero","settings":{"show_brand_banner":false,"banner_max_height":370,"mobile_banner_max_height":120,"product_image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_29_34_PM.png","image_fit":"contain","image_position":"right","media_badge":"Made layer by layer","eyebrow":"PERSONALIZED 3D GIFTS & DECOR","heading":"Playful ideas, brought to life","text":"<p>Discover personalized key holders, bookish accessories, desk decor and seasonal gifts designed to feel useful, original and unmistakably yours.<\/p>","button_label":"SHOP BEST SELLERS","button_link":"shopify:\/\/collections\/frontpage","secondary_button_label":"SHOP ALL PRODUCTS","secondary_button_link":"shopify:\/\/collections\/all","show_highlights":true,"height":560,"color_scheme":"scheme-3"}},"ticker":{"type":"ds-horizontal-ticker","blocks":{"a":{"type":"text","settings":{"title":"Original 3D-Printed Designs"}},"b":{"type":"text","settings":{"title":"Personalized for You"}},"c":{"type":"text","settings":{"title":"Made with PLA Bioplastic"}},"d":{"type":"text","settings":{"title":"Tracked Shipping"}}},"block_order":["a","b","c","d"],"settings":{"speed":1,"text_spacing":5,"text_size":"1.2","italic_text":false,"uppercase_text":false,"bold_text":true,"color_scheme":"custom","padding_top":12,"padding_bottom":12,"custom_colors_background":"#c99b6b","custom_gradient_background":"","custom_colors_text":"#ffffff"}},"categories":{"type":"three-d-category-grid","blocks":{"c1":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_32_04_PM.png","title":"Car Key Holders","cta":"Shop car designs","link":"shopify:\/\/collections\/car-key-holders"}},"c2":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_38_03_PM.png","title":"Personalized Key Holders","cta":"Shop custom key racks","link":"shopify:\/\/collections\/key-holders"}},"c3":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_44_15_PM.png","title":"Book Counters & Trackers","cta":"Shop bookish gifts","link":"shopify:\/\/collections\/book-counter"}},"c4":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_48_19_PM.png","title":"Book Nooks & LED Decor","cta":"Shop reading decor","link":"shopify:\/\/collections\/decor"}},"c5":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_50_19_PM.png","title":"Can Holders & Coolers","cta":"Shop drink accessories","link":"shopify:\/\/collections\/can-holder"}},"c6":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_52_13_PM.png","title":"Zen Gardens","cta":"Shop desk decor","link":"shopify:\/\/collections\/zen-garden"}},"c7":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_03_35_03_PM.png","title":"Halloween Decor","cta":"Shop spooky designs","link":"shopify:\/\/collections\/frontpage"}},"c8":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/il_794xN.7958396795_ruha_1.avif","title":"Unique Decor","cta":"Shop unique keepsakes","link":"shopify:\/\/collections\/decor"}}},"block_order":["c1","c2","c3","c4","c5","c6","c7","c8"],"settings":{"heading":"Shop Plastbat by Collection","text":"Explore the product families currently available from Plastbat—from personalized wall organizers to bookish, seasonal and celebration decor.","columns":4,"background":"#fbf7f1","padding_top":56,"padding_bottom":48}},"h_etrending_6tgfqL":{"type":"HEtrending","name":"TX 5. Sản phẩm trending","settings":{"heading":"TRENDING NOW","heading_size":22,"heading_color":"#111318","heading_uppercase":true,"show_viewall":true,"viewall_text":"VIEW ALL","viewall_link":"","viewall_color":"#2962ff","viewall_size":12,"collection":"best-sellers","limit":6,"bg_color":"#F3E6D3","card_bg":"#ffffff","card_border_color":"#8B8A47","media_bg":"#0b0e14","title_color":"#111318","price_color":"#111318","compare_color":"#9ca3af","star_color":"#f59e0b","star_empty_color":"#d8dbe0","rating_text_color":"#9ca3af","columns_desktop":6,"columns_mobile":"2","gap":14,"card_radius":12,"card_border_width":1,"card_shadow":true,"image_ratio":"square","image_fit":"cover","title_size":13,"title_weight":"600","title_lines":"1","price_size":14,"show_rating":true,"rating_size":12,"show_badge":true,"badge_label":"SALE","badge_bg":"#ef4444","badge_text_color":"#ffffff","hover_effect":"lift-zoom","glow_color":"#2962ff","reveal":"up","content_width":1450,"pad_top":28,"pad_bottom":36}},"story":{"type":"image-with-text","blocks":{"h":{"type":"heading","settings":{"heading":"Useful, Personal & Made With Purpose","heading_size":"h1"}},"t":{"type":"text","settings":{"text":"<p>Plastbat turns original digital concepts into practical objects, personalized gifts and playful decor. Each piece is printed one layer at a time using PLA bioplastic, then carefully checked before packing.<\/p>","text_style":"body"}},"b":{"type":"button","settings":{"button_label":"ABOUT PLASTBAT","button_link":"shopify:\/\/pages\/about-us","button_style_secondary":false}}},"block_order":["h","t","b"],"settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_Jul_29_2026_04_03_50_PM.png","height":"medium","desktop_image_width":"medium","layout":"text_first","desktop_content_position":"middle","desktop_content_alignment":"left","content_layout":"no-overlap","section_color_scheme":"","color_scheme":"scheme-2","image_behavior":"none","mobile_content_alignment":"left","padding_top":44,"padding_bottom":44}},"process":{"type":"three-d-process","blocks":{"s1":{"type":"step","settings":{"title":"Choose a Product","text":"Pick a key holder, bookish accessory, can holder, zen garden or seasonal design."}},"s2":{"type":"step","settings":{"title":"Add Your Details","text":"Enter the name, photo or available customization requested on the product page."}},"s3":{"type":"step","settings":{"title":"We Print & Finish It","text":"Your piece is produced layer by layer, assembled when required and quality checked."}},"s4":{"type":"step","settings":{"title":"Packed & Shipped","text":"Your order is protected for transit and sent with tracking when available."}}},"block_order":["s1","s2","s3","s4"],"settings":{"heading":"How Your Personalized Order Is Made","text":"From your chosen design and custom details to printing, inspection and tracked delivery.","background":"#f5ebdd","accent":"#c99b6b","padding_top":64,"padding_bottom":64}},"testimonials":{"type":"ds-testimonials","blocks":{"r1":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/iap_640x640.8332915771_lubs2pz4.avif","title":"“Beautifully Done”","text":"<p>High-quality design, useful details and an impressive 3D-printed finish.<\/p>","author":"David"}},"r2":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/iap_640x640.8227561686_6hhha9nx.avif","title":"“Exactly What I Wanted”","text":"<p>A cutepiece, responsive customization support and careful packaging.<\/p>","author":"Sara"}},"r3":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/iap_640x640.8223220757_1idzhrmf.jpg","title":"“Excellent Craftsmanship”","text":"<p>The finished product matched expectations and looked great in person.<\/p>","author":"Jennifer"}}},"block_order":["r1","r2","r3"],"settings":{"title":"Loved by Plastbat Customers","heading_size":"h1","text":"","image_width":"full","image_ratio":"square","columns_desktop":3,"slider_preview":true,"column_alignment":"center","show_stars":true,"stars_color":"#c99b6b","show_quotes":false,"quotes_color_scheme":"accent-2","background_style":"primary","color_scheme":"scheme-1","padding_top":52,"padding_bottom":52,"custom_colors_background":"#fbf7f1","custom_gradient_background":"","custom_colors_text":"#5f493d"}},"promise":{"type":"ds-icon-bar","blocks":{"p1":{"type":"column","settings":{"icon":"box","title":"Original Designs","text":"<p>Products developed around Plastbat concepts rather than generic mass-produced items.<\/p>"}},"p2":{"type":"column","settings":{"icon":"check_mark","title":"Personalized Options","text":"<p>Selected designs can include names, photos and other custom details.<\/p>"}},"p3":{"type":"column","settings":{"icon":"truck","title":"PLA Bioplastic","text":"<p>Printed with plant-based PLA material across the core product range.<\/p>"}},"p4":{"type":"column","settings":{"icon":"chat_bubble","title":"Careful Support","text":"<p>Responsive help with customization questions before and after purchase.<\/p>"}}},"block_order":["p1","p2","p3","p4"],"settings":{"title":"Why Shop Plastbat","heading_size":"h1","text":"<p>Original concepts, thoughtful personalization and careful production for gifts and objects that feel distinctly yours.<\/p>","icon_size":"small","columns_desktop":4,"icon_color":"accent-1","background_style":"none","color_scheme":"scheme-2","columns_mobile":"1","swipe_on_mobile":true,"padding_top":48,"padding_bottom":56,"custom_colors_background":"#f5ebdd","custom_gradient_background":"","custom_colors_text":"#5f493d"}},"newsletter":{"type":"newsletter","blocks":{"h":{"type":"heading","settings":{"heading":"Get New Plastbat Designs First","heading_size":"h1"}},"p":{"type":"paragraph","settings":{"text":"<p>Join for new personalized designs, seasonal launches and limited product drops.<\/p>"}},"e":{"type":"email_form","settings":{}}},"block_order":["h","p","e"],"settings":{"color_scheme":"background-1","full_width":true,"padding_top":52,"padding_bottom":60}}},"order":["hero","ticker","categories","h_etrending_6tgfqL","story","process","testimonials","promise","newsletter"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "plastbat-hero",
+      "name": "Plastbat hero",
+      "settings": {
+        "show_brand_banner": false,
+        "banner_max_height": 370,
+        "mobile_banner_max_height": 120,
+        "product_image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_29_34_PM.png",
+        "image_fit": "contain",
+        "image_position": "right",
+        "media_badge": "Made layer by layer",
+        "eyebrow": "PERSONALIZED 3D GIFTS & DECOR",
+        "heading": "Playful ideas, brought to life",
+        "text": "<p>Discover personalized key holders, bookish accessories, desk decor and seasonal gifts designed to feel useful, original and unmistakably yours.</p>",
+        "button_label": "SHOP BEST SELLERS",
+        "button_link": "shopify://collections/frontpage",
+        "secondary_button_label": "SHOP ALL PRODUCTS",
+        "secondary_button_link": "shopify://collections/all",
+        "show_highlights": true,
+        "height": 560,
+        "color_scheme": "scheme-3"
+      }
+    },
+    "ticker": {
+      "type": "ds-horizontal-ticker",
+      "blocks": {
+        "a": {
+          "type": "text",
+          "settings": {
+            "title": "Original 3D-Printed Designs"
+          }
+        },
+        "b": {
+          "type": "text",
+          "settings": {
+            "title": "Personalized for You"
+          }
+        },
+        "c": {
+          "type": "text",
+          "settings": {
+            "title": "Made with PLA Bioplastic"
+          }
+        },
+        "d": {
+          "type": "text",
+          "settings": {
+            "title": "Tracked Shipping"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "settings": {
+        "speed": 1,
+        "text_spacing": 5,
+        "text_size": "1.2",
+        "italic_text": false,
+        "uppercase_text": false,
+        "bold_text": true,
+        "color_scheme": "custom",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "custom_colors_background": "#c99b6b",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#ffffff"
+      }
+    },
+    "categories": {
+      "type": "three-d-category-grid",
+      "blocks": {
+        "c1": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_32_04_PM.png",
+            "title": "Car Key Holders",
+            "cta": "Shop car designs",
+            "link": "shopify://collections/car-key-holders"
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_38_03_PM.png",
+            "title": "Personalized Key Holders",
+            "cta": "Shop custom key racks",
+            "link": "shopify://collections/key-holders"
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_44_15_PM.png",
+            "title": "Book Counters & Trackers",
+            "cta": "Shop bookish gifts",
+            "link": "shopify://collections/book-counter"
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_48_19_PM.png",
+            "title": "Book Nooks & LED Decor",
+            "cta": "Shop reading decor",
+            "link": "shopify://collections/decor"
+          }
+        },
+        "c5": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_50_19_PM.png",
+            "title": "Can Holders & Coolers",
+            "cta": "Shop drink accessories",
+            "link": "shopify://collections/can-holder"
+          }
+        },
+        "c6": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_52_13_PM.png",
+            "title": "Zen Gardens",
+            "cta": "Shop desk decor",
+            "link": "shopify://collections/zen-garden"
+          }
+        },
+        "c7": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_35_03_PM.png",
+            "title": "Halloween Decor",
+            "cta": "Shop spooky designs",
+            "link": "shopify://collections/frontpage"
+          }
+        },
+        "c8": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/il_794xN.7958396795_ruha_1.avif",
+            "title": "Unique Decor",
+            "cta": "Shop unique keepsakes",
+            "link": "shopify://collections/decor"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "settings": {
+        "heading": "Shop Plastbat by Collection",
+        "text": "Explore the product families currently available from Plastbat—from personalized wall organizers to bookish, seasonal and celebration decor.",
+        "columns": 4,
+        "background": "#fbf7f1",
+        "padding_top": 56,
+        "padding_bottom": 48
+      }
+    },
+    "h_etrending_6tgfqL": {
+      "type": "HEtrending",
+      "name": "TX 5. Sản phẩm trending",
+      "settings": {
+        "heading": "TRENDING NOW",
+        "heading_size": 22,
+        "heading_color": "#111318",
+        "heading_uppercase": true,
+        "show_viewall": true,
+        "viewall_text": "VIEW ALL",
+        "viewall_link": "",
+        "viewall_color": "#2962ff",
+        "viewall_size": 12,
+        "collection": "best-sellers",
+        "limit": 6,
+        "bg_color": "#f3e6d3",
+        "card_bg": "#ffffff",
+        "card_border_color": "#8b8a47",
+        "media_bg": "#0b0e14",
+        "title_color": "#111318",
+        "price_color": "#111318",
+        "compare_color": "#9ca3af",
+        "star_color": "#f59e0b",
+        "star_empty_color": "#d8dbe0",
+        "rating_text_color": "#9ca3af",
+        "columns_desktop": 6,
+        "columns_mobile": "2",
+        "gap": 14,
+        "card_radius": 12,
+        "card_border_width": 1,
+        "card_shadow": true,
+        "image_ratio": "square",
+        "image_fit": "cover",
+        "title_size": 13,
+        "title_weight": "600",
+        "title_lines": "1",
+        "price_size": 14,
+        "show_rating": true,
+        "rating_size": 12,
+        "show_badge": true,
+        "badge_label": "SALE",
+        "badge_bg": "#ef4444",
+        "badge_text_color": "#ffffff",
+        "hover_effect": "lift-zoom",
+        "glow_color": "#2962ff",
+        "reveal": "up",
+        "content_width": 1450,
+        "pad_top": 28,
+        "pad_bottom": 36
+      }
+    },
+    "story": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Useful, Personal & Made With Purpose",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Plastbat turns original digital concepts into practical objects, personalized gifts and playful decor. Each piece is printed one layer at a time using PLA bioplastic, then carefully checked before packing.</p>",
+            "text_style": "body"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "ABOUT PLASTBAT",
+            "button_link": "shopify://pages/about-us",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_04_03_50_PM.png",
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "scheme-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
+    },
+    "process": {
+      "type": "three-d-process",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Choose a Product",
+            "text": "Pick a key holder, bookish accessory, can holder, zen garden or seasonal design."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Add Your Details",
+            "text": "Enter the name, photo or available customization requested on the product page."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "We Print & Finish It",
+            "text": "Your piece is produced layer by layer, assembled when required and quality checked."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Packed & Shipped",
+            "text": "Your order is protected for transit and sent with tracking when available."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {
+        "heading": "How Your Personalized Order Is Made",
+        "text": "From your chosen design and custom details to printing, inspection and tracked delivery.",
+        "background": "#f5ebdd",
+        "accent": "#c99b6b",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "testimonials": {
+      "type": "ds-testimonials",
+      "blocks": {
+        "r1": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/iap_640x640.8332915771_lubs2pz4.avif",
+            "title": "“Beautifully Done”",
+            "text": "<p>High-quality design, useful details and an impressive 3D-printed finish.</p>",
+            "author": "David"
+          }
+        },
+        "r2": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/iap_640x640.8227561686_6hhha9nx.avif",
+            "title": "“Exactly What I Wanted”",
+            "text": "<p>A cutepiece, responsive customization support and careful packaging.</p>",
+            "author": "Sara"
+          }
+        },
+        "r3": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/iap_640x640.8223220757_1idzhrmf.jpg",
+            "title": "“Excellent Craftsmanship”",
+            "text": "<p>The finished product matched expectations and looked great in person.</p>",
+            "author": "Jennifer"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "title": "Loved by Plastbat Customers",
+        "heading_size": "h1",
+        "text": "",
+        "image_width": "full",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "slider_preview": true,
+        "column_alignment": "center",
+        "show_stars": true,
+        "stars_color": "#c99b6b",
+        "show_quotes": false,
+        "quotes_color_scheme": "accent-2",
+        "background_style": "primary",
+        "color_scheme": "scheme-1",
+        "padding_top": 52,
+        "padding_bottom": 52,
+        "custom_colors_background": "#fbf7f1",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#5f493d"
+      }
+    },
+    "promise": {
+      "type": "ds-icon-bar",
+      "blocks": {
+        "p1": {
+          "type": "column",
+          "settings": {
+            "icon": "box",
+            "title": "Original Designs",
+            "text": "<p>Products developed around Plastbat concepts rather than generic mass-produced items.</p>"
+          }
+        },
+        "p2": {
+          "type": "column",
+          "settings": {
+            "icon": "check_mark",
+            "title": "Personalized Options",
+            "text": "<p>Selected designs can include names, photos and other custom details.</p>"
+          }
+        },
+        "p3": {
+          "type": "column",
+          "settings": {
+            "icon": "truck",
+            "title": "PLA Bioplastic",
+            "text": "<p>Printed with plant-based PLA material across the core product range.</p>"
+          }
+        },
+        "p4": {
+          "type": "column",
+          "settings": {
+            "icon": "chat_bubble",
+            "title": "Careful Support",
+            "text": "<p>Responsive help with customization questions before and after purchase.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "title": "Why Shop Plastbat",
+        "heading_size": "h1",
+        "text": "<p>Original concepts, thoughtful personalization and careful production for gifts and objects that feel distinctly yours.</p>",
+        "icon_size": "small",
+        "columns_desktop": 4,
+        "icon_color": "accent-1",
+        "background_style": "none",
+        "color_scheme": "scheme-2",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 48,
+        "padding_bottom": 56,
+        "custom_colors_background": "#f5ebdd",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#5f493d"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Get New Plastbat Designs First",
+            "heading_size": "h1"
+          }
+        },
+        "p": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Join for new personalized designs, seasonal launches and limited product drops.</p>"
+          }
+        },
+        "e": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "h",
+        "p",
+        "e"
+      ],
+      "settings": {
+        "color_scheme": "background-1",
+        "full_width": true,
+        "padding_top": 52,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "ticker",
+    "categories",
+    "h_etrending_6tgfqL",
+    "story",
+    "process",
+    "testimonials",
+    "promise",
+    "newsletter"
+  ]
+}

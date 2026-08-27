@@ -454,6 +454,148 @@
             </details>
           {% endif %}
         </div>
+
+        <!-- CUSTOMER REVIEWS -->
+        {% if section.settings.show_reviews %}
+          <div class="pb-reviews" id="pb-reviews-{{ section.id }}">
+            <div class="pb-reviews__header">
+              <div>
+                <h2 class="pb-reviews__title">{{ section.settings.reviews_heading | escape }}</h2>
+
+                {% if rating_object != blank and rating_count != blank %}
+                  <div class="pb-reviews__rating-line">
+                    <span class="pb-reviews__stars">★★★★★</span>
+                    <strong>{{ rating_object.rating | round: 1 }}</strong>
+                    <span>({{ rating_count }})</span>
+                  </div>
+                {% else %}
+                  <p class="pb-reviews__empty">{{ section.settings.no_reviews_text | escape }}</p>
+                {% endif %}
+              </div>
+
+              <span class="pb-reviews__write pb-reviews__write--static">
+                {{ section.settings.write_review_text | escape }}
+              </span>
+            </div>
+
+            <div class="pb-reviews__body">
+
+              {% assign pb_review_count = 0 %}
+              {% assign pb_rating_total = 0 %}
+              {% for block in section.blocks %}
+                {% if block.type == 'manual_review' %}
+                  {% assign pb_review_count = pb_review_count | plus: 1 %}
+                  {% assign pb_rating_total = pb_rating_total | plus: block.settings.rating %}
+                {% endif %}
+              {% endfor %}
+
+              {% if pb_review_count > 0 %}
+                {% assign pb_average_rating = pb_rating_total | times: 1.0 | divided_by: pb_review_count %}
+
+                <div class="pb-review-summary-grid">
+                  <div class="pb-review-summary-score">
+                    <strong>{{ pb_average_rating | round: 1 }}</strong>
+                    <div>
+                      <div class="pb-reviews__stars" aria-hidden="true">★★★★★</div>
+                      <span>Based on {{ pb_review_count }} review{% if pb_review_count != 1 %}s{% endif %}</span>
+                    </div>
+                  </div>
+
+                  <div class="pb-review-histogram" aria-label="Review distribution">
+                    {% for star in (1..5) reversed %}
+                      {% assign star_count = 0 %}
+                      {% for block in section.blocks %}
+                        {% if block.type == 'manual_review' and block.settings.rating == star %}
+                          {% assign star_count = star_count | plus: 1 %}
+                        {% endif %}
+                      {% endfor %}
+
+                      {% if pb_review_count > 0 %}
+                        {% assign star_percent = star_count | times: 100 | divided_by: pb_review_count %}
+                      {% else %}
+                        {% assign star_percent = 0 %}
+                      {% endif %}
+
+                      <div class="pb-review-histogram__row">
+                        <span>{{ star }} ★</span>
+                        <div class="pb-review-histogram__track">
+                          <i style="width: {{ star_percent }}%;"></i>
+                        </div>
+                        <b>{{ star_count }}</b>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <div class="pb-review-tabs" role="tablist">
+                  <button type="button" class="pb-review-tab is-active">Item Reviews</button>
+                  <button type="button" class="pb-review-tab" disabled>Store Reviews</button>
+                </div>
+
+                <div class="pb-review-list">
+                  {% for block in section.blocks %}
+                    {% if block.type == 'manual_review' %}
+                      <article class="pb-review-card" {{ block.shopify_attributes }}>
+                        <div class="pb-review-card__top">
+                          <div>
+                            <div class="pb-review-card__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                              {% for i in (1..5) %}
+                                <span class="{% if i <= block.settings.rating %}is-on{% endif %}">★</span>
+                              {% endfor %}
+                            </div>
+
+                            <div class="pb-review-card__author">
+                              <strong>{{ block.settings.author | escape }}</strong>
+                              {% if block.settings.verified %}
+                                <span class="pb-review-card__verified">✓ Verified buyer</span>
+                              {% endif %}
+                            </div>
+                          </div>
+
+                          {% if block.settings.date != blank %}
+                            <time class="pb-review-card__date">{{ block.settings.date | escape }}</time>
+                          {% endif %}
+                        </div>
+
+                        {% if block.settings.title != blank %}
+                          <h3 class="pb-review-card__title">{{ block.settings.title | escape }}</h3>
+                        {% endif %}
+
+                        {% if block.settings.body != blank %}
+                          <div class="pb-review-card__body rte">{{ block.settings.body }}</div>
+                        {% endif %}
+
+                        {% if block.settings.image != blank %}
+                          <div class="pb-review-card__media">
+                            {{
+                              block.settings.image
+                              | image_url: width: 700
+                              | image_tag:
+                                loading: 'lazy',
+                                widths: '180, 320, 500, 700',
+                                class: 'pb-review-card__image',
+                                alt: block.settings.title
+                            }}
+                          </div>
+                        {% endif %}
+                      </article>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% else %}
+                {% if request.design_mode %}
+                  <div class="pb-reviews__preview-note">
+                    <strong>Review list preview</strong>
+                    <span>Add real customer feedback using “Manual review” blocks in the Theme Editor.</span>
+                  </div>
+                {% else %}
+                  <p class="pb-reviews__empty">{{ section.settings.no_reviews_text | escape }}</p>
+                {% endif %}
+              {% endif %}
+
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -474,100 +616,6 @@
     </div>
   {% endif %}
 </section>
-
-{% if section.settings.show_reviews %}
-  <section
-    id="pb-reviews-{{ section.id }}"
-    class="pb-reviews-section"
-    aria-labelledby="PBReviewsHeading-{{ section.id }}"
-  >
-    <div class="page-width">
-      <div class="pb-reviews-shell">
-        <div class="pb-reviews-top">
-          <div class="pb-reviews-top__copy">
-            <h2 id="PBReviewsHeading-{{ section.id }}" class="pb-reviews-title">
-              {{ section.settings.reviews_heading | escape }}
-            </h2>
-
-            {% if rating_count != blank and rating_count > 0 %}
-              <p class="pb-reviews-subtitle">
-                Based on {{ rating_count }} review{% if rating_count != 1 %}s{% endif %}
-              </p>
-            {% elsif product.metafields.judgeme.review_count != blank %}
-              <p class="pb-reviews-subtitle">
-                Based on {{ product.metafields.judgeme.review_count }} reviews
-              </p>
-            {% else %}
-              <p class="pb-reviews-subtitle">{{ section.settings.no_reviews_text | escape }}</p>
-            {% endif %}
-          </div>
-
-          <a class="pb-write-review" href="#judgeme_product_reviews">
-            {{ section.settings.write_review_text | escape }}
-          </a>
-        </div>
-
-        {% if rating_object != blank and rating_count != blank and rating_count > 0 %}
-          <div class="pb-reviews-summary" aria-label="Product review summary">
-            <div class="pb-reviews-score">
-              <strong>{{ rating_object.rating | round: 1 }}</strong>
-              <div>
-                <div class="pb-reviews-stars" aria-label="{{ rating_object.rating | round: 1 }} out of 5 stars">★★★★★</div>
-                <span>{{ rating_count }} review{% if rating_count != 1 %}s{% endif %}</span>
-              </div>
-            </div>
-          </div>
-        {% endif %}
-
-        {% assign pb_has_judgeme_legacy = false %}
-        {% if product.metafields.judgeme.widget.size > 20 %}
-          {% assign pb_has_judgeme_legacy = true %}
-        {% endif %}
-
-        <div class="pb-judgeme-wrap">
-          <div style="clear:both"></div>
-
-          <div
-            id="judgeme_product_reviews"
-            class="jdgm-widget jdgm-review-widget"
-            data-product-title="{{ product.title | escape }}"
-            data-id="{{ product.id }}"
-            data-product-id="{{ product.id }}"
-            data-widget="review"
-            data-auto-install="false"
-            data-shop-reviews-count="{{ shop.metafields.judgeme.shop_reviews_count | default: 0 | escape }}"
-            data-entry-point="review_widget.js"
-            data-entry-key="review-widget/main.js"
-          >
-            {% if pb_has_judgeme_legacy %}
-              <div class="jdgm-legacy-widget-content" style="display:none;">
-                {{ product.metafields.judgeme.widget }}
-              </div>
-            {% endif %}
-          </div>
-
-          {% if product.metafields.judgeme.review_widget_data %}
-            <script>
-              jdgm.data ||= {};
-              jdgm.data.reviewWidget ||= {};
-              jdgm.data.reviewWidget[{{ product.id }}] = {{ product.metafields.judgeme.review_widget_data }};
-            </script>
-          {% endif %}
-
-          {% if request.design_mode and product.metafields.judgeme.widget == blank and product.metafields.judgeme.review_widget_data == blank %}
-            <div class="pb-reviews-editor-note">
-              <strong>Review widget preview</strong>
-              <p>
-                Enable the Judge.me app embed to show real product reviews,
-                rating distribution, Item Reviews / Store Reviews tabs, and the Write a Review form here.
-              </p>
-            </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </section>
-{% endif %}
 
 <style>
   /*
@@ -1576,55 +1624,59 @@
 
 
 
-  /* ==========================================================
-     CUSTOMER REVIEWS — MACORNER-INSPIRED / PLASTBAT TONE
-     ========================================================== */
-  .pb-reviews-section {
-    background: rgb(var(--color-background, 250, 247, 242));
-    color: #5a4437;
-    padding: {{ section.settings.reviews_padding_top }}px 0 {{ section.settings.reviews_padding_bottom }}px;
+  /* ---------------- CUSTOMER REVIEWS ---------------- */
+  #PBProductMain-{{ section.id }} .pb-reviews {
+    margin-top: 30px;
+    padding-top: 26px;
+    border-top: 1px solid var(--pb-border-ui);
   }
 
-  .pb-reviews-shell {
-    max-width: {{ section.settings.reviews_max_width }}px;
-    margin: 0 auto;
-    padding: 32px clamp(18px, 3vw, 38px);
-    border: 1px solid #e5d8cc;
-    border-radius: 18px;
-    background: #fffdfa;
-    box-shadow: 0 12px 34px rgba(82, 60, 45, .045);
-  }
-
-  .pb-reviews-top {
+  #PBProductMain-{{ section.id }} .pb-reviews__header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid #eadfd5;
+    gap: 18px;
+    margin-bottom: 20px;
   }
 
-  .pb-reviews-title {
+  #PBProductMain-{{ section.id }} .pb-reviews__title {
     margin: 0;
-    color: #594235;
+    color: #5b4437;
     font-family: var(--font-heading-family, inherit);
-    font-size: clamp(28px, 2.5vw, 38px);
-    line-height: 1.08;
-    letter-spacing: -.025em;
+    font-size: 28px;
+    line-height: 1.1;
     font-weight: 780;
+    letter-spacing: -.02em;
   }
 
-  .pb-reviews-subtitle {
-    margin: 7px 0 0;
+  #PBProductMain-{{ section.id }} .pb-reviews__rating-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    color: #7f6d61;
+    font-size: 13px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-reviews__stars {
+    color: #d79531;
+    letter-spacing: 1.5px;
+    font-size: 15px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-reviews__rating-line strong {
+    color: #5b4437;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-reviews__empty {
+    margin: 8px 0 0;
     color: #8f7e72;
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 13px;
   }
 
-  .pb-write-review {
-    flex: 0 0 auto;
-    min-height: 46px;
-    padding: 0 18px;
+  #PBProductMain-{{ section.id }} .pb-reviews__write {
+    min-height: 44px;
+    padding: 0 16px;
     border: 1.5px solid #7e6454;
     border-radius: 999px;
     display: inline-flex;
@@ -1632,161 +1684,279 @@
     justify-content: center;
     color: #674f40;
     background: transparent;
-    font-size: 14px;
-    line-height: 1;
-    font-weight: 800;
     text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 800;
+    white-space: nowrap;
     transition: .18s ease;
   }
 
-  .pb-write-review:hover {
+  #PBProductMain-{{ section.id }} .pb-reviews__write:hover {
     background: #725746;
     border-color: #725746;
     color: #fffaf5;
-    transform: translateY(-1px);
   }
 
-  .pb-reviews-summary {
-    padding: 22px 0 4px;
+  #PBProductMain-{{ section.id }} .pb-reviews__body {
+    padding: 20px;
+    border: 1px solid var(--pb-border-ui);
+    border-radius: 16px;
+    background: var(--pb-panel);
   }
 
-  .pb-reviews-score {
+  #PBProductMain-{{ section.id }} .pb-reviews__preview-note {
+    display: grid;
+    gap: 5px;
+    padding: 16px;
+    border: 1px dashed #d8c8ba;
+    border-radius: 13px;
+    background: #faf4ed;
+    color: #755f51;
+    font-size: 13px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-reviews__preview-note strong {
+    color: #594235;
+  }
+
+  @media (max-width: 749px) {
+    #PBProductMain-{{ section.id }} .pb-reviews__header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #PBProductMain-{{ section.id }} .pb-reviews__title {
+      font-size: 25px;
+    }
+
+    #PBProductMain-{{ section.id }} .pb-reviews__body {
+      padding: 16px;
+    }
+  }
+
+
+
+  /* ---------------- MANUAL REVIEW LIST ---------------- */
+  #PBProductMain-{{ section.id }} .pb-review-summary-grid {
+    display: grid;
+    grid-template-columns: minmax(200px, .75fr) minmax(280px, 1.25fr);
+    gap: 32px;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #eadfd5;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-summary-score {
     display: flex;
     align-items: center;
     gap: 16px;
   }
 
-  .pb-reviews-score > strong {
+  #PBProductMain-{{ section.id }} .pb-review-summary-score > strong {
     color: #594235;
-    font-size: 42px;
+    font-size: 44px;
     line-height: 1;
     font-weight: 850;
   }
 
-  .pb-reviews-score > div {
+  #PBProductMain-{{ section.id }} .pb-review-summary-score > div {
     display: grid;
-    gap: 4px;
+    gap: 5px;
   }
 
-  .pb-reviews-stars {
-    color: #d79531;
-    letter-spacing: 2px;
-    font-size: 18px;
-    line-height: 1;
-  }
-
-  .pb-reviews-score span {
+  #PBProductMain-{{ section.id }} .pb-review-summary-score span {
     color: #8f7e72;
     font-size: 13px;
   }
 
-  .pb-judgeme-wrap {
-    margin-top: 12px;
+  #PBProductMain-{{ section.id }} .pb-review-histogram {
+    display: grid;
+    gap: 8px;
   }
 
-  .pb-reviews-section .jdgm-widget,
-  .pb-reviews-section .jdgm-review-widget {
-    font-family: var(--font-body-family, inherit) !important;
-    color: #5e493d !important;
+  #PBProductMain-{{ section.id }} .pb-review-histogram__row {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 26px;
+    align-items: center;
+    gap: 10px;
+    color: #806e62;
+    font-size: 12.5px;
   }
 
-  .pb-reviews-section .jdgm-rev-widg {
-    padding: 0 !important;
-    border: 0 !important;
+  #PBProductMain-{{ section.id }} .pb-review-histogram__track {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #eee5dc;
   }
 
-  .pb-reviews-section .jdgm-rev-widg__title {
-    display: none !important;
+  #PBProductMain-{{ section.id }} .pb-review-histogram__track i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #c58a52;
   }
 
-  .pb-reviews-section .jdgm-star,
-  .pb-reviews-section .jdgm-star.jdgm--on,
-  .pb-reviews-section .jdgm-star.jdgm--half {
-    color: #d79531 !important;
+  #PBProductMain-{{ section.id }} .pb-review-histogram__row b {
+    color: #756359;
+    text-align: right;
+    font-weight: 750;
   }
 
-  .pb-reviews-section .jdgm-write-rev-link,
-  .pb-reviews-section .jdgm-write-rev-link.jdgm-write-rev-link {
-    border-color: #7e6454 !important;
-    background: #725746 !important;
-    color: #fffaf5 !important;
-    border-radius: 999px !important;
-    font-weight: 800 !important;
+  #PBProductMain-{{ section.id }} .pb-review-tabs {
+    display: flex;
+    gap: 6px;
+    margin: 22px 0 4px;
+    border-bottom: 1px solid #eadfd5;
   }
 
-  .pb-reviews-section .jdgm-rev {
-    padding: 22px 0 !important;
-    border-top: 1px solid #eadfd5 !important;
+  #PBProductMain-{{ section.id }} .pb-review-tab {
+    position: relative;
+    padding: 11px 14px;
+    border: 0;
+    background: transparent;
+    color: #948379;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 750;
   }
 
-  .pb-reviews-section .jdgm-rev__author {
-    color: #594235 !important;
-    font-weight: 800 !important;
-  }
-
-  .pb-reviews-section .jdgm-rev__body,
-  .pb-reviews-section .jdgm-rev__title {
-    color: #6f5d52 !important;
-  }
-
-  .pb-reviews-section .jdgm-rev__buyer-badge,
-  .pb-reviews-section .jdgm-rev__verified-badge {
-    color: #2e8050 !important;
-  }
-
-  .pb-reviews-section .jdgm-histogram__bar-content {
-    background-color: #c58a52 !important;
-  }
-
-  .pb-reviews-section .jdgm-histogram__bar {
-    background-color: #eee5dc !important;
-    border-radius: 99px !important;
-  }
-
-  .pb-reviews-editor-note {
-    margin-top: 22px;
-    padding: 18px;
-    border: 1px dashed #d8c8ba;
-    border-radius: 14px;
-    background: #faf4ed;
-    color: #755f51;
-  }
-
-  .pb-reviews-editor-note strong {
+  #PBProductMain-{{ section.id }} .pb-review-tab.is-active {
     color: #594235;
   }
 
-  .pb-reviews-editor-note p {
-    margin: 6px 0 0;
-    font-size: 13px;
-    line-height: 1.55;
+  #PBProductMain-{{ section.id }} .pb-review-tab.is-active::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 2px;
+    background: #c58a52;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-tab:disabled {
+    opacity: .5;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-list {
+    display: grid;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card {
+    padding: 22px 0;
+    border-bottom: 1px solid #eadfd5;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card:last-child {
+    border-bottom: 0;
+    padding-bottom: 4px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__stars {
+    display: flex;
+    gap: 1px;
+    margin-bottom: 7px;
+    color: #ded3ca;
+    font-size: 15px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__stars .is-on {
+    color: #d79531;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__author {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__author strong {
+    color: #594235;
+    font-size: 14px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #2e8050;
+    font-size: 11.5px;
+    font-weight: 750;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__date {
+    color: #a08e83;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__title {
+    margin: 13px 0 7px;
+    color: #5d4739;
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: 820;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__body {
+    color: #7c6a60;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__body > :first-child {
+    margin-top: 0;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__body > :last-child {
+    margin-bottom: 0;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__media {
+    margin-top: 14px;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-review-card__image {
+    width: min(180px, 100%);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #e2d6cb;
+    display: block;
   }
 
   @media (max-width: 749px) {
-    .pb-reviews-section {
-      padding-top: {{ section.settings.reviews_padding_top_mobile }}px;
-      padding-bottom: {{ section.settings.reviews_padding_bottom_mobile }}px;
+    #PBProductMain-{{ section.id }} .pb-review-summary-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
     }
 
-    .pb-reviews-shell {
-      padding: 24px 16px;
-      border-radius: 15px;
-    }
-
-    .pb-reviews-top {
-      align-items: flex-start;
+    #PBProductMain-{{ section.id }} .pb-review-card__top {
       flex-direction: column;
-      gap: 14px;
+      gap: 8px;
     }
+  }
 
-    .pb-write-review {
-      min-height: 43px;
-      padding: 0 16px;
-    }
 
-    .pb-reviews-score > strong {
-      font-size: 36px;
-    }
+  #PBProductMain-{{ section.id }} .pb-reviews__write--static {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  #PBProductMain-{{ section.id }} .pb-reviews__write--static:hover {
+    background: transparent;
+    border-color: #7e6454;
+    color: #674f40;
+    transform: none;
   }
 
 </style>
@@ -2225,7 +2395,7 @@
     {
       "type": "checkbox",
       "id": "show_reviews",
-      "label": "Show reviews section",
+      "label": "Show reviews",
       "default": true
     },
     {
@@ -2237,64 +2407,14 @@
     {
       "type": "text",
       "id": "write_review_text",
-      "label": "Write review button",
-      "default": "Write a review"
+      "label": "Write review text",
+      "default": "Customer feedback"
     },
     {
       "type": "text",
       "id": "no_reviews_text",
       "label": "No reviews text",
       "default": "Be the first to review this product"
-    },
-    {
-      "type": "range",
-      "id": "reviews_max_width",
-      "label": "Reviews max width",
-      "min": 900,
-      "max": 1500,
-      "step": 20,
-      "unit": "px",
-      "default": 1200
-    },
-    {
-      "type": "range",
-      "id": "reviews_padding_top",
-      "label": "Reviews top padding",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "reviews_padding_bottom",
-      "label": "Reviews bottom padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 52
-    },
-    {
-      "type": "range",
-      "id": "reviews_padding_top_mobile",
-      "label": "Reviews top padding mobile",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "reviews_padding_bottom_mobile",
-      "label": "Reviews bottom padding mobile",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 36
     },
     {
       "type": "header",
@@ -2344,6 +2464,55 @@
   "presets": [
     {
       "name": "Plastbat — Product Main"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "manual_review",
+      "name": "Manual review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Customer name",
+          "default": "Customer"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified buyer",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Review title"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Review text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer photo"
+        }
+      ]
     }
   ]
 }

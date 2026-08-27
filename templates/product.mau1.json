@@ -31,6 +31,18 @@
     "main_product_aykktf": {
       "type": "main-product",
       "blocks": {
+        "manual_review_rQCQfw": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": "",
+            "image": "shopify://shop_images/1787825817232_5864500917613633006_5864500917613633006_h_e0a69ef2-9ac0-413f-b1dc-a7ac6635aed6.jpg"
+          }
+        },
         "manual_review_YXWDfX": {
           "type": "manual_review",
           "settings": {
@@ -50,12 +62,13 @@
             "date": "1/8/2026",
             "verified": true,
             "title": "Love this product so muchh.",
-            "body": "<p>Better than expected <br/><br/></p>",
+            "body": "<p>Better than expected </p>",
             "image": "shopify://shop_images/1787814817807_119966994728092966_7852098855956265588_h.jpg"
           }
         }
       },
       "block_order": [
+        "manual_review_rQCQfw",
         "manual_review_YXWDfX",
         "manual_review_wnFNk8"
       ],

@@ -31,6 +31,17 @@
     "main_product_aykktf": {
       "type": "main-product",
       "blocks": {
+        "manual_review_YXWDfX": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Harden Roses",
+            "rating": 5,
+            "date": "2/8/2026",
+            "verified": true,
+            "title": "Really happy",
+            "body": "<p>Good quality at an affordable price</p>"
+          }
+        },
         "manual_review_wnFNk8": {
           "type": "manual_review",
           "settings": {
@@ -45,6 +56,7 @@
         }
       },
       "block_order": [
+        "manual_review_YXWDfX",
         "manual_review_wnFNk8"
       ],
       "name": "Plastbat — Product Main New",

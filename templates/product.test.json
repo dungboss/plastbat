@@ -246,6 +246,7 @@
     },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -267,7 +268,7 @@
       "custom_css": [
         "/* Hide duplicated product title inside product image */.product-card-wrapper .card__inner .card__content .card__information {display: none !important;}"
       ],
-      "name": "t:sections.featured-collection.presets.name",
+      "name": "You may also like",
       "settings": {
         "title": "Featured collection",
         "heading_size": "h1",

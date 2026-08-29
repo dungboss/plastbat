@@ -160,7 +160,39 @@
 
   #shopify-section-{{ section.id }} .plastbat-hero__text p { margin: 0; }
   #shopify-section-{{ section.id }} .plastbat-hero__buttons { display: flex; flex-wrap: wrap; gap: 12px; }
-  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button { min-height: 50px; padding-inline: 30px; font-weight: 800; letter-spacing: .025em; }
+  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button {
+    min-height: 50px;
+    padding-inline: 30px;
+    font-weight: 800;
+    letter-spacing: .025em;
+  }
+
+  /* Keep both hero CTAs legible when the global button hover styles are applied. */
+  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button:not(.button--secondary):hover {
+    background: #ae7950 !important;
+    color: #fff !important;
+  }
+
+  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button.button--secondary:hover {
+    background: #ae7950 !important;
+    border-color: #ae7950 !important;
+    color: #fff !important;
+  }
+
+  /* Disable Dawn's decorative hover pseudo-elements for these text-only CTAs. */
+  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button::before,
+  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button::after {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button:hover {
+    padding-right: 30px;
+  }
+
+  #shopify-section-{{ section.id }} .plastbat-hero__buttons .button:focus-visible {
+    outline: 2px solid #5b4438;
+    outline-offset: 3px;
+  }
 
   #shopify-section-{{ section.id }} .plastbat-hero__highlights {
     display: flex;

@@ -73,7 +73,7 @@
             "author": "Ava Collins",
             "rating": 5,
             "date": "07/03/2026",
-            "verified": false,
+            "verified": true,
             "title": "Better than I expected",
             "body": "<p>Honestly much nicer than I expected. The 3D car details really stand out once it is mounted.</p>",
             "image": "shopify://shop_images/9413ebbc-8b3a-464a-8de0-b320fe25cbaf.png"
@@ -141,7 +141,7 @@
             "author": "Owen Hayes",
             "rating": 5,
             "date": "08/08/2026",
-            "verified": false,
+            "verified": true,
             "title": "So much nicer in person",
             "body": "<p>Pictures really do not show the depth of the car. It looks awesome hanging on the wall.</p>"
           }
@@ -185,9 +185,9 @@
             "author": "Henry Ward",
             "rating": 5,
             "date": "07/31/2026",
-            "verified": false,
+            "verified": true,
             "title": "Gift was a success",
-            "body": "<p><br/>Ordered this for my brother who loves sports cars. He immediately asked me where I found it because he had never seen anything like it before.<br/><br/></p>"
+            "body": "<p>Ordered this for my brother who loves sports cars. He immediately asked me where I found it because he had never seen anything like it before.</p>"
           }
         },
         "manual_review_txrBzN": {
@@ -218,7 +218,7 @@
             "author": "Wyatt Perry",
             "rating": 5,
             "date": "07/23/2026",
-            "verified": false,
+            "verified": true,
             "title": "Perfect little detail",
             "body": "<p>Looks great, holds the keys, and the personalized plate is adorable.</p>"
           }
@@ -229,7 +229,7 @@
             "author": "Hannah Morris",
             "rating": 5,
             "date": "07/21/2026",
-            "verified": false,
+            "verified": true,
             "title": "Coolest thing in my garage",
             "body": "<p>Everyone who sees it asks about it. Really unique concept for a car key holder.</p>"
           }
@@ -240,20 +240,9 @@
             "author": "Levi Powell",
             "rating": 5,
             "date": "07/19/2026",
-            "verified": false,
+            "verified": true,
             "title": "Great gift for car lovers",
             "body": "<p>Bought it as a gift and I am very happy I did. It feels much more personal than giving another generic car accessory.</p>"
-          }
-        },
-        "manual_review_BLX8pm": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Sofia Long",
-            "rating": 5,
-            "date": "07/17/2026",
-            "verified": false,
-            "title": "Exactly what I wanted",
-            "body": "<p>The car design looks clean and the personalized name turned out perfectly.</p>"
           }
         },
         "manual_review_kAqADQ": {
@@ -262,7 +251,7 @@
             "author": "Dylan Hughes",
             "rating": 5,
             "date": "07/15/2026",
-            "verified": false,
+            "verified": true,
             "title": "Great birthday present",
             "body": "<p>I bought this for my boyfriend because he recently got his dream car. Having his name personalized on it made it a really meaningful little gift.</p>"
           }
@@ -284,7 +273,7 @@
             "author": "Natalie Gray",
             "rating": 5,
             "date": "07/05/2026",
-            "verified": false,
+            "verified": true,
             "title": "My dad wants another one",
             "body": "<p>Gave one to my dad and now he wants a second car design for his other set of keys. I think that says everything 😂</p>"
           }
@@ -295,7 +284,7 @@
             "author": "Connor Sanders",
             "rating": 5,
             "date": "07/03/2026",
-            "verified": false,
+            "verified": true,
             "title": "Unique and personal",
             "body": "<p>This is exactly the type of personalized gift I like—something that actually relates to the person's interests instead of just putting their name on a random item.</p>"
           }
@@ -306,7 +295,7 @@
             "author": "Stella Watson",
             "rating": 4,
             "date": "07/01/2026",
-            "verified": false,
+            "verified": true,
             "title": "Great overall",
             "body": "<p>Really cool design and the personalization looks great. I just wish I had ordered a bigger size because it looks so good on the wall.</p>"
           }
@@ -317,7 +306,7 @@
             "author": "Adrian Kelly",
             "rating": 4,
             "date": "06/29/2026",
-            "verified": false,
+            "verified": true,
             "title": "Very happy with it",
             "body": "<p>Nice car details, useful hooks and beautiful personalization. Would definitely make a good gift for someone who loves cars.</p>"
           }
@@ -398,7 +387,6 @@
         "manual_review_A9y4Bx",
         "manual_review_8XcUxz",
         "manual_review_rQ4Jcb",
-        "manual_review_BLX8pm",
         "manual_review_kAqADQ",
         "manual_review_FVY6U3",
         "manual_review_R64QwD",

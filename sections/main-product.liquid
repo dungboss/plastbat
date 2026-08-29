@@ -481,143 +481,234 @@
   <section
     id="pb-reviews-{{ section.id }}"
     class="pb-reviews-section color-{{ section.settings.color_scheme }}"
+    data-pb-reviews-section
   >
+    {% liquid
+      assign pb_review_count = 0
+      assign pb_rating_total = 0
+      assign pb_count_5 = 0
+      assign pb_count_4 = 0
+      assign pb_count_3 = 0
+      assign pb_count_2 = 0
+      assign pb_count_1 = 0
+
+      for block in section.blocks
+        if block.type == 'manual_review'
+          assign pb_review_count = pb_review_count | plus: 1
+          assign pb_rating_total = pb_rating_total | plus: block.settings.rating
+
+          case block.settings.rating
+            when 5
+              assign pb_count_5 = pb_count_5 | plus: 1
+            when 4
+              assign pb_count_4 = pb_count_4 | plus: 1
+            when 3
+              assign pb_count_3 = pb_count_3 | plus: 1
+            when 2
+              assign pb_count_2 = pb_count_2 | plus: 1
+            when 1
+              assign pb_count_1 = pb_count_1 | plus: 1
+          endcase
+        endif
+      endfor
+
+      if pb_review_count > 0
+        assign pb_average_rating = pb_rating_total | times: 1.0 | divided_by: pb_review_count
+      else
+        assign pb_average_rating = 0
+      endif
+    %}
+
     <div class="page-width pb-reviews-section__inner">
       <div class="pb-reviews-panel">
 
-        {% assign pb_review_count = 0 %}
-        {% assign pb_rating_total = 0 %}
-        {% for block in section.blocks %}
-          {% if block.type == 'manual_review' %}
-            {% assign pb_review_count = pb_review_count | plus: 1 %}
-            {% assign pb_rating_total = pb_rating_total | plus: block.settings.rating %}
-          {% endif %}
-        {% endfor %}
-
-        <div class="pb-reviews-section__header">
-          <div>
-            <span class="pb-reviews-section__eyebrow">Reviews</span>
-            <h2 class="pb-reviews-section__title">{{ section.settings.reviews_heading | escape }}</h2>
-
-            {% if pb_review_count > 0 %}
-              {% assign pb_average_rating = pb_rating_total | times: 1.0 | divided_by: pb_review_count %}
-              <p class="pb-reviews-section__subtitle">
-                {{ pb_average_rating | round: 1 }} out of 5 ·
-                Based on {{ pb_review_count }} review{% if pb_review_count != 1 %}s{% endif %}
-              </p>
-            {% else %}
-              <p class="pb-reviews-section__subtitle">{{ section.settings.no_reviews_text | escape }}</p>
-            {% endif %}
-          </div>
+        <aside class="pb-reviews-summary">
+          <h2 class="pb-reviews-summary__title">{{ section.settings.reviews_heading | escape }}</h2>
 
           {% if pb_review_count > 0 %}
-            <div class="pb-reviews-section__header-rating">
-              <span class="pb-reviews-section__header-stars">★★★★★</span>
-              <strong>{{ pb_average_rating | round: 1 }}</strong>
-            </div>
-          {% endif %}
-        </div>
-
-        {% if pb_review_count > 0 %}
-          <div class="pb-review-summary-grid">
-            <div class="pb-review-summary-score">
+            <div class="pb-reviews-summary__score">
               <strong>{{ pb_average_rating | round: 1 }}</strong>
               <div>
-                <div class="pb-reviews__stars" aria-hidden="true">★★★★★</div>
+                <div class="pb-reviews-summary__stars" aria-hidden="true">★★★★★</div>
                 <span>Based on {{ pb_review_count }} review{% if pb_review_count != 1 %}s{% endif %}</span>
               </div>
             </div>
 
             <div class="pb-review-histogram" aria-label="Review distribution">
+              {% assign pb_counts = pb_count_5 | append: ',' | append: pb_count_4 | append: ',' | append: pb_count_3 | append: ',' | append: pb_count_2 | append: ',' | append: pb_count_1 | split: ',' %}
               {% for star in (1..5) reversed %}
-                {% assign star_count = 0 %}
-                {% for block in section.blocks %}
-                  {% if block.type == 'manual_review' and block.settings.rating == star %}
-                    {% assign star_count = star_count | plus: 1 %}
-                  {% endif %}
-                {% endfor %}
-
-                {% if pb_review_count > 0 %}
-                  {% assign star_percent = star_count | times: 100 | divided_by: pb_review_count %}
-                {% else %}
-                  {% assign star_percent = 0 %}
-                {% endif %}
+                {% assign index = 5 | minus: star %}
+                {% assign star_count = pb_counts[index] | plus: 0 %}
+                {% assign star_percent = star_count | times: 100 | divided_by: pb_review_count %}
 
                 <div class="pb-review-histogram__row">
-                  <span>{{ star }} ★</span>
+                  <span>{{ star }} Star</span>
                   <div class="pb-review-histogram__track">
                     <i style="width: {{ star_percent }}%;"></i>
                   </div>
-                  <b>{{ star_count }}</b>
+                  <b>{{ star_percent }}%</b>
                 </div>
               {% endfor %}
             </div>
-          </div>
+          {% else %}
+            <p class="pb-reviews-summary__empty">{{ section.settings.no_reviews_text | escape }}</p>
+          {% endif %}
+        </aside>
 
-          <div class="pb-review-tabs" role="tablist">
-            <button type="button" class="pb-review-tab is-active">Item Reviews</button>
-            <button type="button" class="pb-review-tab" disabled>Store Reviews</button>
-          </div>
+        <div class="pb-reviews-main">
+          <h3 class="pb-reviews-main__title">Top reviews</h3>
 
-          <div class="pb-review-list">
-            {% for block in section.blocks %}
-              {% if block.type == 'manual_review' %}
-                <article class="pb-review-card" {{ block.shopify_attributes }}>
-                  <div class="pb-review-card__top">
-                    <div>
+          {% if pb_review_count > 0 %}
+            <div class="pb-review-filters" data-pb-review-filters>
+              <button type="button" class="pb-review-filter is-active" data-rating="all">
+                All Reviews ({{ pb_review_count }})
+              </button>
+              <button type="button" class="pb-review-filter" data-rating="5" {% if pb_count_5 == 0 %}disabled{% endif %}>
+                5 Star ({{ pb_count_5 }})
+              </button>
+              <button type="button" class="pb-review-filter" data-rating="4" {% if pb_count_4 == 0 %}disabled{% endif %}>
+                4 Star ({{ pb_count_4 }})
+              </button>
+              <button type="button" class="pb-review-filter" data-rating="3" {% if pb_count_3 == 0 %}disabled{% endif %}>
+                3 Star ({{ pb_count_3 }})
+              </button>
+              <button type="button" class="pb-review-filter" data-rating="2" {% if pb_count_2 == 0 %}disabled{% endif %}>
+                2 Star ({{ pb_count_2 }})
+              </button>
+              <button type="button" class="pb-review-filter" data-rating="1" {% if pb_count_1 == 0 %}disabled{% endif %}>
+                1 Star ({{ pb_count_1 }})
+              </button>
+            </div>
+
+            <div class="pb-review-list" data-pb-review-list>
+              {% assign pb_review_index = 0 %}
+              {% for block in section.blocks %}
+                {% if block.type == 'manual_review' %}
+                  <article
+                    class="pb-review-card"
+                    data-pb-review-card
+                    data-rating="{{ block.settings.rating }}"
+                    data-review-index="{{ pb_review_index }}"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Open review from {{ block.settings.author | escape }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    <div class="pb-review-card__headline">
                       <div class="pb-review-card__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
                         {% for i in (1..5) %}
                           <span class="{% if i <= block.settings.rating %}is-on{% endif %}">★</span>
                         {% endfor %}
                       </div>
-
-                      <div class="pb-review-card__author">
-                        <strong>{{ block.settings.author | escape }}</strong>
-                        {% if block.settings.verified %}
-                          <span class="pb-review-card__verified">✓ Verified buyer</span>
-                        {% endif %}
-                      </div>
+                      <strong class="pb-review-card__author">{{ block.settings.author | escape }}</strong>
                     </div>
 
-                    {% if block.settings.date != blank %}
-                      <time class="pb-review-card__date">{{ block.settings.date | escape }}</time>
+                    <div class="pb-review-card__meta">
+                      {% if block.settings.verified %}
+                        <span>Verified Purchase</span>
+                      {% endif %}
+                      {% if block.settings.date != blank %}
+                        <time>{{ block.settings.date | escape }}</time>
+                      {% endif %}
+                    </div>
+
+                    {% if block.settings.title != blank %}
+                      <h4 class="pb-review-card__title">{{ block.settings.title | escape }}</h4>
                     {% endif %}
-                  </div>
 
-                  {% if block.settings.title != blank %}
-                    <h3 class="pb-review-card__title">{{ block.settings.title | escape }}</h3>
-                  {% endif %}
+                    {% if block.settings.body != blank %}
+                      <div class="pb-review-card__body rte">{{ block.settings.body }}</div>
+                    {% endif %}
 
-                  {% if block.settings.body != blank %}
-                    <div class="pb-review-card__body rte">{{ block.settings.body }}</div>
-                  {% endif %}
+                    {% if block.settings.image != blank %}
+                      <div class="pb-review-card__thumb-wrap">
+                        {{
+                          block.settings.image
+                          | image_url: width: 220
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '90, 140, 220',
+                            class: 'pb-review-card__thumb',
+                            alt: block.settings.title
+                        }}
+                      </div>
+                    {% endif %}
 
-                  {% if block.settings.image != blank %}
-                    <div class="pb-review-card__media">
-                      {{
-                        block.settings.image
-                        | image_url: width: 700
-                        | image_tag:
-                          loading: 'lazy',
-                          widths: '180, 320, 500, 700',
-                          class: 'pb-review-card__image',
-                          alt: block.settings.title
-                      }}
-                    </div>
-                  {% endif %}
-                </article>
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% else %}
-          {% if request.design_mode %}
-            <div class="pb-reviews__preview-note">
-              <strong>Review section preview</strong>
-              <span>Add real customer feedback using “Manual review” blocks in the Theme Editor.</span>
+                    <template data-pb-review-modal-source>
+                      <div class="pb-review-modal-source{% if block.settings.image == blank %} is-no-image{% endif %}">
+                        {% if block.settings.image != blank %}
+                          <div class="pb-review-modal-source__media">
+                            {{
+                              block.settings.image
+                              | image_url: width: 1400
+                              | image_tag:
+                                loading: 'lazy',
+                                widths: '600, 900, 1200, 1400',
+                                class: 'pb-review-modal-source__image',
+                                alt: block.settings.title
+                            }}
+                          </div>
+                        {% endif %}
+
+                        <div class="pb-review-modal-source__details">
+                          <div class="pb-review-modal-source__headline">
+                            <div class="pb-review-card__stars" aria-hidden="true">
+                              {% for i in (1..5) %}
+                                <span class="{% if i <= block.settings.rating %}is-on{% endif %}">★</span>
+                              {% endfor %}
+                            </div>
+                            <strong>{{ block.settings.author | escape }}</strong>
+                          </div>
+
+                          <div class="pb-review-card__meta">
+                            {% if block.settings.verified %}
+                              <span>Verified Purchase</span>
+                            {% endif %}
+                            {% if block.settings.date != blank %}
+                              <time>{{ block.settings.date | escape }}</time>
+                            {% endif %}
+                          </div>
+
+                          {% if block.settings.title != blank %}
+                            <h4 class="pb-review-modal-source__title">{{ block.settings.title | escape }}</h4>
+                          {% endif %}
+
+                          {% if block.settings.body != blank %}
+                            <div class="pb-review-modal-source__body rte">{{ block.settings.body }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </template>
+                  </article>
+
+                  {% assign pb_review_index = pb_review_index | plus: 1 %}
+                {% endif %}
+              {% endfor %}
             </div>
-          {% endif %}
-        {% endif %}
 
+            <nav class="pb-review-pagination" data-pb-review-pagination aria-label="Review pages"></nav>
+          {% else %}
+            {% if request.design_mode %}
+              <div class="pb-reviews__preview-note">
+                <strong>Review section preview</strong>
+                <span>Add real customer feedback using “Manual review” blocks in the Theme Editor.</span>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pb-review-modal" data-pb-review-modal hidden>
+      <div class="pb-review-modal__backdrop" data-pb-modal-close></div>
+
+      <div class="pb-review-modal__dialog" role="dialog" aria-modal="true" aria-label="Customer review">
+        <button type="button" class="pb-review-modal__close" data-pb-modal-close aria-label="Close review">×</button>
+        <button type="button" class="pb-review-modal__arrow pb-review-modal__arrow--prev" data-pb-modal-prev aria-label="Previous review">‹</button>
+        <button type="button" class="pb-review-modal__arrow pb-review-modal__arrow--next" data-pb-modal-next aria-label="Next review">›</button>
+
+        <div class="pb-review-modal__content" data-pb-review-modal-content></div>
       </div>
     </div>
   </section>
@@ -1630,348 +1721,492 @@
 
 
 
-  /* ---------------- MANUAL REVIEW LIST ---------------- */
-  .pb-reviews-section .pb-review-summary-grid {
-    display: grid;
-    grid-template-columns: minmax(200px, .75fr) minmax(280px, 1.25fr);
-    gap: 32px;
-    align-items: center;
-    padding-bottom: 24px;
-    border-bottom: 1px solid #eadfd5;
+  /* ==========================================================
+     REVIEWS — COMPACT MACORNER-INSPIRED LAYOUT
+     10 REVIEWS PER PAGE + FILTERS + REVIEW MODAL
+     ========================================================== */
+  .pb-reviews-section {
+    background: #f8f6f3;
+    color: #5a4437;
+    padding: 30px 0 44px;
+    border-top: 1px solid #eee5dd;
+    font-family: var(--font-body-family, inherit);
   }
 
-  .pb-reviews-section .pb-review-summary-score {
+  .pb-reviews-panel {
+    width: min(100%, 1080px);
+    margin: 0 auto;
+    padding: 24px 26px;
+    border: 1px solid #e5d8cc;
+    border-radius: 16px;
+    background: #fffdfa;
+    box-shadow: 0 10px 28px rgba(82, 60, 45, .04);
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  .pb-reviews-summary {
+    padding-right: 24px;
+    border-right: 1px solid #eadfd5;
+  }
+
+  .pb-reviews-summary__title {
+    margin: 0 0 16px;
+    color: #594235;
+    font-family: var(--font-heading-family, inherit);
+    font-size: 22px;
+    line-height: 1.1;
+    font-weight: 780;
+  }
+
+  .pb-reviews-summary__score {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 13px;
+    margin-bottom: 20px;
   }
 
-  .pb-reviews-section .pb-review-summary-score > strong {
+  .pb-reviews-summary__score > strong {
     color: #594235;
-    font-size: 44px;
+    font-size: 36px;
     line-height: 1;
     font-weight: 850;
   }
 
-  .pb-reviews-section .pb-review-summary-score > div {
+  .pb-reviews-summary__score > div {
     display: grid;
-    gap: 5px;
+    gap: 4px;
   }
 
-  .pb-reviews-section .pb-review-summary-score span {
-    color: #8f7e72;
-    font-size: 13px;
+  .pb-reviews-summary__stars,
+  .pb-review-card__stars {
+    color: #ded3ca;
+    letter-spacing: 1px;
+    line-height: 1;
   }
 
-  .pb-reviews-section .pb-review-histogram {
+  .pb-reviews-summary__stars {
+    color: #f0642b;
+    font-size: 15px;
+  }
+
+  .pb-reviews-summary__score span,
+  .pb-reviews-summary__empty {
+    color: #96867c;
+    font-size: 12px;
+  }
+
+  .pb-review-histogram {
     display: grid;
     gap: 8px;
   }
 
-  .pb-reviews-section .pb-review-histogram__row {
+  .pb-review-histogram__row {
     display: grid;
-    grid-template-columns: 34px minmax(0, 1fr) 26px;
+    grid-template-columns: 42px minmax(0, 1fr) 34px;
+    gap: 8px;
     align-items: center;
-    gap: 10px;
-    color: #806e62;
-    font-size: 12.5px;
+    color: #88786e;
+    font-size: 11.5px;
   }
 
-  .pb-reviews-section .pb-review-histogram__track {
-    height: 7px;
+  .pb-review-histogram__track {
+    height: 6px;
     overflow: hidden;
-    border-radius: 999px;
-    background: #eee5dc;
+    border-radius: 99px;
+    background: #eee7e1;
   }
 
-  .pb-reviews-section .pb-review-histogram__track i {
+  .pb-review-histogram__track i {
     display: block;
     height: 100%;
     border-radius: inherit;
     background: #c58a52;
   }
 
-  .pb-reviews-section .pb-review-histogram__row b {
-    color: #756359;
+  .pb-review-histogram__row b {
+    color: #8b7a70;
     text-align: right;
-    font-weight: 750;
+    font-weight: 650;
   }
 
-  .pb-reviews-section .pb-review-tabs {
+  .pb-reviews-main {
+    min-width: 0;
+  }
+
+  .pb-reviews-main__title {
+    margin: 0 0 12px;
+    color: #594235;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 780;
+  }
+
+  .pb-review-filters {
     display: flex;
-    gap: 6px;
-    margin: 22px 0 4px;
-    border-bottom: 1px solid #eadfd5;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
   }
 
-  .pb-reviews-section .pb-review-tab {
-    position: relative;
-    padding: 11px 14px;
-    border: 0;
-    background: transparent;
-    color: #948379;
+  .pb-review-filter {
+    min-height: 36px;
+    padding: 0 13px;
+    border: 1px solid #e8dfd8;
+    border-radius: 999px;
+    background: #fff;
+    color: #796a61;
     font: inherit;
-    font-size: 13px;
-    font-weight: 750;
+    font-size: 11.5px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: .16s ease;
   }
 
-  .pb-reviews-section .pb-review-tab.is-active {
+  .pb-review-filter:hover:not(:disabled) {
+    border-color: #8c7668;
     color: #594235;
   }
 
-  .pb-reviews-section .pb-review-tab.is-active::after {
-    content: '';
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: -1px;
-    height: 2px;
-    background: #c58a52;
+  .pb-review-filter.is-active {
+    border-color: #5e4b40;
+    color: #4f3d33;
+    box-shadow: inset 0 0 0 1px #5e4b40;
   }
 
-  .pb-reviews-section .pb-review-tab:disabled {
-    opacity: .5;
+  .pb-review-filter:disabled {
+    opacity: .32;
+    cursor: not-allowed;
   }
 
-  .pb-reviews-section .pb-review-list {
+  .pb-review-list {
     display: grid;
   }
 
-  .pb-reviews-section .pb-review-card {
-    padding: 22px 0;
-    border-bottom: 1px solid #eadfd5;
+  .pb-review-card {
+    padding: 17px 0;
+    border-bottom: 1px solid #eee6df;
+    cursor: pointer;
+    outline: none;
   }
 
-  .pb-reviews-section .pb-review-card:last-child {
-    border-bottom: 0;
-    padding-bottom: 4px;
+  .pb-review-card:hover {
+    background: linear-gradient(90deg, rgba(246,239,231,.45), transparent 70%);
   }
 
-  .pb-reviews-section .pb-review-card__top {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: flex-start;
+  .pb-review-card:focus-visible {
+    box-shadow: inset 0 0 0 2px #c58a52;
+    border-radius: 8px;
   }
 
-  .pb-reviews-section .pb-review-card__stars {
-    display: flex;
-    gap: 1px;
-    margin-bottom: 7px;
-    color: #ded3ca;
-    font-size: 15px;
+  .pb-review-card[hidden] {
+    display: none !important;
   }
 
-  .pb-reviews-section .pb-review-card__stars .is-on {
-    color: #d79531;
-  }
-
-  .pb-reviews-section .pb-review-card__author {
+  .pb-review-card__headline {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 8px;
   }
 
-  .pb-reviews-section .pb-review-card__author strong {
-    color: #594235;
-    font-size: 14px;
+  .pb-review-card__stars {
+    display: flex;
+    gap: 0;
+    font-size: 13px;
   }
 
-  .pb-reviews-section .pb-review-card__verified {
-    display: inline-flex;
+  .pb-review-card__stars .is-on {
+    color: #f0642b;
+  }
+
+  .pb-review-card__author {
+    color: #403733;
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+
+  .pb-review-card__meta {
+    display: flex;
     align-items: center;
-    gap: 4px;
-    color: #2e8050;
-    font-size: 11.5px;
-    font-weight: 750;
+    gap: 7px;
+    margin-top: 6px;
+    color: #a09289;
+    font-size: 10.5px;
   }
 
-  .pb-reviews-section .pb-review-card__date {
-    color: #a08e83;
-    font-size: 12px;
-    white-space: nowrap;
+  .pb-review-card__title {
+    margin: 9px 0 4px;
+    color: #55453d;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 760;
   }
 
-  .pb-reviews-section .pb-review-card__title {
-    margin: 13px 0 7px;
-    color: #5d4739;
-    font-size: 15px;
-    line-height: 1.3;
-    font-weight: 820;
+  .pb-review-card__body {
+    color: #655a54;
+    font-size: 12.5px;
+    line-height: 1.55;
   }
 
-  .pb-reviews-section .pb-review-card__body {
-    color: #7c6a60;
-    font-size: 14px;
-    line-height: 1.65;
-  }
-
-  .pb-reviews-section .pb-review-card__body > :first-child {
+  .pb-review-card__body > :first-child,
+  .pb-review-card__body > :last-child {
     margin-top: 0;
-  }
-
-  .pb-reviews-section .pb-review-card__body > :last-child {
     margin-bottom: 0;
   }
 
-  .pb-reviews-section .pb-review-card__media {
-    margin-top: 14px;
+  .pb-review-card__thumb-wrap {
+    margin-top: 9px;
   }
 
-  .pb-reviews-section .pb-review-card__image {
-    width: min(180px, 100%);
-    aspect-ratio: 1 / 1;
+  .pb-review-card__thumb {
+    width: 70px;
+    height: 70px;
     object-fit: cover;
-    border-radius: 12px;
-    border: 1px solid #e2d6cb;
+    border-radius: 8px;
+    border: 1px solid #e3d9d1;
     display: block;
   }
 
-  @media (max-width: 749px) {
-    .pb-reviews-section .pb-review-summary-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-
-    .pb-reviews-section .pb-review-card__top {
-      flex-direction: column;
-      gap: 8px;
-    }
-  }
-
-
-  .pb-reviews-section .pb-reviews__write--static {
-    cursor: default;
-    pointer-events: none;
-  }
-
-  .pb-reviews-section .pb-reviews__write--static:hover {
-    background: transparent;
-    border-color: #7e6454;
-    color: #674f40;
-    transform: none;
-  }
-
-
-
-  /* ==========================================================
-     CUSTOMER REVIEWS — SEPARATE FULL-WIDTH SECTION
-     ========================================================== */
-  .pb-reviews-section {
-    background: #f8f6f3;
-    color: #5a4437;
-    padding: {{ section.settings.reviews_section_top }}px 0 {{ section.settings.reviews_section_bottom }}px;
-    border-top: 1px solid #eee5dd;
-  }
-
-  .pb-reviews-section__inner {
-    position: relative;
-  }
-
-  .pb-reviews-panel {
-    max-width: {{ section.settings.reviews_section_width }}px;
-    margin: 0 auto;
-    padding: clamp(26px, 3.5vw, 44px);
-    border: 1px solid #e5d8cc;
-    border-radius: 20px;
-    background: #fffdfa;
-    box-shadow: 0 16px 42px rgba(82, 60, 45, .055);
-  }
-
-  .pb-reviews-section__header {
+  .pb-review-pagination {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 24px;
-    padding-bottom: 28px;
-    border-bottom: 1px solid #eadfd5;
-  }
-
-  .pb-reviews-section__eyebrow {
-    display: inline-flex;
-    margin-bottom: 9px;
-    color: #9a826f;
-    font-size: 11px;
-    line-height: 1;
-    font-weight: 850;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-  }
-
-  .pb-reviews-section__title {
-    margin: 0;
-    color: #594235;
-    font-family: var(--font-heading-family, inherit);
-    font-size: clamp(30px, 3vw, 42px);
-    line-height: 1.08;
-    font-weight: 780;
-    letter-spacing: -.03em;
-  }
-
-  .pb-reviews-section__subtitle {
-    margin: 9px 0 0;
-    color: #8f7e72;
-    font-size: 14px;
-  }
-
-  .pb-reviews-section__header-rating {
-    min-width: 126px;
-    padding: 13px 16px;
-    border: 1px solid #e4d7cc;
-    border-radius: 14px;
-    background: #faf5ef;
-    display: grid;
-    justify-items: center;
+    align-items: center;
+    justify-content: flex-start;
     gap: 5px;
+    margin-top: 14px;
+    min-height: 34px;
   }
 
-  .pb-reviews-section__header-stars,
-  .pb-reviews-section .pb-reviews__stars {
-    color: #d79531;
-    letter-spacing: 2px;
+  .pb-review-pagination button {
+    min-width: 31px;
+    height: 31px;
+    padding: 0 8px;
+    border: 1px solid #e5ddd7;
+    border-radius: 999px;
+    background: #fff;
+    color: #796a61;
+    font: inherit;
+    font-size: 11.5px;
+    cursor: pointer;
   }
 
-  .pb-reviews-section__header-rating strong {
-    color: #594235;
-    font-size: 22px;
+  .pb-review-pagination button.is-active {
+    background: #665246;
+    border-color: #665246;
+    color: #fff;
   }
 
-  .pb-reviews-section .pb-review-summary-grid {
-    margin-top: 28px;
+  .pb-review-pagination button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
   }
 
-  .pb-reviews-section .pb-reviews__preview-note {
-    margin-top: 26px;
-    padding: 18px;
-    border: 1px dashed #d8c8ba;
-    border-radius: 14px;
-    background: #faf4ed;
-    color: #755f51;
+  /* REVIEW MODAL */
+  .pb-review-modal[hidden] {
+    display: none !important;
+  }
+
+  .pb-review-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
     display: grid;
-    gap: 6px;
+    place-items: center;
+    padding: 20px;
+  }
+
+  .pb-review-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(41, 35, 38, .72);
+  }
+
+  .pb-review-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(860px, calc(100vw - 54px));
+    max-height: min(620px, calc(100vh - 56px));
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 22px 70px rgba(0,0,0,.28);
+    overflow: visible;
+  }
+
+  .pb-review-modal__content {
+    max-height: min(620px, calc(100vh - 56px));
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  .pb-review-modal__close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    z-index: 4;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e6ded8;
+    border-radius: 999px;
+    background: #fff;
+    color: #4f423c;
+    font-size: 23px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  }
+
+  .pb-review-modal__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 4;
+    width: 40px;
+    height: 40px;
+    transform: translateY(-50%);
+    border: 1px solid #ece3dd;
+    border-radius: 999px;
+    background: #fff;
+    color: #58483f;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,.1);
+  }
+
+  .pb-review-modal__arrow--prev { left: -20px; }
+  .pb-review-modal__arrow--next { right: -20px; }
+
+  .pb-review-modal-source {
+    display: grid;
+    grid-template-columns: 49% 51%;
+    min-height: 390px;
+    max-height: min(620px, calc(100vh - 56px));
+  }
+
+  .pb-review-modal-source.is-no-image {
+    grid-template-columns: 1fr;
+  }
+
+  .pb-review-modal-source__media {
+    min-width: 0;
+    padding: 16px;
+    border-right: 1px solid #eee6df;
+    background: #fffdfb;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .pb-review-modal-source__image {
+    width: 100%;
+    height: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .pb-review-modal-source__details {
+    min-width: 0;
+    padding: 22px 22px 26px;
+    overflow-y: auto;
+    color: #554944;
+  }
+
+  .pb-review-modal-source__headline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pb-review-modal-source__headline strong {
+    color: #403733;
+    font-size: 13px;
+  }
+
+  .pb-review-modal-source__title {
+    margin: 12px 0 6px;
+    color: #51423a;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .pb-review-modal-source__body {
+    color: #5f5550;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  body.pb-review-modal-open {
+    overflow: hidden !important;
+  }
+
+  @media (max-width: 849px) {
+    .pb-reviews-panel {
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      padding: 22px;
+    }
   }
 
   @media (max-width: 749px) {
     .pb-reviews-section {
-      padding-top: {{ section.settings.reviews_section_top_mobile }}px;
-      padding-bottom: {{ section.settings.reviews_section_bottom_mobile }}px;
+      padding: 24px 0 34px;
     }
 
     .pb-reviews-panel {
-      padding: 22px 16px;
-      border-radius: 16px;
+      width: 100%;
+      padding: 18px 14px;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      border-radius: 14px;
     }
 
-    .pb-reviews-section__header {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 16px;
+    .pb-reviews-summary {
+      padding-right: 0;
+      padding-bottom: 20px;
+      border-right: 0;
+      border-bottom: 1px solid #eadfd5;
     }
 
-    .pb-reviews-section__header-rating {
-      min-width: 112px;
+    .pb-review-filter {
+      min-height: 34px;
+      padding: 0 11px;
     }
+
+    .pb-review-modal {
+      padding: 14px;
+    }
+
+    .pb-review-modal__dialog {
+      width: min(620px, calc(100vw - 28px));
+      max-height: calc(100vh - 28px);
+    }
+
+    .pb-review-modal__content {
+      max-height: calc(100vh - 28px);
+      overflow-y: auto;
+    }
+
+    .pb-review-modal-source {
+      display: block;
+      min-height: 0;
+      max-height: none;
+    }
+
+    .pb-review-modal-source__media {
+      height: 280px;
+      border-right: 0;
+      border-bottom: 1px solid #eee6df;
+    }
+
+    .pb-review-modal-source__details {
+      padding: 18px;
+      overflow: visible;
+    }
+
+    .pb-review-modal__arrow--prev { left: 8px; }
+    .pb-review-modal__arrow--next { right: 8px; }
+    .pb-review-modal__close { top: 8px; right: 8px; }
   }
 
 </style>
@@ -2131,6 +2366,176 @@
     const observer = new MutationObserver(markRelatedSection);
     observer.observe(document.documentElement, { childList: true, subtree: true });
     window.setTimeout(() => observer.disconnect(), 8000);
+  })();
+</script>
+
+
+<script>
+  (() => {
+    const section = document.getElementById('pb-reviews-{{ section.id }}');
+    if (!section || section.dataset.pbReviewsReady === 'true') return;
+    section.dataset.pbReviewsReady = 'true';
+
+    const pageSize = 10;
+    const cards = [...section.querySelectorAll('[data-pb-review-card]')];
+    const filters = [...section.querySelectorAll('.pb-review-filter')];
+    const pagination = section.querySelector('[data-pb-review-pagination]');
+    const modal = section.querySelector('[data-pb-review-modal]');
+    const modalContent = section.querySelector('[data-pb-review-modal-content]');
+    const modalPrev = section.querySelector('[data-pb-modal-prev]');
+    const modalNext = section.querySelector('[data-pb-modal-next]');
+
+    let activeRating = 'all';
+    let currentPage = 1;
+    let modalIndex = -1;
+
+    const filteredCards = () => {
+      if (activeRating === 'all') return cards;
+      return cards.filter((card) => card.dataset.rating === activeRating);
+    };
+
+    const renderPagination = () => {
+      if (!pagination) return;
+
+      const list = filteredCards();
+      const totalPages = Math.max(1, Math.ceil(list.length / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+      pagination.innerHTML = '';
+
+      if (list.length <= pageSize) {
+        pagination.hidden = true;
+        return;
+      }
+
+      pagination.hidden = false;
+
+      const makeButton = (label, page, { active = false, disabled = false } = {}) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = label;
+        button.dataset.page = page;
+        button.disabled = disabled;
+        if (active) button.classList.add('is-active');
+        return button;
+      };
+
+      pagination.appendChild(
+        makeButton('‹', currentPage - 1, { disabled: currentPage === 1 })
+      );
+
+      for (let page = 1; page <= totalPages; page += 1) {
+        pagination.appendChild(
+          makeButton(String(page), page, { active: page === currentPage })
+        );
+      }
+
+      pagination.appendChild(
+        makeButton('›', currentPage + 1, { disabled: currentPage === totalPages })
+      );
+    };
+
+    const renderReviews = ({ scroll = false } = {}) => {
+      const list = filteredCards();
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pageCards = list.slice(start, end);
+
+      cards.forEach((card) => {
+        card.hidden = !pageCards.includes(card);
+      });
+
+      renderPagination();
+
+      if (scroll) {
+        section.querySelector('.pb-reviews-main__title')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    };
+
+    filters.forEach((filter) => {
+      filter.addEventListener('click', () => {
+        if (filter.disabled) return;
+
+        filters.forEach((item) => item.classList.remove('is-active'));
+        filter.classList.add('is-active');
+
+        activeRating = filter.dataset.rating || 'all';
+        currentPage = 1;
+        renderReviews();
+      });
+    });
+
+    pagination?.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-page]');
+      if (!button || button.disabled) return;
+
+      currentPage = Number(button.dataset.page || 1);
+      renderReviews({ scroll: true });
+    });
+
+    const closeModal = () => {
+      if (!modal) return;
+      modal.hidden = true;
+      document.body.classList.remove('pb-review-modal-open');
+      modalIndex = -1;
+    };
+
+    const openModalAt = (index) => {
+      const list = filteredCards();
+      if (!modal || !modalContent || !list.length) return;
+
+      modalIndex = (index + list.length) % list.length;
+      const card = list[modalIndex];
+      const source = card.querySelector('[data-pb-review-modal-source]');
+
+      if (!source) return;
+
+      modalContent.innerHTML = '';
+      modalContent.appendChild(source.content.cloneNode(true));
+
+      modalPrev.hidden = list.length <= 1;
+      modalNext.hidden = list.length <= 1;
+
+      modal.hidden = false;
+      document.body.classList.add('pb-review-modal-open');
+      section.querySelector('[data-pb-modal-close]:not(.pb-review-modal__backdrop)')?.focus();
+    };
+
+    const openCard = (card) => {
+      const list = filteredCards();
+      const index = list.indexOf(card);
+      if (index >= 0) openModalAt(index);
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => openCard(card));
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openCard(card);
+        }
+      });
+    });
+
+    section.querySelectorAll('[data-pb-modal-close]').forEach((button) => {
+      button.addEventListener('click', closeModal);
+    });
+
+    modalPrev?.addEventListener('click', () => openModalAt(modalIndex - 1));
+    modalNext?.addEventListener('click', () => openModalAt(modalIndex + 1));
+
+    document.addEventListener('keydown', (event) => {
+      if (!modal || modal.hidden) return;
+
+      if (event.key === 'Escape') closeModal();
+      if (event.key === 'ArrowLeft') openModalAt(modalIndex - 1);
+      if (event.key === 'ArrowRight') openModalAt(modalIndex + 1);
+    });
+
+    renderReviews();
   })();
 </script>
 
@@ -2421,65 +2826,9 @@
     },
     {
       "type": "text",
-      "id": "write_review_text",
-      "label": "Write review text",
-      "default": "Customer feedback"
-    },
-    {
-      "type": "text",
       "id": "no_reviews_text",
       "label": "No reviews text",
       "default": "Be the first to review this product"
-    },
-    {
-      "type": "range",
-      "id": "reviews_section_width",
-      "label": "Reviews section width",
-      "min": 900,
-      "max": 1500,
-      "step": 20,
-      "unit": "px",
-      "default": 1200
-    },
-    {
-      "type": "range",
-      "id": "reviews_section_top",
-      "label": "Reviews section top spacing",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 48
-    },
-    {
-      "type": "range",
-      "id": "reviews_section_bottom",
-      "label": "Reviews section bottom spacing",
-      "min": 0,
-      "max": 140,
-      "step": 4,
-      "unit": "px",
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "reviews_section_top_mobile",
-      "label": "Reviews top spacing mobile",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "reviews_section_bottom_mobile",
-      "label": "Reviews bottom spacing mobile",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 40
     },
     {
       "type": "header",
@@ -2559,7 +2908,7 @@
         {
           "type": "checkbox",
           "id": "verified",
-          "label": "Verified buyer",
+          "label": "Verified Purchase",
           "default": false
         },
         {

@@ -60,8 +60,22 @@
         throw new Error(cartState.description || cartState.message || 'Unable to add this item to your cart.');
       }
 
+      const drawerResponse = await fetch(`${window.routes?.cart_url || '/cart'}?section_id=cart-drawer`, {
+        headers: { Accept: 'text/html' },
+        cache: 'no-store'
+      });
+
+      if (!drawerResponse.ok) {
+        throw new Error('Unable to refresh your cart. Please try again.');
+      }
+
+      const drawerHTML = await drawerResponse.text();
+
       drawer.setActiveElement(event.submitter || document.activeElement);
-      drawer.renderContents(cartState);
+      drawer.renderContents({
+        ...cartState,
+        sections: { 'cart-drawer': drawerHTML }
+      });
     } catch (exception) {
       console.error('Unable to add item to cart', exception);
       showError(form, exception.message || 'Unable to add this item to your cart. Please try again.');

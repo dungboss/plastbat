@@ -330,9 +330,7 @@
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
-    {%- if settings.cart_type == 'drawer' -%}
-      {%- render 'cart-drawer' -%}
-    {%- endif -%}
+    {%- render 'cart-drawer' -%}
 
     {% render 'plastbat-sticky-navigation' %}
 
@@ -398,8 +396,9 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if settings.cart_type == 'drawer' -%}
-      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
+    <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {% if request.page_type == 'product' %}
+      <script src="{{ 'plastbat-ajax-cart.js' | asset_url }}" defer="defer"></script>
+    {% endif %}
   </body>
 </html>

@@ -1,4 +1,6 @@
 /* Plastbat conversion-focused product page */
+product-form { display: block; }
+.pb-cart-error { margin:12px 0 0; color:#a12828; font-size:1.35rem; font-weight:700; }
 .template-product { background:#fbf7f1; }
 .template-product .page-width { max-width:1320px; }
 .template-product .product { gap:4.8rem; }

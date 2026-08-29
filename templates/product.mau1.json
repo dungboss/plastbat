@@ -325,56 +325,56 @@
         "manual_review_b3Hm3D": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Logan Murphy",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
+            "date": "06/25/2026",
+            "verified": true,
+            "title": "Really unique",
+            "body": "<p>Such a cool idea. Definitely not something you see everywhere.</p>"
           }
         },
         "manual_review_b8377j": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Mia Peterson",
             "rating": 5,
-            "date": "",
+            "date": "06/23/2026",
             "verified": false,
-            "title": "",
-            "body": ""
+            "title": "He loved it",
+            "body": "<p>My boyfriend is a huge car guy and this was the perfect birthday gift for him.</p>"
           }
         },
         "manual_review_KwtjgB": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "James Griffin",
             "rating": 5,
-            "date": "",
+            "date": "06/17/2026",
             "verified": false,
-            "title": "",
-            "body": ""
+            "title": "Awesome garage gift",
+            "body": "<p>My dad has a garage full of car stuff and somehow this still managed to stand out.</p>"
           }
         },
         "manual_review_yh7APf": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Amelia Foster",
             "rating": 5,
-            "date": "",
+            "date": "06/11/2026",
             "verified": false,
-            "title": "",
-            "body": ""
+            "title": "Best gift for a car lover",
+            "body": "<p>I had no idea what to get my husband this year. He loves cars, so I took a chance on this and he was genuinely impressed</p>"
           }
         },
         "manual_review_JjkWTf": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Luke Morgan",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
+            "date": "06/09/2026",
+            "verified": true,
+            "title": "Looks great",
+            "body": "<p>Clean, detailed and unique. Exactly what I wanted.</p>"
           }
         }
       },

@@ -31,54 +31,105 @@
     "main_product_aykktf": {
       "type": "main-product",
       "blocks": {
-        "manual_review_rQCQfw": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": "",
-            "image": "shopify://shop_images/1787825817232_5864500917613633006_5864500917613633006_h_e0a69ef2-9ac0-413f-b1dc-a7ac6635aed6.jpg"
-          }
-        },
-        "manual_review_YXWDfX": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Harden Roses",
-            "rating": 5,
-            "date": "2/8/2026",
-            "verified": true,
-            "title": "Really happy",
-            "body": "<p>Good quality at an affordable price</p>"
-          }
-        },
         "manual_review_wnFNk8": {
           "type": "manual_review",
           "settings": {
             "author": "James Madders",
             "rating": 5,
-            "date": "1/8/2026",
+            "date": "08/01/2026",
             "verified": true,
             "title": "Love this product so muchh.",
             "body": "<p>Better than expected </p>",
+            "image": "shopify://shop_images/1787825817265_5864500917613633006_5864500917613633006_o.jpg"
+          }
+        },
+        "manual_review_rQCQfw": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ethan Parker",
+            "rating": 5,
+            "date": "07/30/2026",
+            "verified": false,
+            "title": "Such a unique gift",
+            "body": "<p>I was looking for something different for a car lover and this was perfect. Personalized, useful, and actually looks great on the wall.</p>",
+            "image": "shopify://shop_images/1787825817232_5864500917613633006_5864500917613633006_h_e0a69ef2-9ac0-413f-b1dc-a7ac6635aed6.jpg"
+          }
+        },
+        "manual_review_daDqAU": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Mason Turner",
+            "rating": 5,
+            "date": "24/08/2026",
+            "verified": true,
+            "title": "He absolutely loved it",
+            "body": "<p>Bought this as a gift for my husband because he is obsessed with cars. The personalized plate with his name made it feel so special. He put it up in the garage immediately.</p>",
             "image": "shopify://shop_images/1787814817807_119966994728092966_7852098855956265588_h.jpg"
+          }
+        },
+        "manual_review_YdQVNX": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ava Collins",
+            "rating": 5,
+            "date": "07/03/2026",
+            "verified": false,
+            "title": "Better than I expected",
+            "body": "<p>Honestly much nicer than I expected. The 3D car details really stand out once it is mounted.</p>",
+            "image": "shopify://shop_images/9413ebbc-8b3a-464a-8de0-b320fe25cbaf.png"
+          }
+        },
+        "manual_review_YXWDfX": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Hong Chu Lin",
+            "rating": 5,
+            "date": "08/02/2026",
+            "verified": true,
+            "title": "Really happy",
+            "body": "<p>Good quality at an affordable price</p>",
+            "image": "shopify://shop_images/1787825817245_5864500917613633006_5864500917613633006_h.jpg"
+          }
+        },
+        "manual_review_3LQ3CA": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Jack Simmons",
+            "rating": 5,
+            "date": "08/17/2026",
+            "verified": true,
+            "title": "Great personalized gift",
+            "body": "<p>The personalization is definitely what makes it. It turned a cool car decoration into something that actually felt made for him.</p>"
+          }
+        },
+        "manual_review_CzqLF6": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Stella Watson",
+            "rating": 4,
+            "date": "08/10/2026",
+            "verified": true,
+            "title": "Great overall",
+            "body": "<p>Really cool design and the personalization looks great. I just wish I had ordered a bigger size because it looks so good on the wall.</p>"
           }
         }
       },
       "block_order": [
+        "manual_review_wnFNk8",
         "manual_review_rQCQfw",
+        "manual_review_daDqAU",
+        "manual_review_YdQVNX",
         "manual_review_YXWDfX",
-        "manual_review_wnFNk8"
+        "manual_review_3LQ3CA",
+        "manual_review_CzqLF6"
       ],
       "name": "Plastbat — Product Main New",
       "settings": {
         "color_scheme": "",
         "use_theme_colors": true,
-        "accent_color": "#C58A52",
-        "soft_background": "#F6EFE7",
-        "border_color": "#E5D8CC",
+        "accent_color": "#c58a52",
+        "soft_background": "#f6efe7",
+        "border_color": "#e5d8cc",
         "corner_radius": 16,
         "sticky_gallery": true,
         "sticky_top": 90,
@@ -112,13 +163,7 @@
         "personalization_info": "<p>Please complete all required personalization fields, such as <strong>Name, Color, Style, or other available options</strong>, and double-check your selections carefully before placing your order.</p><p>For personalized text, please use <strong>standard English letters and numbers only</strong>. Avoid special characters or emojis unless otherwise stated, as they may not display clearly on the finished product.</p><p>When selecting product characteristics or design options, please choose the options that best match your preferences and personalization details.</p><p>Please note that actual product colors may vary slightly from the images shown on our website due to lighting conditions during photography, screen settings, and differences between digital displays and the physical product.</p>",
         "show_reviews": true,
         "reviews_heading": "Customer Reviews",
-        "write_review_text": "Customer feedback",
         "no_reviews_text": "Be the first to review this product",
-        "reviews_section_width": 1200,
-        "reviews_section_top": 48,
-        "reviews_section_bottom": 64,
-        "reviews_section_top_mobile": 32,
-        "reviews_section_bottom_mobile": 40,
         "padding_top": 32,
         "padding_bottom": 28,
         "padding_top_mobile": 16,
@@ -156,9 +201,9 @@
         "swipe_on_mobile": false,
         "padding_top": 36,
         "padding_bottom": 36,
-        "custom_colors_background": "#FFFFFF",
+        "custom_colors_background": "#ffffff",
         "custom_gradient_background": "",
-        "custom_colors_text": "#2E2A39",
+        "custom_colors_text": "#2e2a39",
         "custom_colors_solid_button_background": "#dd1d1d",
         "custom_colors_solid_button_text": "#ffffff"
       }

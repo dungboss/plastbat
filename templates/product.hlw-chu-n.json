@@ -131,23 +131,6 @@
           "settings": {
             "custom_liquid": "<div id='ss-product-video'></div>"
           }
-        },
-        "sticky_atc_xbBkLM": {
-          "type": "sticky_atc",
-          "settings": {
-            "function": "add_to_cart",
-            "display_when": "after_scroll",
-            "color_scheme": "background-1",
-            "button_label": "ADD TO CART →",
-            "enable_custom_btn_color": true,
-            "custom_btn_color": "#1a1a1a",
-            "show_price_badge": true,
-            "show_variant_picker": true,
-            "desktop_show_title": true,
-            "desktop_show_price": true,
-            "mobile_show_title": false,
-            "mobile_show_price": false
-          }
         }
       },
       "block_order": [
@@ -161,8 +144,7 @@
         "reviews_wbqVgr",
         "custom_liquid_VbTazP",
         "icon_with_text_qnHAeq",
-        "custom_liquid_KVHcje",
-        "sticky_atc_xbBkLM"
+        "custom_liquid_KVHcje"
       ],
       "disabled": true,
       "custom_css": [],

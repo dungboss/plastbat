@@ -60,16 +60,32 @@
         throw new Error(cartState.description || cartState.message || 'Unable to add this item to your cart.');
       }
 
-      const drawerResponse = await fetch(`${window.routes?.cart_url || '/cart'}?section_id=cart-drawer`, {
-        headers: { Accept: 'text/html' },
-        cache: 'no-store'
-      });
+      let drawerHTML = cartState.sections?.['cart-drawer'];
+      const hasDrawerMarkup = (html) => {
+        if (!html) return false;
+        return Boolean(
+          new DOMParser().parseFromString(html, 'text/html').querySelector('#CartDrawer')
+        );
+      };
 
-      if (!drawerResponse.ok) {
-        throw new Error('Unable to refresh your cart. Please try again.');
+      // Shopify normally returns the freshly rendered drawer with cart/add.js.
+      // Only make another request when that section is absent or malformed.
+      if (!hasDrawerMarkup(drawerHTML)) {
+        const drawerResponse = await fetch(`${window.routes?.cart_url || '/cart'}?section_id=cart-drawer`, {
+          headers: { Accept: 'text/html' },
+          cache: 'no-store'
+        });
+
+        if (!drawerResponse.ok) {
+          throw new Error('Unable to refresh your cart. Please try again.');
+        }
+
+        drawerHTML = await drawerResponse.text();
       }
 
-      const drawerHTML = await drawerResponse.text();
+      if (!hasDrawerMarkup(drawerHTML)) {
+        throw new Error('Unable to display your cart. Please refresh the page and try again.');
+      }
 
       drawer.setActiveElement(event.submitter || document.activeElement);
       drawer.renderContents({

@@ -36,7 +36,7 @@
           "settings": {
             "author": "James Madders",
             "rating": 5,
-            "date": "08/01/2026",
+            "date": "08/30/2026",
             "verified": true,
             "title": "Love this product so muchh.",
             "body": "<p>Better than expected </p>",
@@ -48,7 +48,7 @@
           "settings": {
             "author": "Ethan Parker",
             "rating": 5,
-            "date": "07/30/2026",
+            "date": "08/29/2026",
             "verified": false,
             "title": "Such a unique gift",
             "body": "<p>I was looking for something different for a car lover and this was perfect. Personalized, useful, and actually looks great on the wall.</p>",
@@ -60,7 +60,7 @@
           "settings": {
             "author": "Mason Turner",
             "rating": 5,
-            "date": "24/08/2026",
+            "date": "08/27/2026",
             "verified": true,
             "title": "He absolutely loved it",
             "body": "<p>Bought this as a gift for my husband because he is obsessed with cars. The personalized plate with his name made it feel so special. He put it up in the garage immediately.</p>",
@@ -72,7 +72,7 @@
           "settings": {
             "author": "Ava Collins",
             "rating": 5,
-            "date": "07/03/2026",
+            "date": "08/26/2026",
             "verified": true,
             "title": "Better than I expected",
             "body": "<p>Honestly much nicer than I expected. The 3D car details really stand out once it is mounted.</p>",
@@ -84,7 +84,7 @@
           "settings": {
             "author": "Hong Chu Lin",
             "rating": 5,
-            "date": "08/02/2026",
+            "date": "08/20/2026",
             "verified": true,
             "title": "Really happy",
             "body": "<p>Good quality at an affordable price</p>",
@@ -426,7 +426,7 @@
         "checkout_note": "Secure checkout • Your customization is saved with your order",
         "mobile_sticky_atc": true,
         "trust_1": "Made to order",
-        "trust_2": "Fast shipping",
+        "trust_2": "Tracked Shipping",
         "trust_3": "Personalization support",
         "description_heading": "Description",
         "description_body": "<p>Turn your favorite theme, hobby, or personal style into something you can enjoy every day with our <strong>Personalized Key Holder</strong>. More than just a practical place to keep your keys organized, this <strong>3D printed wall decor</strong> adds character and personality to your space. Each piece is made to order with customizable details such as color and name, creating a design that feels uniquely yours. Perfect for an entryway, office, garage, bedroom, workspace, or favorite corner, it combines everyday function with a fun decorative touch.</p><p>Whether you’re shopping for a birthday, Christmas, Father’s Day, Mother’s Day, housewarming, anniversary, or simply looking for a thoughtful surprise, this <strong>custom key holder</strong> makes a unique gift they can actually use. Perfect for friends, family, coworkers, partners, or anyone who loves creative and personalized decor, it turns an everyday essential into something a little more special. Choose the design that fits their personality, add your custom details, and create a <strong>one-of-a-kind personalized gift</strong> made just for them.</p>",
@@ -459,7 +459,7 @@
         "show_description": false,
         "description_style": "body",
         "color_scheme": "background-1",
-        "collection": "key-holders",
+        "collection": "car-key-holders",
         "products_to_show": 4,
         "columns_desktop": 4,
         "product_cards_stretch": false,

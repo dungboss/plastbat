@@ -106,16 +106,41 @@
               {% if option_name_down contains 'color' or option_name_down contains 'colour' %}{% assign option_type = 'color' %}{% endif %}
 
               <fieldset class="pbmac-option" data-pbmac-option-index="{{ forloop.index0 }}">
-                <div class="pbmac-option__head"><legend>{{ option.name }}</legend>{% if option_name_down contains 'size' and section.settings.show_size_chart %}<button type="button" class="pbmac-sizechart-link" data-pbmac-sizechart-open>Size Chart</button>{% endif %}</div>
+                <div class="pbmac-option__head">
+                  <legend>
+                    {{ option.name }}
+                    {% if option_type == 'color' %}
+                      <span class="pbmac-option__selected" data-pbmac-color-selected>{{ option.selected_value }}</span>
+                    {% endif %}
+                  </legend>
+                  {% if option_name_down contains 'size' and section.settings.show_size_chart %}
+                    <button type="button" class="pbmac-sizechart-link" data-pbmac-sizechart-open>Size Chart</button>
+                  {% endif %}
+                </div>
 
                 {% if option_type == 'color' %}
                   <div class="pbmac-colors">
                     {% for option_value in option.values %}
                       {% assign value_name = option_value.name %}
-                      <label class="pbmac-color{% unless option_value.available %} is-unavailable{% endunless %}">
-                        <input type="radio" name="pbmac-opt-{{ section.id }}-{{ option.position }}" value="{{ value_name | escape }}" data-pbmac-option-value {% if option_value.selected %}checked{% endif %}>
-                        <span class="pbmac-color__swatch pbmac-color--{{ value_name | handleize }}" {% if option_value.swatch.color != blank %}style="background:{{ option_value.swatch.color }}"{% endif %}></span>
-                        <span class="pbmac-color__name">{{ value_name }}</span>
+                      <label
+                        class="pbmac-color{% unless option_value.available %} is-unavailable{% endunless %}"
+                        title="{{ value_name | escape }}"
+                        aria-label="{{ value_name | escape }}"
+                      >
+                        <input
+                          type="radio"
+                          name="pbmac-opt-{{ section.id }}-{{ option.position }}"
+                          value="{{ value_name | escape }}"
+                          data-pbmac-option-value
+                          data-pbmac-color-value
+                          {% if option_value.selected %}checked{% endif %}
+                        >
+                        <span class="pbmac-color__outer">
+                          <span
+                            class="pbmac-color__swatch pbmac-color--{{ value_name | handleize }}"
+                            {% if option_value.swatch.color != blank %}style="background:{{ option_value.swatch.color }}"{% endif %}
+                          ></span>
+                        </span>
                       </label>
                     {% endfor %}
                   </div>
@@ -175,10 +200,17 @@
     assign pbmac_count_3 = 0
     assign pbmac_count_2 = 0
     assign pbmac_count_1 = 0
+    assign pbmac_image_review_count = 0
+
     for block in section.blocks
       if block.type == 'manual_review'
         assign pbmac_review_count = pbmac_review_count | plus: 1
         assign pbmac_rating_total = pbmac_rating_total | plus: block.settings.rating
+
+        if block.settings.image != blank
+          assign pbmac_image_review_count = pbmac_image_review_count | plus: 1
+        endif
+
         case block.settings.rating
           when 5
             assign pbmac_count_5 = pbmac_count_5 | plus: 1
@@ -193,6 +225,7 @@
         endcase
       endif
     endfor
+
     if pbmac_review_count > 0
       assign pbmac_average = pbmac_rating_total | times: 1.0 | divided_by: pbmac_review_count
     else
@@ -200,41 +233,198 @@
     endif
   %}
 
-  <div class="page-width"><div class="pbmac-reviews__panel">
-    <aside class="pbmac-reviews__summary">
-      <h2>{{ section.settings.reviews_heading | escape }}</h2>
-      {% if pbmac_review_count > 0 %}
-        <div class="pbmac-reviews__score"><strong>{{ pbmac_average | round: 1 }}</strong><div><span>★★★★★</span><small>Based on {{ pbmac_review_count }} review{% if pbmac_review_count != 1 %}s{% endif %}</small></div></div>
-        {% assign pbmac_counts = pbmac_count_5 | append: ',' | append: pbmac_count_4 | append: ',' | append: pbmac_count_3 | append: ',' | append: pbmac_count_2 | append: ',' | append: pbmac_count_1 | split: ',' %}
-        <div class="pbmac-histogram">{% for star in (1..5) reversed %}{% assign idx = 5 | minus: star %}{% assign count = pbmac_counts[idx] | plus: 0 %}{% assign pct = count | times: 100 | divided_by: pbmac_review_count %}<div class="pbmac-histogram__row"><span>{{ star }} Star</span><div><i style="width:{{ pct }}%"></i></div><b>{{ pct }}%</b></div>{% endfor %}</div>
-      {% endif %}
-    </aside>
-
-    <div class="pbmac-reviews__main">
-      <h3>Top reviews</h3>
-      {% if pbmac_review_count > 0 %}
-        <div class="pbmac-review-filters"><button class="is-active" type="button" data-rating="all">All Reviews ({{ pbmac_review_count }})</button><button type="button" data-rating="5" {% if pbmac_count_5 == 0 %}disabled{% endif %}>5 Star ({{ pbmac_count_5 }})</button><button type="button" data-rating="4" {% if pbmac_count_4 == 0 %}disabled{% endif %}>4 Star ({{ pbmac_count_4 }})</button><button type="button" data-rating="3" {% if pbmac_count_3 == 0 %}disabled{% endif %}>3 Star ({{ pbmac_count_3 }})</button><button type="button" data-rating="2" {% if pbmac_count_2 == 0 %}disabled{% endif %}>2 Star ({{ pbmac_count_2 }})</button><button type="button" data-rating="1" {% if pbmac_count_1 == 0 %}disabled{% endif %}>1 Star ({{ pbmac_count_1 }})</button></div>
-
-        <div class="pbmac-review-list">
-          {% assign pbmac_review_index = 0 %}
-          {% for block in section.blocks %}{% if block.type == 'manual_review' %}
-            <article class="pbmac-review" data-pbmac-review data-rating="{{ block.settings.rating }}" data-review-index="{{ pbmac_review_index }}" role="button" tabindex="0" {{ block.shopify_attributes }}>
-              <div class="pbmac-review__headline"><span class="pbmac-review__stars">{% for i in (1..5) %}<i class="{% if i <= block.settings.rating %}is-on{% endif %}">★</i>{% endfor %}</span><strong>{{ block.settings.author | escape }}</strong></div>
-              <div class="pbmac-review__meta">{% if block.settings.verified %}<span>Verified Purchase</span>{% endif %}{% if block.settings.date != blank %}<time>{{ block.settings.date | escape }}</time>{% endif %}</div>
-              {% if block.settings.title != blank %}<h4>{{ block.settings.title | escape }}</h4>{% endif %}
-              {% if block.settings.body != blank %}<div class="pbmac-review__body rte">{{ block.settings.body }}</div>{% endif %}
-              {% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 220 | image_tag: loading: 'lazy', widths: '90,140,220', class: 'pbmac-review__thumb', alt: block.settings.title }}{% endif %}
-              <template data-pbmac-review-modal-source><div class="pbmac-review-modal-source{% if block.settings.image == blank %} is-no-image{% endif %}">{% if block.settings.image != blank %}<div class="pbmac-review-modal-source__media">{{ block.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1200,1400', class: 'pbmac-review-modal-source__image', alt: block.settings.title }}</div>{% endif %}<div class="pbmac-review-modal-source__details"><div class="pbmac-review__headline"><span class="pbmac-review__stars">{% for i in (1..5) %}<i class="{% if i <= block.settings.rating %}is-on{% endif %}">★</i>{% endfor %}</span><strong>{{ block.settings.author | escape }}</strong></div><div class="pbmac-review__meta">{% if block.settings.verified %}<span>Verified Purchase</span>{% endif %}{% if block.settings.date != blank %}<time>{{ block.settings.date | escape }}</time>{% endif %}</div>{% if block.settings.title != blank %}<h4>{{ block.settings.title | escape }}</h4>{% endif %}{% if block.settings.body != blank %}<div class="rte">{{ block.settings.body }}</div>{% endif %}</div></div></template>
-            </article>
-            {% assign pbmac_review_index = pbmac_review_index | plus: 1 %}
-          {% endif %}{% endfor %}
-        </div>
-        <nav class="pbmac-pagination" aria-label="Review pages"></nav>
-      {% elsif request.design_mode %}<div class="pbmac-empty-review">Add real customer reviews using “Manual review” blocks.</div>{% endif %}
+  <div class="page-width">
+    <div class="pbmac-review-tabs-top">
+      <span class="is-active">Product Reviews</span>
     </div>
-  </div></div>
 
-  <div class="pbmac-review-modal" hidden><div class="pbmac-review-modal__backdrop" data-pbmac-review-close></div><div class="pbmac-review-modal__dialog" role="dialog" aria-modal="true"><button type="button" class="pbmac-review-modal__close" data-pbmac-review-close>×</button><button type="button" class="pbmac-review-modal__arrow pbmac-review-modal__arrow--prev" data-pbmac-review-prev>‹</button><button type="button" class="pbmac-review-modal__arrow pbmac-review-modal__arrow--next" data-pbmac-review-next>›</button><div class="pbmac-review-modal__content"></div></div></div>
+    <div class="pbmac-reviews-layout">
+      <aside class="pbmac-reviews-card">
+        <h2>Reviews for this item</h2>
+
+        {% if pbmac_review_count > 0 %}
+          <div class="pbmac-reviews-card__score">
+            <strong>{{ pbmac_average | round: 1 }}</strong>
+            <div>
+              <span class="pbmac-reviews-card__stars">★★★★★</span>
+              <small>{{ pbmac_review_count }} Review{% if pbmac_review_count != 1 %}s{% endif %}</small>
+            </div>
+          </div>
+
+          {% assign pbmac_counts = pbmac_count_5 | append: ',' | append: pbmac_count_4 | append: ',' | append: pbmac_count_3 | append: ',' | append: pbmac_count_2 | append: ',' | append: pbmac_count_1 | split: ',' %}
+          <div class="pbmac-histogram">
+            {% for star in (1..5) reversed %}
+              {% assign idx = 5 | minus: star %}
+              {% assign count = pbmac_counts[idx] | plus: 0 %}
+              {% assign pct = count | times: 100 | divided_by: pbmac_review_count %}
+              <div class="pbmac-histogram__row">
+                <span>{{ star }} Star</span>
+                <div><i style="width:{{ pct }}%"></i></div>
+                <b>{{ pct }}%</b>
+              </div>
+            {% endfor %}
+          </div>
+
+          <span class="pbmac-review-static-button">Customer Feedback</span>
+        {% else %}
+          <p class="pbmac-empty-review">No product reviews yet.</p>
+        {% endif %}
+      </aside>
+
+      <div class="pbmac-reviews-content">
+        {% if pbmac_image_review_count > 0 %}
+          <div class="pbmac-review-images-head">
+            <h3>Reviews with Images</h3>
+            <div class="pbmac-review-images-arrows">
+              <button type="button" data-pbmac-images-prev aria-label="Previous images">‹</button>
+              <button type="button" data-pbmac-images-next aria-label="Next images">›</button>
+            </div>
+          </div>
+
+          <div class="pbmac-review-images" data-pbmac-review-images>
+            {% assign pbmac_review_index = 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'manual_review' %}
+                {% if block.settings.image != blank %}
+                  <button
+                    type="button"
+                    class="pbmac-review-image-card"
+                    data-pbmac-image-review-index="{{ pbmac_review_index }}"
+                    aria-label="Open review from {{ block.settings.author | escape }}"
+                  >
+                    {{
+                      block.settings.image
+                      | image_url: width: 500
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '180,260,360,500',
+                        class: 'pbmac-review-image-card__image',
+                        alt: block.settings.title
+                    }}
+                  </button>
+                {% endif %}
+                {% assign pbmac_review_index = pbmac_review_index | plus: 1 %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="pbmac-topreviews-head">
+          <h3>Top reviews</h3>
+        </div>
+
+        {% if pbmac_review_count > 0 %}
+          <div class="pbmac-review-filters">
+            <button class="is-active" type="button" data-rating="all">All Reviews ({{ pbmac_review_count }})</button>
+            <button type="button" data-rating="5" {% if pbmac_count_5 == 0 %}disabled{% endif %}>5 Star ({{ pbmac_count_5 }})</button>
+            <button type="button" data-rating="4" {% if pbmac_count_4 == 0 %}disabled{% endif %}>4 Star ({{ pbmac_count_4 }})</button>
+            <button type="button" data-rating="3" {% if pbmac_count_3 == 0 %}disabled{% endif %}>3 Star ({{ pbmac_count_3 }})</button>
+            <button type="button" data-rating="2" {% if pbmac_count_2 == 0 %}disabled{% endif %}>2 Star ({{ pbmac_count_2 }})</button>
+            <button type="button" data-rating="1" {% if pbmac_count_1 == 0 %}disabled{% endif %}>1 Star ({{ pbmac_count_1 }})</button>
+          </div>
+
+          <div class="pbmac-review-list">
+            {% assign pbmac_review_index = 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'manual_review' %}
+                <article
+                  class="pbmac-review"
+                  data-pbmac-review
+                  data-rating="{{ block.settings.rating }}"
+                  data-review-index="{{ pbmac_review_index }}"
+                  role="button"
+                  tabindex="0"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="pbmac-review__headline">
+                    <span class="pbmac-review__stars">
+                      {% for i in (1..5) %}
+                        <i class="{% if i <= block.settings.rating %}is-on{% endif %}">★</i>
+                      {% endfor %}
+                    </span>
+                    <strong>{{ block.settings.author | escape }}</strong>
+                  </div>
+
+                  <div class="pbmac-review__meta">
+                    {% if block.settings.verified %}<span>Verified Purchase</span>{% endif %}
+                    {% if block.settings.date != blank %}<time>{{ block.settings.date | escape }}</time>{% endif %}
+                  </div>
+
+                  {% if block.settings.title != blank %}<h4>{{ block.settings.title | escape }}</h4>{% endif %}
+                  {% if block.settings.body != blank %}<div class="pbmac-review__body rte">{{ block.settings.body }}</div>{% endif %}
+
+                  {% if block.settings.image != blank %}
+                    {{
+                      block.settings.image
+                      | image_url: width: 220
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '90,140,220',
+                        class: 'pbmac-review__thumb',
+                        alt: block.settings.title
+                    }}
+                  {% endif %}
+
+                  <template data-pbmac-review-modal-source>
+                    <div class="pbmac-review-modal-source{% if block.settings.image == blank %} is-no-image{% endif %}">
+                      {% if block.settings.image != blank %}
+                        <div class="pbmac-review-modal-source__media">
+                          {{
+                            block.settings.image
+                            | image_url: width: 1400
+                            | image_tag:
+                              loading: 'lazy',
+                              widths: '600,900,1200,1400',
+                              class: 'pbmac-review-modal-source__image',
+                              alt: block.settings.title
+                          }}
+                        </div>
+                      {% endif %}
+
+                      <div class="pbmac-review-modal-source__details">
+                        <div class="pbmac-review__headline">
+                          <span class="pbmac-review__stars">
+                            {% for i in (1..5) %}
+                              <i class="{% if i <= block.settings.rating %}is-on{% endif %}">★</i>
+                            {% endfor %}
+                          </span>
+                          <strong>{{ block.settings.author | escape }}</strong>
+                        </div>
+
+                        <div class="pbmac-review__meta">
+                          {% if block.settings.verified %}<span>Verified Purchase</span>{% endif %}
+                          {% if block.settings.date != blank %}<time>{{ block.settings.date | escape }}</time>{% endif %}
+                        </div>
+
+                        {% if block.settings.title != blank %}<h4>{{ block.settings.title | escape }}</h4>{% endif %}
+                        {% if block.settings.body != blank %}<div class="rte">{{ block.settings.body }}</div>{% endif %}
+                      </div>
+                    </div>
+                  </template>
+                </article>
+
+                {% assign pbmac_review_index = pbmac_review_index | plus: 1 %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <nav class="pbmac-pagination" aria-label="Review pages"></nav>
+        {% elsif request.design_mode %}
+          <div class="pbmac-empty-review">Add real customer reviews using “Manual review” blocks.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="pbmac-review-modal" hidden>
+    <div class="pbmac-review-modal__backdrop" data-pbmac-review-close></div>
+    <div class="pbmac-review-modal__dialog" role="dialog" aria-modal="true">
+      <button type="button" class="pbmac-review-modal__close" data-pbmac-review-close>×</button>
+      <button type="button" class="pbmac-review-modal__arrow pbmac-review-modal__arrow--prev" data-pbmac-review-prev>‹</button>
+      <button type="button" class="pbmac-review-modal__arrow pbmac-review-modal__arrow--next" data-pbmac-review-next>›</button>
+      <div class="pbmac-review-modal__content"></div>
+    </div>
+  </div>
 </section>
 {% endif %}
 
@@ -252,6 +442,247 @@
   .pbmac-reviews{padding:34px 0 46px;background:#faf8f6;color:#514a4e;font-family:var(--font-body-family,inherit)}.pbmac-reviews__panel{width:min(100%,1080px);margin:0 auto;padding:24px 26px;border:1px solid #e5d8cc;border-radius:16px;background:#fff;display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px}.pbmac-reviews__summary{padding-right:24px;border-right:1px solid #eee6e0}.pbmac-reviews__summary h2{margin:0 0 16px;font-size:22px}.pbmac-reviews__score{display:flex;gap:13px;align-items:center;margin-bottom:20px}.pbmac-reviews__score>strong{font-size:36px;line-height:1}.pbmac-reviews__score>div{display:grid;gap:4px}.pbmac-reviews__score span{color:var(--orange);letter-spacing:1px}.pbmac-reviews__score small{color:#9a9194;font-size:11.5px}.pbmac-histogram{display:grid;gap:8px}.pbmac-histogram__row{display:grid;grid-template-columns:42px 1fr 34px;gap:8px;align-items:center;font-size:11px;color:#837a7d}.pbmac-histogram__row>div{height:6px;background:#eee7e2;border-radius:99px;overflow:hidden}.pbmac-histogram__row i{display:block;height:100%;background:#c58a52}.pbmac-histogram__row b{text-align:right;font-weight:600}.pbmac-reviews__main h3{margin:0 0 12px;font-size:20px}.pbmac-review-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}.pbmac-review-filters button{min-height:36px;padding:0 13px;border:1px solid #e8dfd8;border-radius:999px;background:#fff;color:#796f74;font:inherit;font-size:11px;cursor:pointer}.pbmac-review-filters button.is-active{border-color:#4c4448;box-shadow:inset 0 0 0 1px #4c4448}.pbmac-review-filters button:disabled{opacity:.3}.pbmac-review{padding:17px 0;border-bottom:1px solid #eee6e0;cursor:pointer}.pbmac-review[hidden]{display:none!important}.pbmac-review__headline{display:flex;gap:8px;align-items:center}.pbmac-review__stars{display:flex;font-size:13px;color:#ddd3cd}.pbmac-review__stars i{font-style:normal}.pbmac-review__stars .is-on{color:var(--orange)}.pbmac-review__headline strong{font-size:12.5px}.pbmac-review__meta{display:flex;gap:7px;margin-top:6px;color:#a09598;font-size:10.5px}.pbmac-review h4{margin:9px 0 4px;font-size:13px}.pbmac-review__body{color:#665d61;font-size:12.5px;line-height:1.55}.pbmac-review__thumb{width:70px;height:70px;margin-top:9px;object-fit:cover;border-radius:8px;border:1px solid #e3d9d1}.pbmac-pagination{display:flex;gap:5px;margin-top:14px}.pbmac-pagination button{min-width:31px;height:31px;padding:0 8px;border:1px solid #e5ddd7;border-radius:999px;background:#fff;color:#796f74;font:inherit;font-size:11px;cursor:pointer}.pbmac-pagination button.is-active{background:#52484d;border-color:#52484d;color:#fff}.pbmac-review-modal{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:20px}.pbmac-review-modal__dialog{position:relative;z-index:1;width:min(860px,calc(100vw - 54px));max-height:min(620px,calc(100vh - 56px));border-radius:14px;background:#fff;box-shadow:0 22px 70px rgba(0,0,0,.28)}.pbmac-review-modal__content{max-height:min(620px,calc(100vh - 56px));overflow:hidden;border-radius:inherit}.pbmac-review-modal__close{position:absolute;top:-14px;right:-14px;z-index:4;width:36px;height:36px;border:1px solid #e6ded8;border-radius:999px;background:#fff;font-size:23px;cursor:pointer}.pbmac-review-modal__arrow{position:absolute;top:50%;z-index:4;width:40px;height:40px;transform:translateY(-50%);border:1px solid #ece3dd;border-radius:999px;background:#fff;font-size:28px;cursor:pointer}.pbmac-review-modal__arrow--prev{left:-20px}.pbmac-review-modal__arrow--next{right:-20px}.pbmac-review-modal-source{display:grid;grid-template-columns:49% 51%;min-height:390px;max-height:min(620px,calc(100vh - 56px))}.pbmac-review-modal-source.is-no-image{grid-template-columns:1fr}.pbmac-review-modal-source__media{padding:16px;border-right:1px solid #eee6df;background:#fffdfb;display:grid;place-items:center;overflow:hidden}.pbmac-review-modal-source__image{width:100%;height:100%;max-height:500px;object-fit:contain;border-radius:8px}.pbmac-review-modal-source__details{padding:22px 22px 26px;overflow-y:auto;color:#554944}body.pbmac-modal-open{overflow:hidden!important}
   @media(max-width:989px){#PBMac-{{ section.id }} .pbmac__grid{grid-template-columns:1fr;gap:26px}.pbmac-gallery--sticky{position:static}.pbmac-reviews__panel{grid-template-columns:220px minmax(0,1fr);gap:24px}}
   @media(max-width:749px){#PBMac-{{ section.id }} .pbmac__wrap{padding-top:16px}.pbmac-gallery__thumbs{display:flex;overflow-x:auto}.pbmac-gallery__thumb{width:64px;flex:0 0 64px}.pbmac-title{font-size:30px}.pbmac-shipping__timeline{grid-template-columns:1fr}.pbmac-shipping__timeline>div{border-right:0;border-bottom:1px solid #eee8e3;padding:8px}.pbmac-buy-row{grid-template-columns:104px minmax(0,1fr)}.pbmac-reviews__panel{grid-template-columns:1fr;gap:22px;padding:18px 14px}.pbmac-reviews__summary{padding-right:0;padding-bottom:20px;border-right:0;border-bottom:1px solid #eee6e0}.pbmac-review-modal__dialog{width:min(620px,calc(100vw - 28px));max-height:calc(100vh - 28px)}.pbmac-review-modal__content{max-height:calc(100vh - 28px);overflow-y:auto}.pbmac-review-modal-source{display:block;min-height:0;max-height:none}.pbmac-review-modal-source__media{height:280px;border-right:0;border-bottom:1px solid #eee6df}.pbmac-review-modal-source__details{padding:18px}.pbmac-review-modal__arrow--prev{left:8px}.pbmac-review-modal__arrow--next{right:8px}.pbmac-review-modal__close{top:8px;right:8px}}
+
+  /* V2 — MACORNER-LIKE COLOR SWATCHES */
+  .pbmac-option__selected{
+    margin-left:5px;
+    color:#a39a9d;
+    font-size:12px;
+    font-weight:500;
+  }
+  .pbmac-colors{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:8px!important;
+    align-items:center;
+  }
+  .pbmac-color{
+    width:auto!important;
+    cursor:pointer;
+  }
+  .pbmac-color__outer{
+    width:56px;
+    height:36px;
+    padding:3px;
+    display:block;
+    border:1px solid #ded7d2;
+    border-radius:999px;
+    background:#fff;
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  .pbmac-color__swatch{
+    width:100%!important;
+    height:100%!important;
+    margin:0!important;
+    display:block;
+    border:0!important;
+    border-radius:999px!important;
+  }
+  .pbmac-color input:checked + .pbmac-color__outer{
+    border-color:#3e373b;
+    box-shadow:0 0 0 1px #3e373b;
+  }
+  .pbmac-color:hover .pbmac-color__outer{
+    border-color:#857b7e;
+  }
+  .pbmac-color__name{
+    display:none!important;
+  }
+
+  /* V2 — REVIEWS LAYOUT */
+  .pbmac-reviews{
+    padding:28px 0 44px!important;
+    background:#faf8f6!important;
+  }
+
+  .pbmac-review-tabs-top{
+    width:min(100%,1180px);
+    margin:0 auto 16px;
+    border-bottom:1px solid #e8e0da;
+  }
+  .pbmac-review-tabs-top span{
+    position:relative;
+    display:inline-flex;
+    padding:0 0 12px;
+    color:#4a4246;
+    font-size:13px;
+    font-weight:700;
+  }
+  .pbmac-review-tabs-top span::after{
+    content:'';
+    position:absolute;
+    left:0;right:0;bottom:-1px;
+    height:2px;
+    background:#4a4246;
+  }
+
+  .pbmac-reviews-layout{
+    width:min(100%,1180px);
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:320px minmax(0,1fr);
+    gap:42px;
+    align-items:start;
+  }
+
+  .pbmac-reviews-card{
+    padding:24px 22px;
+    border-radius:8px;
+    background:#f3f0ec;
+  }
+  .pbmac-reviews-card h2{
+    margin:0 0 22px;
+    color:#332f32;
+    font-size:16px;
+    line-height:1.2;
+  }
+  .pbmac-reviews-card__score{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:22px;
+  }
+  .pbmac-reviews-card__score > strong{
+    color:#3b2d33;
+    font-family:Georgia,serif;
+    font-size:48px;
+    line-height:1;
+    font-weight:500;
+  }
+  .pbmac-reviews-card__score > div{
+    display:grid;
+    gap:5px;
+  }
+  .pbmac-reviews-card__stars{
+    color:#f16422;
+    letter-spacing:2px;
+    font-size:18px;
+  }
+  .pbmac-reviews-card__score small{
+    color:#443d40;
+    font-size:12px;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram{
+    display:grid;
+    gap:13px;
+  }
+  .pbmac-reviews-card .pbmac-histogram__row{
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr) 38px;
+    gap:10px;
+    align-items:center;
+    color:#50494c;
+    font-size:11px;
+  }
+  .pbmac-reviews-card .pbmac-histogram__row > div{
+    height:7px;
+    border-radius:99px;
+    background:#e3ddd7;
+  }
+  .pbmac-reviews-card .pbmac-histogram__row i{
+    background:#ff7040;
+  }
+  .pbmac-review-static-button{
+    min-height:44px;
+    margin-top:20px;
+    padding:0 15px;
+    border:1px solid #393337;
+    border-radius:999px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    color:#393337;
+    font-size:12px;
+    font-weight:700;
+  }
+
+  .pbmac-review-images-head,
+  .pbmac-topreviews-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .pbmac-review-images-head h3,
+  .pbmac-topreviews-head h3{
+    margin:0;
+    color:#2f2b2e;
+    font-size:20px;
+  }
+  .pbmac-review-images-arrows{
+    display:flex;
+    gap:10px;
+  }
+  .pbmac-review-images-arrows button{
+    width:34px;
+    height:34px;
+    border:0;
+    background:transparent;
+    color:#3f383c;
+    font-size:28px;
+    cursor:pointer;
+  }
+  .pbmac-review-images{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+    overflow-x:auto;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+  }
+  .pbmac-review-images::-webkit-scrollbar{display:none}
+  .pbmac-review-image-card{
+    width:168px;
+    flex:0 0 168px;
+    aspect-ratio:1/1;
+    padding:0;
+    overflow:hidden;
+    border:0;
+    border-radius:8px;
+    background:#f4f1ef;
+    cursor:pointer;
+  }
+  .pbmac-review-image-card__image{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+
+  .pbmac-topreviews-head{
+    margin-top:28px;
+    margin-bottom:12px;
+  }
+
+  @media(max-width:989px){
+    .pbmac-reviews-layout{
+      grid-template-columns:280px minmax(0,1fr);
+      gap:28px;
+    }
+    .pbmac-review-image-card{
+      width:150px;
+      flex-basis:150px;
+    }
+  }
+
+  @media(max-width:749px){
+    .pbmac-review-tabs-top,
+    .pbmac-reviews-layout{
+      width:100%;
+    }
+    .pbmac-reviews-layout{
+      grid-template-columns:1fr;
+      gap:22px;
+    }
+    .pbmac-reviews-card{
+      padding:20px 18px;
+    }
+    .pbmac-review-image-card{
+      width:138px;
+      flex-basis:138px;
+    }
+  }
+
 </style>
 
 <script>
@@ -261,7 +692,9 @@
   const slides=[...root.querySelectorAll('[data-pbmac-media]')],thumbs=[...root.querySelectorAll('[data-pbmac-thumb]')];let active=0;const show=(i)=>{if(!slides.length)return;active=(i+slides.length)%slides.length;slides.forEach((s,x)=>{s.hidden=x!==active;s.classList.toggle('is-active',x===active)});thumbs.forEach((t,x)=>t.classList.toggle('is-active',x===active))};thumbs.forEach(t=>t.addEventListener('click',()=>show(Number(t.dataset.pbmacThumb))));root.querySelector('[data-pbmac-prev]')?.addEventListener('click',()=>show(active-1));root.querySelector('[data-pbmac-next]')?.addEventListener('click',()=>show(active+1));
   const byMedia=(id)=>{if(!id)return;const i=slides.findIndex(s=>String(s.dataset.pbmacMediaId)===String(id));if(i>=0)show(i)};
   const groups=[...root.querySelectorAll('[data-pbmac-option-index]')],variantId=root.querySelector('[data-pbmac-variant-id]'),price=root.querySelector('[data-pbmac-price]'),compare=root.querySelector('[data-pbmac-compare]'),save=root.querySelector('[data-pbmac-save]'),atc=root.querySelector('[data-pbmac-atc]'),atcText=root.querySelector('[data-pbmac-atc-text]'),addText={{ section.settings.add_to_cart_text | json }},soldText={{ section.settings.sold_out_text | json }};
-  const selected=()=>groups.map(g=>g.querySelector('[data-pbmac-option-value]:checked')?.value||'');const find=()=>{const w=selected();return variants.find(v=>v.options.length===w.length&&v.options.every((x,i)=>x===w[i]))||null};const render=(v)=>{if(!v){variantId.value='';atc.disabled=true;atcText.textContent='UNAVAILABLE';return}variantId.value=v.id;price.textContent=v.price;compare.textContent=v.compare||'';compare.classList.toggle('is-hidden',!v.compare);save.textContent=`Save ${v.save}%`;save.classList.toggle('is-hidden',!v.save);atc.disabled=!v.available;atcText.textContent=v.available?addText:soldText;byMedia(v.mediaId);try{const u=new URL(location.href);u.searchParams.set('variant',v.id);history.replaceState({},'',u)}catch(e){}};root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>render(find())));render(find());
+  const selected=()=>groups.map(g=>g.querySelector('[data-pbmac-option-value]:checked')?.value||'');const find=()=>{const w=selected();return variants.find(v=>v.options.length===w.length&&v.options.every((x,i)=>x===w[i]))||null};const render=(v)=>{if(!v){variantId.value='';atc.disabled=true;atcText.textContent='UNAVAILABLE';return}variantId.value=v.id;price.textContent=v.price;compare.textContent=v.compare||'';compare.classList.toggle('is-hidden',!v.compare);save.textContent=`Save ${v.save}%`;save.classList.toggle('is-hidden',!v.save);atc.disabled=!v.available;atcText.textContent=v.available?addText:soldText;byMedia(v.mediaId);try{const u=new URL(location.href);u.searchParams.set('variant',v.id);history.replaceState({},'',u)}catch(e){}};const colorSelectedLabel=root.querySelector('[data-pbmac-color-selected]');
+  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value};
+  root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>{render(find());syncColorSelected()}));syncColorSelected();render(find());
   const qty=root.querySelector('[data-pbmac-qty]'),clamp=v=>Math.min(99,Math.max(1,parseInt(v||'1',10)||1));root.querySelector('[data-pbmac-minus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)-1));root.querySelector('[data-pbmac-plus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)+1));
   const sizeModal=root.querySelector('[data-pbmac-sizechart]');root.querySelector('[data-pbmac-sizechart-open]')?.addEventListener('click',()=>{sizeModal.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-sizechart-close]').forEach(x=>x.addEventListener('click',()=>{sizeModal.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
   const preview=root.querySelector('[data-pbmac-preview-modal]'),pers=root.querySelector('[data-pbmac-personalization]');root.querySelector('[data-pbmac-preview-open]')?.addEventListener('click',()=>{if(!preview)return;const opts=selected(),names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||''),get=n=>{const i=names.findIndex(x=>x.includes(n));return i>=0?opts[i]:'—'};preview.querySelector('[data-pbmac-preview-style]').textContent=`Style: ${get('style')}`;preview.querySelector('[data-pbmac-preview-color]').textContent=`Color: ${get('color')}`;preview.querySelector('[data-pbmac-preview-size]').textContent=`Size: ${get('size')}`;preview.querySelector('[data-pbmac-preview-text]').textContent=pers?.value.trim()||'No personalization entered';preview.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-preview-close]').forEach(x=>x.addEventListener('click',()=>{preview.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
@@ -271,7 +704,141 @@
 {% if section.settings.show_reviews %}
 <script>
 (() => {
-  const section=document.getElementById('pbmac-reviews-{{ section.id }}');if(!section)return;const pageSize=10,cards=[...section.querySelectorAll('[data-pbmac-review]')],filters=[...section.querySelectorAll('.pbmac-review-filters button')],pagination=section.querySelector('.pbmac-pagination'),modal=section.querySelector('.pbmac-review-modal'),content=section.querySelector('.pbmac-review-modal__content'),prev=section.querySelector('[data-pbmac-review-prev]'),next=section.querySelector('[data-pbmac-review-next]');let rating='all',page=1,modalIndex=-1;const filtered=()=>rating==='all'?cards:cards.filter(c=>c.dataset.rating===rating);const renderPages=()=>{const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));if(page>pages)page=pages;pagination.innerHTML='';if(list.length<=pageSize){pagination.hidden=true;return}pagination.hidden=false;const mk=(label,p,active=false,disabled=false)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.page=p;b.disabled=disabled;if(active)b.classList.add('is-active');return b};pagination.appendChild(mk('‹',page-1,false,page===1));for(let i=1;i<=pages;i++)pagination.appendChild(mk(String(i),i,i===page));pagination.appendChild(mk('›',page+1,false,page===pages))};const render=(scroll=false)=>{const list=filtered(),start=(page-1)*pageSize,current=list.slice(start,start+pageSize);cards.forEach(c=>c.hidden=!current.includes(c));renderPages();if(scroll)section.querySelector('.pbmac-reviews__main h3')?.scrollIntoView({behavior:'smooth',block:'start'})};filters.forEach(f=>f.addEventListener('click',()=>{if(f.disabled)return;filters.forEach(x=>x.classList.remove('is-active'));f.classList.add('is-active');rating=f.dataset.rating||'all';page=1;render()}));pagination?.addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(!b||b.disabled)return;page=Number(b.dataset.page||1);render(true)});const close=()=>{modal.hidden=true;document.body.classList.remove('pbmac-modal-open');modalIndex=-1};const openAt=i=>{const list=filtered();if(!list.length)return;modalIndex=(i+list.length)%list.length;const card=list[modalIndex],src=card.querySelector('[data-pbmac-review-modal-source]');content.innerHTML='';content.appendChild(src.content.cloneNode(true));prev.hidden=list.length<=1;next.hidden=list.length<=1;modal.hidden=false;document.body.classList.add('pbmac-modal-open')};cards.forEach(c=>{c.addEventListener('click',()=>openAt(filtered().indexOf(c)));c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openAt(filtered().indexOf(c))}})});section.querySelectorAll('[data-pbmac-review-close]').forEach(x=>x.addEventListener('click',close));prev?.addEventListener('click',()=>openAt(modalIndex-1));next?.addEventListener('click',()=>openAt(modalIndex+1));document.addEventListener('keydown',e=>{if(modal.hidden)return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')openAt(modalIndex-1);if(e.key==='ArrowRight')openAt(modalIndex+1)});render();
+  const section=document.getElementById('pbmac-reviews-{{ section.id }}');
+  if(!section||section.dataset.ready==='true')return;
+  section.dataset.ready='true';
+
+  const pageSize=10;
+  const cards=[...section.querySelectorAll('[data-pbmac-review]')];
+  const filters=[...section.querySelectorAll('.pbmac-review-filters button')];
+  const pagination=section.querySelector('.pbmac-pagination');
+  const modal=section.querySelector('.pbmac-review-modal');
+  const content=section.querySelector('.pbmac-review-modal__content');
+  const prev=section.querySelector('[data-pbmac-review-prev]');
+  const next=section.querySelector('[data-pbmac-review-next]');
+  const images=section.querySelector('[data-pbmac-review-images]');
+  const imagesPrev=section.querySelector('[data-pbmac-images-prev]');
+  const imagesNext=section.querySelector('[data-pbmac-images-next]');
+  const imageCards=[...section.querySelectorAll('[data-pbmac-image-review-index]')];
+
+  let rating='all',page=1,modalIndex=-1;
+
+  const filtered=()=>rating==='all'?cards:cards.filter(c=>c.dataset.rating===rating);
+
+  const renderPages=()=>{
+    const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));
+    if(page>pages)page=pages;
+    pagination.innerHTML='';
+    if(list.length<=pageSize){pagination.hidden=true;return}
+    pagination.hidden=false;
+
+    const mk=(label,p,active=false,disabled=false)=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.textContent=label;
+      b.dataset.page=p;
+      b.disabled=disabled;
+      if(active)b.classList.add('is-active');
+      return b;
+    };
+
+    pagination.appendChild(mk('‹',page-1,false,page===1));
+    for(let i=1;i<=pages;i++)pagination.appendChild(mk(String(i),i,i===page));
+    pagination.appendChild(mk('›',page+1,false,page===pages));
+  };
+
+  const render=(scroll=false)=>{
+    const list=filtered(),start=(page-1)*pageSize,current=list.slice(start,start+pageSize);
+    cards.forEach(c=>c.hidden=!current.includes(c));
+    renderPages();
+
+    if(scroll){
+      section.querySelector('.pbmac-topreviews-head')?.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  };
+
+  filters.forEach(f=>f.addEventListener('click',()=>{
+    if(f.disabled)return;
+    filters.forEach(x=>x.classList.remove('is-active'));
+    f.classList.add('is-active');
+    rating=f.dataset.rating||'all';
+    page=1;
+    render();
+  }));
+
+  pagination?.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-page]');
+    if(!b||b.disabled)return;
+    page=Number(b.dataset.page||1);
+    render(true);
+  });
+
+  const close=()=>{
+    modal.hidden=true;
+    document.body.classList.remove('pbmac-modal-open');
+    modalIndex=-1;
+  };
+
+  const openAt=i=>{
+    const list=filtered();
+    if(!list.length)return;
+    modalIndex=(i+list.length)%list.length;
+    const card=list[modalIndex];
+    const src=card.querySelector('[data-pbmac-review-modal-source]');
+    if(!src)return;
+    content.innerHTML='';
+    content.appendChild(src.content.cloneNode(true));
+    prev.hidden=list.length<=1;
+    next.hidden=list.length<=1;
+    modal.hidden=false;
+    document.body.classList.add('pbmac-modal-open');
+  };
+
+  const openCard=card=>{
+    const list=filtered();
+    const idx=list.indexOf(card);
+    if(idx>=0)openAt(idx);
+  };
+
+  cards.forEach(c=>{
+    c.addEventListener('click',()=>openCard(c));
+    c.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        openCard(c);
+      }
+    });
+  });
+
+  imageCards.forEach(imageCard=>{
+    imageCard.addEventListener('click',()=>{
+      const reviewIndex=Number(imageCard.dataset.pbmacImageReviewIndex||0);
+      const card=cards.find(c=>Number(c.dataset.reviewIndex)===reviewIndex);
+      if(!card)return;
+
+      if(rating!=='all'){
+        rating='all';
+        filters.forEach(btn=>btn.classList.toggle('is-active',btn.dataset.rating==='all'));
+      }
+      openAt(cards.indexOf(card));
+    });
+  });
+
+  imagesPrev?.addEventListener('click',()=>images?.scrollBy({left:-520,behavior:'smooth'}));
+  imagesNext?.addEventListener('click',()=>images?.scrollBy({left:520,behavior:'smooth'}));
+
+  section.querySelectorAll('[data-pbmac-review-close]').forEach(x=>x.addEventListener('click',close));
+  prev?.addEventListener('click',()=>openAt(modalIndex-1));
+  next?.addEventListener('click',()=>openAt(modalIndex+1));
+
+  document.addEventListener('keydown',e=>{
+    if(!modal||modal.hidden)return;
+    if(e.key==='Escape')close();
+    if(e.key==='ArrowLeft')openAt(modalIndex-1);
+    if(e.key==='ArrowRight')openAt(modalIndex+1);
+  });
+
+  render();
 })();
 </script>
 {% endif %}

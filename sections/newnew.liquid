@@ -2938,6 +2938,108 @@
     }
   }
 
+
+  /* ==========================================================
+     V12 — FIX REVIEW IMAGE STRIP OVERFLOW
+     Keep the image carousel inside the review content on mobile.
+     ========================================================== */
+
+  .pbmac-reviews-content {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .pbmac-review-images-head {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .pbmac-review-images {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 2px 5px 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 0;
+  }
+
+  .pbmac-review-image-card {
+    scroll-snap-align: start;
+  }
+
+  @media (max-width: 749px) {
+    .pbmac-reviews-content {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      overflow: hidden !important;
+    }
+
+    .pbmac-review-images-head,
+    .pbmac-topreviews-head {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .pbmac-review-images {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding: 0 3px 5px 0 !important;
+      gap: 8px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      scrollbar-width: none !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .pbmac-review-images::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    .pbmac-review-image-card {
+      width: 84px !important;
+      height: 84px !important;
+      flex: 0 0 84px !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 7px !important;
+      overflow: hidden !important;
+    }
+
+    .pbmac-review-image-card__image {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
+    /* Keep filters in their own contained horizontal scroller too. */
+    .pbmac-review-filters {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding: 0 0 4px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      flex-wrap: nowrap !important;
+      scrollbar-width: none !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .pbmac-review-filters::-webkit-scrollbar {
+      display: none !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -3183,7 +3285,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP V11",
+  "name": "Plastbat Shirt PDP V12",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -3523,7 +3625,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP V11"
+      "name": "Plastbat Shirt PDP V12"
     }
   ]
 }

@@ -28,9 +28,26 @@
         "padding_bottom": 28
       }
     },
-    "newnew_QDy6rx": {
+    "newnew_a3yf6N": {
       "type": "newnew",
-      "name": "Plastbat Shirt PDP V9",
+      "blocks": {
+        "manual_review_97WUnW": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "sadsads",
+            "verified": false,
+            "title": "dsadasdsa",
+            "body": "<p>dsadasdsadasdasdasdsa</p>",
+            "image": "shopify://shop_images/1787825817245_5864500917613633006_5864500917613633006_h.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "manual_review_97WUnW"
+      ],
+      "name": "Plastbat Shirt PDP V11",
       "settings": {
         "color_scheme": "",
         "sticky_gallery": true,
@@ -75,6 +92,6 @@
   },
   "order": [
     "related-products",
-    "newnew_QDy6rx"
+    "newnew_a3yf6N"
   ]
 }

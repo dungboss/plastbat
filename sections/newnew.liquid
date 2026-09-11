@@ -13,15 +13,23 @@
   assign rating_count = product.metafields.reviews.rating_count.value
 
   assign has_native_color_option = false
+  assign has_native_size_option = false
+
   for pbmac_option in product.options_with_values
     assign pbmac_option_name = pbmac_option.name | downcase
+
     if pbmac_option_name contains 'color' or pbmac_option_name contains 'colour'
       assign has_native_color_option = true
     endif
+
+    if pbmac_option_name contains 'size'
+      assign has_native_size_option = true
+    endif
   endfor
 
-  assign pbmac_fallback_color_names = 'Red|Orange|Yellow|Beige|Gold|Brown|Green|Blue|Navy|Grey|Purple|Black|White|Turquoise|Olive|Light Pink|Cyan|Light Purple' | split: '|'
-  assign pbmac_fallback_color_hexes = '#EF2B2D|#FF8500|#FFD400|#E9D8AF|#D79B00|#9D5E3B|#0AAE4F|#126BD1|#292C97|#909497|#A250D6|#050607|#FFFFFF|#42CDC8|#7A7F0B|#F7B7C3|#16D8DF|#A34FD3' | split: '|'
+  assign pbmac_fallback_color_names = 'Black|Navy|Forest Green|Cardinal Red|Red|Orange|Carolina Blue|Light Blue|Sport Grey|Gold|White' | split: '|'
+  assign pbmac_fallback_color_hexes = '#050505|#071D3A|#174F3C|#9E2638|#B8292F|#E45F21|#6486B8|#A6D5E5|#BFC4CC|#FFD000|#F2F2F2' | split: '|'
+  assign pbmac_fallback_sizes = 'S|M|L|XL|2XL|3XL|4XL|5XL' | split: '|'
 
   assign pbmac_manual_review_count = 0
   assign pbmac_manual_rating_total = 0
@@ -180,16 +188,18 @@
           {% endunless %}
 
           {% unless has_native_color_option %}
-            <div class="pbmac-custom-color-card">
-              <div class="pbmac-custom-color-card__head">
-                <strong>Choose your color</strong>
-                <span>Selected: <b data-pbmac-custom-color-selected>Red</b></span>
+            <fieldset class="pbmac-fallback-option pbmac-fallback-color">
+              <div class="pbmac-fallback-option__head">
+                <legend>
+                  Color
+                  <span data-pbmac-custom-color-selected>Black</span>
+                </legend>
               </div>
 
-              <div class="pbmac-custom-color-grid" role="radiogroup" aria-label="Choose your color">
+              <div class="pbmac-fallback-colors" role="radiogroup" aria-label="Color">
                 {% for pbmac_color_name in pbmac_fallback_color_names %}
                   {% assign pbmac_color_hex = pbmac_fallback_color_hexes[forloop.index0] %}
-                  <label class="pbmac-custom-color">
+                  <label class="pbmac-fallback-color-pill" title="{{ pbmac_color_name | escape }}">
                     <input
                       type="radio"
                       name="properties[Color]"
@@ -197,21 +207,78 @@
                       data-pbmac-custom-color
                       {% if forloop.first %}checked{% endif %}
                     >
-                    <span class="pbmac-custom-color__control">
-                      <i class="pbmac-custom-color__dot" style="background: {{ pbmac_color_hex }};"></i>
-                      <span class="pbmac-custom-color__name">{{ pbmac_color_name }}</span>
-                      <em>✓</em>
+                    <span class="pbmac-fallback-color-pill__outer">
+                      <i style="background: {{ pbmac_color_hex }};"></i>
                     </span>
                   </label>
                 {% endfor %}
               </div>
-            </div>
+            </fieldset>
+          {% endunless %}
+
+          {% unless has_native_size_option %}
+            <fieldset class="pbmac-fallback-option pbmac-fallback-size">
+              <div class="pbmac-fallback-option__head">
+                <legend>Size</legend>
+
+                {% if section.settings.show_size_chart %}
+                  <button type="button" class="pbmac-sizechart-link" data-pbmac-sizechart-open>
+                    ⚖ Size Chart
+                  </button>
+                {% endif %}
+              </div>
+
+              <div class="pbmac-fallback-size-pills" role="radiogroup" aria-label="Size">
+                {% for pbmac_size in pbmac_fallback_sizes %}
+                  <label class="pbmac-fallback-size-pill">
+                    <input
+                      type="radio"
+                      name="properties[Size]"
+                      value="{{ pbmac_size | escape }}"
+                      data-pbmac-custom-size
+                      {% if forloop.first %}checked{% endif %}
+                    >
+                    <span>{{ pbmac_size }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
           {% endunless %}
 
           {% if section.settings.show_personalization %}
-            <div class="pbmac-personalization">
-              <div class="pbmac-personalization__head"><span>✎</span><strong>{{ section.settings.personalization_heading | escape }}</strong></div>
-              <input type="text" class="pbmac-input" name="properties[Personalization]" maxlength="{{ section.settings.personalization_max }}" placeholder="{{ section.settings.personalization_placeholder | escape }}" data-pbmac-personalization {% if section.settings.personalization_required %}required{% endif %}>
+            <div class="pbmac-personalization-card">
+              <div class="pbmac-personalization-card__banner">
+                <span>✦</span>
+                <strong>{{ section.settings.personalization_heading | escape }}</strong>
+              </div>
+
+              <div class="pbmac-personalization-card__body">
+                <label for="PBMacPersonalization-{{ section.id }}">
+                  {{ section.settings.personalization_field_label | escape }}
+                  {% if section.settings.personalization_required %}<sup>*</sup>{% endif %}
+                </label>
+
+                <div class="pbmac-personalization-card__input-wrap">
+                  <input
+                    id="PBMacPersonalization-{{ section.id }}"
+                    type="text"
+                    class="pbmac-input"
+                    name="properties[Personalization]"
+                    maxlength="{{ section.settings.personalization_max }}"
+                    placeholder="{{ section.settings.personalization_placeholder | escape }}"
+                    data-pbmac-personalization
+                    {% if section.settings.personalization_required %}required{% endif %}
+                  >
+
+                  <span class="pbmac-personalization-card__counter">
+                    <b data-pbmac-personalization-count>0</b>/{{ section.settings.personalization_max }}
+                  </span>
+                </div>
+
+                {% if section.settings.personalization_helper != blank %}
+                  <p>{{ section.settings.personalization_helper | escape }}</p>
+                {% endif %}
+              </div>
             </div>
           {% endif %}
 
@@ -1248,6 +1315,225 @@
     }
   }
 
+
+  /* ==========================================================
+     V7 — COMPACT COLOR + FALLBACK SIZE + PERSONALIZED CARD
+     ========================================================== */
+
+  #PBMac-{{ section.id }} .pbmac-fallback-option {
+    margin: 0 0 19px;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 9px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend {
+    color: #393438;
+    font-size: 13px;
+    line-height: 1.2;
+    font-weight: 600;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend > span {
+    margin-left: 5px;
+    color: #9a9296;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* compact color swatches exactly like the reference */
+  #PBMac-{{ section.id }} .pbmac-fallback-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill {
+    position: relative;
+    cursor: pointer;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill__outer {
+    width: 56px;
+    height: 35px;
+    padding: 3px;
+    display: block;
+    border: 1px solid #ded8d4;
+    border-radius: 999px;
+    background: #fff;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill__outer i {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 999px;
+    border: 1px solid rgba(35, 30, 33, .06);
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill:hover .pbmac-fallback-color-pill__outer {
+    border-color: #8f8689;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill input:checked + .pbmac-fallback-color-pill__outer {
+    border-color: #423b40;
+    box-shadow: 0 0 0 1px #423b40;
+  }
+
+  /* fallback Size pills */
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill {
+    position: relative;
+    cursor: pointer;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill span {
+    min-width: 50px;
+    min-height: 42px;
+    padding: 0 12px;
+    border: 1px solid #e2dcd8;
+    border-radius: 999px;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #777074;
+    font-size: 12px;
+    font-weight: 600;
+    transition: border-color .15s ease, box-shadow .15s ease, color .15s ease;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill input:checked + span {
+    border-color: #403940;
+    box-shadow: inset 0 0 0 1px #403940;
+    color: #393236;
+  }
+
+  /* Personalized card */
+  #PBMac-{{ section.id }} .pbmac-personalization-card {
+    margin: 6px 0 18px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #f4efe9;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner {
+    min-height: 40px;
+    padding: 0 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(90deg, #ff7b31 0%, #f59e70 48%, #f4efe9 100%);
+    color: #fff;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner span {
+    font-size: 13px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner strong {
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body {
+    padding: 13px 13px 14px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > label {
+    display: block;
+    margin-bottom: 7px;
+    color: #3f393d;
+    font-size: 12px;
+    line-height: 1.2;
+    font-weight: 600;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body label sup {
+    color: #e5423c;
+    font-size: 12px;
+    top: 0;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__input-wrap {
+    position: relative;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input {
+    width: 100%;
+    height: 47px;
+    padding: 0 54px 0 13px;
+    border: 1px solid #4b4548;
+    border-radius: 7px;
+    background: #fff;
+    color: #403a3d;
+    font-size: 12.5px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input::placeholder {
+    color: #aca4a8;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__counter {
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #c9c2c5;
+    font-size: 10px;
+    pointer-events: none;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__counter b {
+    font-weight: 500;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > p {
+    margin: 7px 0 0;
+    color: #a79fa3;
+    font-size: 10.5px;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-fallback-color-pill__outer {
+      width: 52px;
+      height: 33px;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-fallback-size-pill span {
+      min-width: 48px;
+      min-height: 40px;
+    }
+  }
+
 </style>
 
 <script>
@@ -1341,7 +1627,11 @@
 
   const qty=root.querySelector('[data-pbmac-qty]'),clamp=v=>Math.min(99,Math.max(1,parseInt(v||'1',10)||1));root.querySelector('[data-pbmac-minus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)-1));root.querySelector('[data-pbmac-plus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)+1));
   const sizeModal=root.querySelector('[data-pbmac-sizechart]');root.querySelector('[data-pbmac-sizechart-open]')?.addEventListener('click',()=>{sizeModal.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-sizechart-close]').forEach(x=>x.addEventListener('click',()=>{sizeModal.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
-  const preview=root.querySelector('[data-pbmac-preview-modal]'),pers=root.querySelector('[data-pbmac-personalization]');root.querySelector('[data-pbmac-preview-open]')?.addEventListener('click',()=>{if(!preview)return;const opts=selected(),names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||''),get=n=>{const i=names.findIndex(x=>x.includes(n));return i>=0?opts[i]:'—'};preview.querySelector('[data-pbmac-preview-style]').textContent=`Style: ${get('style')}`;const nativeColor=get('color'),customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'—';preview.querySelector('[data-pbmac-preview-color]').textContent=`Color: ${nativeColor!=='—'?nativeColor:customColor}`;preview.querySelector('[data-pbmac-preview-size]').textContent=`Size: ${get('size')}`;preview.querySelector('[data-pbmac-preview-text]').textContent=pers?.value.trim()||'No personalization entered';preview.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-preview-close]').forEach(x=>x.addEventListener('click',()=>{preview.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
+  const preview=root.querySelector('[data-pbmac-preview-modal]'),pers=root.querySelector('[data-pbmac-personalization]');
+  const persCount=root.querySelector('[data-pbmac-personalization-count]');
+  const syncPersCount=()=>{if(pers&&persCount)persCount.textContent=pers.value.length};
+  pers?.addEventListener('input',syncPersCount);
+  syncPersCount();root.querySelector('[data-pbmac-preview-open]')?.addEventListener('click',()=>{if(!preview)return;const opts=selected(),names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||''),get=n=>{const i=names.findIndex(x=>x.includes(n));return i>=0?opts[i]:'—'};preview.querySelector('[data-pbmac-preview-style]').textContent=`Style: ${get('style')}`;const nativeColor=get('color'),customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'—';preview.querySelector('[data-pbmac-preview-color]').textContent=`Color: ${nativeColor!=='—'?nativeColor:customColor}`;const nativeSize=get('size'),customSize=root.querySelector('[data-pbmac-custom-size]:checked')?.value||'—';preview.querySelector('[data-pbmac-preview-size]').textContent=`Size: ${nativeSize!=='—'?nativeSize:customSize}`;preview.querySelector('[data-pbmac-preview-text]').textContent=pers?.value.trim()||'No personalization entered';preview.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-preview-close]').forEach(x=>x.addEventListener('click',()=>{preview.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
 })();
 </script>
 
@@ -1543,6 +1833,18 @@
       "id": "personalization_heading",
       "label": "Personalization heading",
       "default": "Personalized"
+    },
+    {
+      "type": "text",
+      "id": "personalization_field_label",
+      "label": "Personalization field label",
+      "default": "Enter Your Text"
+    },
+    {
+      "type": "text",
+      "id": "personalization_helper",
+      "label": "Personalization helper",
+      "default": "Press Space On The Keyboard If You Don't Want To Include Text"
     },
     {
       "type": "text",

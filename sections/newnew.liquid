@@ -1257,13 +1257,88 @@
   const slides=[...root.querySelectorAll('[data-pbmac-media]')],thumbs=[...root.querySelectorAll('[data-pbmac-thumb]')];let active=0;const show=(i)=>{if(!slides.length)return;active=(i+slides.length)%slides.length;slides.forEach((s,x)=>{s.hidden=x!==active;s.classList.toggle('is-active',x===active)});thumbs.forEach((t,x)=>t.classList.toggle('is-active',x===active))};thumbs.forEach(t=>t.addEventListener('click',()=>show(Number(t.dataset.pbmacThumb))));root.querySelector('[data-pbmac-prev]')?.addEventListener('click',()=>show(active-1));root.querySelector('[data-pbmac-next]')?.addEventListener('click',()=>show(active+1));
   const byMedia=(id)=>{if(!id)return;const i=slides.findIndex(s=>String(s.dataset.pbmacMediaId)===String(id));if(i>=0)show(i)};
   const groups=[...root.querySelectorAll('[data-pbmac-option-index]')],variantId=root.querySelector('[data-pbmac-variant-id]'),price=root.querySelector('[data-pbmac-price]'),compare=root.querySelector('[data-pbmac-compare]'),save=root.querySelector('[data-pbmac-save]'),atc=root.querySelector('[data-pbmac-atc]'),atcText=root.querySelector('[data-pbmac-atc-text]'),addText={{ section.settings.add_to_cart_text | json }},soldText={{ section.settings.sold_out_text | json }};
-  const selected=()=>groups.map(g=>g.querySelector('[data-pbmac-option-value]:checked')?.value||'');const find=()=>{const w=selected();return variants.find(v=>v.options.length===w.length&&v.options.every((x,i)=>x===w[i]))||null};const render=(v)=>{if(!v){variantId.value='';atc.disabled=true;atcText.textContent='UNAVAILABLE';return}variantId.value=v.id;price.textContent=v.price;compare.textContent=v.compare||'';compare.classList.toggle('is-hidden',!v.compare);save.textContent=`Save ${v.save}%`;save.classList.toggle('is-hidden',!v.save);atc.disabled=!v.available;atcText.textContent=v.available?addText:soldText;byMedia(v.mediaId);try{const u=new URL(location.href);u.searchParams.set('variant',v.id);history.replaceState({},'',u)}catch(e){}};const colorSelectedLabel=root.querySelector('[data-pbmac-color-selected]');
+  const initialVariantId={{ current_variant.id | json }};
+
+  const defaultVariant=()=>{
+    return variants.find(v=>String(v.id)===String(initialVariantId))
+      || variants.find(v=>v.available)
+      || variants[0]
+      || null;
+  };
+
+  const selected=()=>groups.map(g=>g.querySelector('[data-pbmac-option-value]:checked')?.value||'');
+
+  const find=()=>{
+    // Products with only Shopify's "Default Title" do not render native option groups.
+    // Use the selected/first available variant instead of treating the product as unavailable.
+    if(!groups.length)return defaultVariant();
+
+    const w=selected();
+    if(w.some(value=>!value))return null;
+
+    return variants.find(v=>
+      v.options.length===w.length &&
+      v.options.every((x,i)=>x===w[i])
+    ) || null;
+  };
+
+  const render=(v)=>{
+    // Extra safeguard for simple products.
+    if(!v && !groups.length)v=defaultVariant();
+
+    if(!v){
+      if(variantId)variantId.value='';
+      if(atc)atc.disabled=true;
+      if(atcText)atcText.textContent='UNAVAILABLE';
+      return;
+    }
+
+    if(variantId)variantId.value=v.id;
+    if(price)price.textContent=v.price;
+
+    if(compare){
+      compare.textContent=v.compare||'';
+      compare.classList.toggle('is-hidden',!v.compare);
+    }
+
+    if(save){
+      save.textContent=`Save ${v.save}%`;
+      save.classList.toggle('is-hidden',!v.save);
+    }
+
+    if(atc)atc.disabled=!v.available;
+    if(atcText)atcText.textContent=v.available?addText:soldText;
+
+    byMedia(v.mediaId);
+
+    try{
+      const u=new URL(location.href);
+      u.searchParams.set('variant',v.id);
+      history.replaceState({},'',u);
+    }catch(e){}
+  };const colorSelectedLabel=root.querySelector('[data-pbmac-color-selected]');
   const customColorSelectedLabel=root.querySelector('[data-pbmac-custom-color-selected]');
   const customColorInputs=[...root.querySelectorAll('[data-pbmac-custom-color]')];
   const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value;const c=customColorInputs.find(i=>i.checked);if(customColorSelectedLabel&&c)customColorSelectedLabel.textContent=c.value};
   root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>{render(find());syncColorSelected()}));
   customColorInputs.forEach(i=>i.addEventListener('change',syncColorSelected));
   syncColorSelected();render(find());
+
+  // Final cart safeguard: never submit an empty variant id on a simple product.
+  const productForm=root.querySelector('#{{ product_form_id }}');
+  productForm?.addEventListener('submit',(event)=>{
+    if(variantId && !variantId.value){
+      const fallback=defaultVariant();
+      if(fallback && fallback.available){
+        variantId.value=fallback.id;
+        render(fallback);
+      }else{
+        event.preventDefault();
+        if(atcText)atcText.textContent=soldText;
+      }
+    }
+  });
+
   const qty=root.querySelector('[data-pbmac-qty]'),clamp=v=>Math.min(99,Math.max(1,parseInt(v||'1',10)||1));root.querySelector('[data-pbmac-minus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)-1));root.querySelector('[data-pbmac-plus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)+1));
   const sizeModal=root.querySelector('[data-pbmac-sizechart]');root.querySelector('[data-pbmac-sizechart-open]')?.addEventListener('click',()=>{sizeModal.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-sizechart-close]').forEach(x=>x.addEventListener('click',()=>{sizeModal.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
   const preview=root.querySelector('[data-pbmac-preview-modal]'),pers=root.querySelector('[data-pbmac-personalization]');root.querySelector('[data-pbmac-preview-open]')?.addEventListener('click',()=>{if(!preview)return;const opts=selected(),names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||''),get=n=>{const i=names.findIndex(x=>x.includes(n));return i>=0?opts[i]:'—'};preview.querySelector('[data-pbmac-preview-style]').textContent=`Style: ${get('style')}`;const nativeColor=get('color'),customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'—';preview.querySelector('[data-pbmac-preview-color]').textContent=`Color: ${nativeColor!=='—'?nativeColor:customColor}`;preview.querySelector('[data-pbmac-preview-size]').textContent=`Size: ${get('size')}`;preview.querySelector('[data-pbmac-preview-text]').textContent=pers?.value.trim()||'No personalization entered';preview.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-preview-close]').forEach(x=>x.addEventListener('click',()=>{preview.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
@@ -1718,7 +1793,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP 77777"
+      "name": "Plastbat Shirt PDP"
     }
   ]
 }

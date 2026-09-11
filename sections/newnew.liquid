@@ -303,15 +303,40 @@
             </div>
           {% endif %}
 
-          <div class="pbmac-buy-row">
-            <div class="pbmac-qty"><button type="button" data-pbmac-minus>−</button><input type="number" name="quantity" value="1" min="1" max="99" data-pbmac-qty><button type="button" data-pbmac-plus>+</button></div>
-            {% if section.settings.show_preview_button %}<button type="button" class="pbmac-preview" data-pbmac-preview-open>👁 {{ section.settings.preview_button_text | escape }}</button>{% endif %}
+          <div class="pbmac-quantity-block">
+            <span class="pbmac-quantity-label">{{ section.settings.quantity_label | escape }}</span>
+
+            <div class="pbmac-qty">
+              <button type="button" data-pbmac-minus aria-label="Decrease quantity">−</button>
+              <input type="number" name="quantity" value="1" min="1" max="99" data-pbmac-qty aria-label="Quantity">
+              <button type="button" data-pbmac-plus aria-label="Increase quantity">+</button>
+            </div>
           </div>
 
-          <button type="submit" name="add" class="pbmac-atc" data-pbmac-atc {% unless current_variant.available %}disabled{% endunless %}><span data-pbmac-atc-text>{% if current_variant.available %}{{ section.settings.add_to_cart_text | escape }}{% else %}{{ section.settings.sold_out_text | escape }}{% endif %}</span></button>
+          {% if section.settings.show_preview_button %}
+            <button type="button" class="pbmac-preview pbmac-preview--full" data-pbmac-preview-open>
+              <svg class="pbmac-button-icon pbmac-button-icon--eye" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.4-5.2 9.5-5.2S21.5 12 21.5 12 18.1 17.2 12 17.2 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
+              </svg>
+              <span>{{ section.settings.preview_button_text | escape }}</span>
+            </button>
+          {% endif %}
+
+          <button type="submit" name="add" class="pbmac-atc" data-pbmac-atc {% unless current_variant.available %}disabled{% endunless %}>
+            <svg class="pbmac-button-icon pbmac-button-icon--cart" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 4h2l1.6 9.1a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 1.9-1.4L20 7H6.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9" cy="19" r="1.4" fill="currentColor"/>
+              <circle cx="17" cy="19" r="1.4" fill="currentColor"/>
+            </svg>
+            <span data-pbmac-atc-text>{% if current_variant.available %}{{ section.settings.add_to_cart_text | escape }}{% else %}{{ section.settings.sold_out_text | escape }}{% endif %}</span>
+          </button>
         {% endform %}
 
-        <div class="pbmac-trust"><p>✓ {{ section.settings.trust_1 | escape }}</p><p>✓ {{ section.settings.trust_2 | escape }}</p></div>
+        <div class="pbmac-trust">
+          <p><span class="pbmac-trust__check" aria-hidden="true">✓</span><span>{{ section.settings.trust_1 | escape }}</span></p>
+          <p><span class="pbmac-trust__check" aria-hidden="true">✓</span><span>{{ section.settings.trust_2 | escape }}</span></p>
+        </div>
 
         <div class="pbmac-accordions">
           <details class="pbmac-accordion" {% if section.settings.open_description %}open{% endif %}><summary><span>▤</span>{{ section.settings.description_heading | escape }}<b>⌄</b></summary><div class="pbmac-accordion__content rte">{% if section.settings.description_body != blank %}{{ section.settings.description_body }}{% else %}{{ product.description }}{% endif %}</div></details>
@@ -3553,6 +3578,293 @@
     }
   }
 
+
+  /* ==========================================================
+     V15 — READABLE MACORNER SCALE
+     V14 spacing retained; typography and buy hierarchy enlarged.
+     ========================================================== */
+
+  #PBMac-{{ section.id }},
+  #PBMac-{{ section.id }} button,
+  #PBMac-{{ section.id }} input,
+  #PBMac-{{ section.id }} select,
+  #PBMac-{{ section.id }} textarea {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  /* Personalization */
+  #PBMac-{{ section.id }} .pbmac-personalization-card {
+    margin-bottom: 15px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner {
+    min-height: 40px !important;
+    padding: 0 13px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner strong {
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__sparkles {
+    width: 18px !important;
+    min-width: 18px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body {
+    padding: 13px 13px 14px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > label {
+    margin-bottom: 8px !important;
+    color: #393438 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input {
+    height: 48px !important;
+    padding: 0 55px 0 13px !important;
+    color: #3c373a !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input::placeholder {
+    color: #aca5a8 !important;
+    font-size: 14px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__counter {
+    right: 12px !important;
+    font-size: 10.5px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > p {
+    margin-top: 8px !important;
+    color: #a19a9e !important;
+    font-size: 12px !important;
+    line-height: 1.48 !important;
+    font-weight: 400 !important;
+  }
+
+  /* Quantity gets its own row like Macorner */
+  #PBMac-{{ section.id }} .pbmac-quantity-block {
+    margin: 0 0 12px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-quantity-label {
+    display: block !important;
+    margin: 0 0 8px !important;
+    color: #3a3538 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-qty {
+    width: 112px !important;
+    height: 46px !important;
+    grid-template-columns: 36px 1fr 36px !important;
+    border-color: #e2dcd8 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-qty button {
+    color: #4c4649 !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-qty input {
+    color: #3a3538 !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+  }
+
+  /* Preview is full width, easy to scan */
+  #PBMac-{{ section.id }} .pbmac-preview--full {
+    width: 100% !important;
+    height: 49px !important;
+    margin: 0 0 10px !important;
+    border: 1.2px solid #3c363a !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: #fff !important;
+    color: #373136 !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-button-icon {
+    width: 18px !important;
+    height: 18px !important;
+    flex: 0 0 18px !important;
+    display: block !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-button-icon--eye {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  /* Add to Cart */
+  #PBMac-{{ section.id }} .pbmac-atc {
+    width: 100% !important;
+    height: 53px !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Trust messages */
+  #PBMac-{{ section.id }} .pbmac-trust {
+    margin: 15px 0 0 !important;
+    padding: 0 2px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-trust p {
+    margin: 8px 0 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    color: #5d565a !important;
+    font-size: 12.5px !important;
+    line-height: 1.4 !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-trust__check {
+    flex: 0 0 auto !important;
+    color: #4f76ff !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    margin-top: 1px !important;
+  }
+
+  /* Accordions: larger, clearer, Macorner-like open pill */
+  #PBMac-{{ section.id }} .pbmac-accordions {
+    margin-top: 17px !important;
+    border-top: 0 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion {
+    border-bottom: 1px solid #e5dfdb !important;
+    padding: 0 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion summary {
+    min-height: 54px !important;
+    padding: 0 10px !important;
+    grid-template-columns: 23px minmax(0, 1fr) 20px !important;
+    gap: 8px !important;
+    color: #50494d !important;
+    font-size: 13.5px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    border-radius: 999px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion summary > span:first-child {
+    font-size: 15px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion summary b {
+    font-size: 15px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    transition: transform .18s ease !important;
+    transform-origin: center !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion[open] summary {
+    margin: 6px 0 10px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    background: #e9e5e1 !important;
+    color: #413b3f !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion[open] summary b {
+    transform: rotate(180deg) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion__content {
+    padding: 4px 12px 18px !important;
+    color: #5d565a !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion__content p {
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Mobile tuned to the exact reference scale */
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-personalization-card__banner strong {
+      font-size: 14px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__body > label {
+      font-size: 13px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input,
+    #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input::placeholder {
+      font-size: 14px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__body > p {
+      font-size: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-quantity-label {
+      font-size: 13px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-preview--full {
+      height: 50px !important;
+      font-size: 14.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-atc {
+      height: 52px !important;
+      font-size: 15.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-trust p {
+      font-size: 12.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion summary {
+      min-height: 55px !important;
+      font-size: 13.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion__content {
+      font-size: 14px !important;
+      line-height: 1.72 !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -3798,7 +4110,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP14",
+  "name": "Plastbat Shirt PDP15",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -3925,6 +4237,12 @@
     {
       "type": "header",
       "content": "Purchase"
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity label",
+      "default": "Quantity"
     },
     {
       "type": "text",
@@ -4168,7 +4486,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP14"
+      "name": "Plastbat Shirt PDP15"
     }
   ]
 }

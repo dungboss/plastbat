@@ -28,31 +28,21 @@
         "padding_bottom": 28
       }
     },
-    "newnew_6NTYY3": {
+    "newnew_QDy6rx": {
       "type": "newnew",
-      "blocks": {
-        "manual_review_fyGi8d": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
-          }
-        }
-      },
-      "block_order": [
-        "manual_review_fyGi8d"
-      ],
-      "name": "Plastbat Shirt PDP 77777",
+      "name": "Plastbat Shirt PDP V9",
       "settings": {
         "color_scheme": "",
         "sticky_gallery": true,
         "sticky_top": 90,
+        "show_style_option": true,
+        "show_color_option": true,
+        "show_size_option": true,
+        "show_save_badge": false,
         "show_personalization": true,
         "personalization_heading": "Personalized",
+        "personalization_field_label": "Enter Your Text",
+        "personalization_helper": "Press Space On The Keyboard If You Don't Want To Include Text",
         "personalization_placeholder": "Enter your custom text",
         "personalization_required": false,
         "personalization_max": 20,
@@ -85,6 +75,6 @@
   },
   "order": [
     "related-products",
-    "newnew_6NTYY3"
+    "newnew_QDy6rx"
   ]
 }

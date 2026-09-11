@@ -1815,6 +1815,382 @@
     }
   }
 
+
+  /* ==========================================================
+     V9 — MACORNER-LIKE TYPOGRAPHY SYSTEM
+     Neutral system sans + intentional type/weight hierarchy.
+     ========================================================== */
+
+  #PBMac-{{ section.id }},
+  #PBMac-{{ section.id }} *,
+  .pbmac-reviews,
+  .pbmac-reviews *,
+  .pbmac-newsletter,
+  .pbmac-newsletter * {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  /* PRODUCT TITLE
+     Macorner keeps the product title compact and only semi-bold. */
+  #PBMac-{{ section.id }} .pbmac-title {
+    max-width: 660px !important;
+    margin: 0 !important;
+    color: #262226 !important;
+    font-size: 17px !important;
+    line-height: 1.43 !important;
+    letter-spacing: -.008em !important;
+    font-weight: 600 !important;
+  }
+
+  /* Rating is deliberately much lighter/smaller than title. */
+  #PBMac-{{ section.id }} .pbmac-meta {
+    margin-top: 6px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating,
+  #PBMac-{{ section.id }} .pbmac-rating--manual {
+    min-height: 16px;
+    gap: 5px !important;
+    color: #494348 !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars {
+    display: inline-flex;
+    gap: 0 !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars .is-on {
+    color: #29242a !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating em {
+    color: #6e676b !important;
+    font-size: 10.5px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+  }
+
+  /* PRICE HIERARCHY */
+  #PBMac-{{ section.id }} .pbmac-price-row {
+    margin-top: 9px !important;
+    margin-bottom: 21px !important;
+    gap: 7px !important;
+    align-items: baseline !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-compare {
+    color: #625c60 !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    text-decoration-line: line-through !important;
+    text-decoration-thickness: 1px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price {
+    color: #f16422 !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+    letter-spacing: -.018em !important;
+    font-weight: 700 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-save {
+    color: #d95d29 !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+  }
+
+  /* OPTION SECTION LABELS:
+     noticeably smaller/lighter than title and price. */
+  #PBMac-{{ section.id }} .pbmac-option,
+  #PBMac-{{ section.id }} .pbmac-fallback-option {
+    margin-bottom: 17px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__head,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head {
+    margin-bottom: 8px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__head legend,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend {
+    color: #3a3538 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    font-weight: 500 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__selected,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend > span {
+    margin-left: 4px !important;
+    color: #989094 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-sizechart-link {
+    color: #4f484c !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  /* STYLE + NATIVE SIZE PILLS */
+  #PBMac-{{ section.id }} .pbmac-pills {
+    gap: 8px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-pill span {
+    min-width: 55px !important;
+    min-height: 40px !important;
+    padding: 0 14px !important;
+    border: 1px solid #e3ddd9 !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    color: #666064 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-pill input:checked + span {
+    border-color: #3a3439 !important;
+    box-shadow: inset 0 0 0 1px #3a3439 !important;
+    color: #2e292d !important;
+    background: #fff !important;
+    font-weight: 500 !important;
+  }
+
+  /* COLOR SWATCHES */
+  #PBMac-{{ section.id }} .pbmac-colors,
+  #PBMac-{{ section.id }} .pbmac-fallback-colors {
+    gap: 7px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color__outer,
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill__outer {
+    width: 52px !important;
+    height: 32px !important;
+    padding: 3px !important;
+    border: 1px solid #ddd7d3 !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color input:checked + .pbmac-color__outer,
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill input:checked + .pbmac-fallback-color-pill__outer {
+    border-color: #3a3439 !important;
+    box-shadow: 0 0 0 1px #3a3439 !important;
+  }
+
+  /* FALLBACK SIZE */
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pills {
+    gap: 8px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill span {
+    min-width: 51px !important;
+    min-height: 40px !important;
+    padding: 0 12px !important;
+    border-color: #e3ddd9 !important;
+    color: #70696d !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill input:checked + span {
+    border-color: #3a3439 !important;
+    box-shadow: inset 0 0 0 1px #3a3439 !important;
+    color: #2d282c !important;
+    font-weight: 500 !important;
+  }
+
+  /* PERSONALIZATION: this is intentionally stronger than options,
+     but still less dominant than Add to Cart. */
+  #PBMac-{{ section.id }} .pbmac-personalization-card {
+    margin-top: 6px !important;
+    margin-bottom: 17px !important;
+    border-radius: 9px !important;
+    background: #f5f1ec !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner {
+    min-height: 38px !important;
+    padding: 0 13px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner span {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner strong {
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body {
+    padding: 12px 13px 13px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > label {
+    margin-bottom: 7px !important;
+    color: #3e383b !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input {
+    height: 47px !important;
+    padding-left: 13px !important;
+    border-radius: 7px !important;
+    color: #3d373b !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__counter {
+    font-size: 10px !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > p {
+    margin-top: 7px !important;
+    color: #a1999d !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+    font-weight: 400 !important;
+  }
+
+  /* PURCHASE ACTIONS */
+  #PBMac-{{ section.id }} .pbmac-buy-row {
+    margin-top: 15px !important;
+    grid-template-columns: 110px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-qty,
+  #PBMac-{{ section.id }} .pbmac-preview {
+    height: 48px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-qty input {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-preview {
+    color: #342e33 !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc {
+    height: 52px !important;
+    margin-top: 9px !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+  }
+
+  /* TRUST + ACCORDIONS */
+  #PBMac-{{ section.id }} .pbmac-trust {
+    margin-top: 12px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-trust p {
+    margin: 5px 0 !important;
+    color: #625b5f !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordions {
+    margin-top: 12px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion summary {
+    min-height: 50px !important;
+    color: #423c40 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion__content {
+    color: #71696d !important;
+    font-size: 12.5px !important;
+    line-height: 1.6 !important;
+    font-weight: 400 !important;
+  }
+
+  /* REVIEW TYPOGRAPHY */
+  .pbmac-review-tabs-top span {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-reviews-card h2 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
+
+  .pbmac-review-images-head h3,
+  .pbmac-topreviews-head h3 {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+  }
+
+  .pbmac-review__headline strong {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review__body {
+    font-size: 12.5px !important;
+    font-weight: 400 !important;
+  }
+
+  /* NEWSLETTER TYPOGRAPHY */
+  .pbmac-newsletter__copy h2 {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+  }
+
+  .pbmac-newsletter__copy p {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+  }
+
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-title {
+      font-size: 16px !important;
+      line-height: 1.45 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-price {
+      font-size: 23px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-pill span,
+    #PBMac-{{ section.id }} .pbmac-fallback-size-pill span {
+      min-height: 39px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -2060,7 +2436,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP",
+  "name": "Plastbat Shirt PDP V9",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -2400,7 +2776,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP"
+      "name": "Plastbat Shirt PDP V9"
     }
   ]
 }

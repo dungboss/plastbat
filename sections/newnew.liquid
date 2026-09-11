@@ -4076,6 +4076,159 @@
     }
   }
 
+
+  /* ==========================================================
+     V17 — DARKER ICONS + BIGGER RATING STARS + TIGHTER SPACING
+     ========================================================== */
+
+  /* Dark accordion icons like Macorner */
+  #PBMac-{{ section.id }} .pbmac-accordion summary > span:first-child,
+  #PBMac-{{ section.id }} .pbmac-accordion summary i,
+  #PBMac-{{ section.id }} .pbmac-accordion summary svg {
+    color: #201c20 !important;
+    fill: #201c20 !important;
+    stroke: #201c20 !important;
+    opacity: 1 !important;
+  }
+
+  /* Also make general tiny UI icons darker */
+  #PBMac-{{ section.id }} .pbmac-button-icon,
+  #PBMac-{{ section.id }} .pbmac-sizechart-link svg,
+  #PBMac-{{ section.id }} .pbmac-rating svg {
+    color: #201c20 !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
+  }
+
+  /* Tighter title/rating/price block */
+  #PBMac-{{ section.id }} .pbmac-title {
+    margin-bottom: 0 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-meta {
+    margin-top: 3px !important;
+    min-height: auto !important;
+    line-height: 1 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price-row {
+    margin-top: 6px !important;
+    margin-bottom: 11px !important;
+    gap: 6px !important;
+  }
+
+  /* Product title rating row: bigger stars, darker color */
+  #PBMac-{{ section.id }} .pbmac-rating,
+  #PBMac-{{ section.id }} .pbmac-rating--manual {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: #61595e !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+    letter-spacing: .35px !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    color: #d8d0cd !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars i,
+  #PBMac-{{ section.id }} .pbmac-rating__stars span {
+    font-style: normal !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars .is-on {
+    color: #1f1b20 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating em {
+    color: #746d72 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-style: normal !important;
+  }
+
+  /* Make compare / price feel closer like reference */
+  #PBMac-{{ section.id }} .pbmac-compare {
+    font-size: 13px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price {
+    font-size: 24px !important;
+    line-height: 1 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-save {
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  /* Mobile-specific tightening and scale */
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-title {
+      font-size: 17px !important;
+      line-height: 1.38 !important;
+      font-weight: 600 !important;
+      margin-bottom: 0 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-meta {
+      margin-top: 4px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-rating,
+    #PBMac-{{ section.id }} .pbmac-rating--manual {
+      gap: 4px !important;
+      font-size: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-rating__stars {
+      font-size: 15px !important;
+      letter-spacing: .45px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-rating em {
+      font-size: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-price-row {
+      margin-top: 7px !important;
+      margin-bottom: 10px !important;
+      gap: 6px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-compare {
+      font-size: 13.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-price {
+      font-size: 24px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-save {
+      font-size: 11px !important;
+    }
+
+    /* Dark, clear accordion icons and labels */
+    #PBMac-{{ section.id }} .pbmac-accordion summary {
+      min-height: 54px !important;
+      font-size: 15px !important;
+      color: #312c30 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion summary > span:first-child {
+      font-size: 16px !important;
+      color: #211d21 !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -4321,7 +4474,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP16",
+  "name": "Plastbat Shirt PDP17",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -4697,7 +4850,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP16"
+      "name": "Plastbat Shirt PDP17"
     }
   ]
 }

@@ -11,6 +11,17 @@
   assign product_form_id = 'pbmac-form-' | append: section.id
   assign rating_object = product.metafields.reviews.rating.value
   assign rating_count = product.metafields.reviews.rating_count.value
+
+  assign has_native_color_option = false
+  for pbmac_option in product.options_with_values
+    assign pbmac_option_name = pbmac_option.name | downcase
+    if pbmac_option_name contains 'color' or pbmac_option_name contains 'colour'
+      assign has_native_color_option = true
+    endif
+  endfor
+
+  assign pbmac_fallback_color_names = 'Red|Orange|Yellow|Beige|Gold|Brown|Green|Blue|Navy|Grey|Purple|Black|White|Turquoise|Olive|Light Pink|Cyan|Light Purple' | split: '|'
+  assign pbmac_fallback_color_hexes = '#EF2B2D|#FF8500|#FFD400|#E9D8AF|#D79B00|#9D5E3B|#0AAE4F|#126BD1|#292C97|#909497|#A250D6|#050607|#FFFFFF|#42CDC8|#7A7F0B|#F7B7C3|#16D8DF|#A34FD3' | split: '|'
   if current_variant.compare_at_price > current_variant.price
     assign initial_save = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price
   else
@@ -134,6 +145,35 @@
                 {% endif %}
               </fieldset>
             {% endfor %}
+          {% endunless %}
+
+          {% unless has_native_color_option %}
+            <div class="pbmac-custom-color-card">
+              <div class="pbmac-custom-color-card__head">
+                <strong>Choose your color</strong>
+                <span>Selected: <b data-pbmac-custom-color-selected>Red</b></span>
+              </div>
+
+              <div class="pbmac-custom-color-grid" role="radiogroup" aria-label="Choose your color">
+                {% for pbmac_color_name in pbmac_fallback_color_names %}
+                  {% assign pbmac_color_hex = pbmac_fallback_color_hexes[forloop.index0] %}
+                  <label class="pbmac-custom-color">
+                    <input
+                      type="radio"
+                      name="properties[Color]"
+                      value="{{ pbmac_color_name | escape }}"
+                      data-pbmac-custom-color
+                      {% if forloop.first %}checked{% endif %}
+                    >
+                    <span class="pbmac-custom-color__control">
+                      <i class="pbmac-custom-color__dot" style="background: {{ pbmac_color_hex }};"></i>
+                      <span class="pbmac-custom-color__name">{{ pbmac_color_name }}</span>
+                      <em>✓</em>
+                    </span>
+                  </label>
+                {% endfor %}
+              </div>
+            </div>
           {% endunless %}
 
           {% if section.settings.show_personalization %}
@@ -666,15 +706,15 @@
 
 
   /* V3 CLEAN TOP AREA */
-  #PBMacProduct-{{ section.id }},
-  #PBMacProduct-{{ section.id }} button,
-  #PBMacProduct-{{ section.id }} input,
-  #PBMacProduct-{{ section.id }} select,
-  #PBMacProduct-{{ section.id }} textarea {
+  #PBMac-{{ section.id }},
+  #PBMac-{{ section.id }} button,
+  #PBMac-{{ section.id }} input,
+  #PBMac-{{ section.id }} select,
+  #PBMac-{{ section.id }} textarea {
     font-family: "Montserrat", "Avenir Next", "Helvetica Neue", Arial, sans-serif !important;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-title {
+  #PBMac-{{ section.id }} .pbmac-title {
     max-width: 720px;
     color: #2f2b2d;
     font-family: "Montserrat", "Avenir Next", "Helvetica Neue", Arial, sans-serif !important;
@@ -684,50 +724,50 @@
     font-weight: 700;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-meta {
+  #PBMac-{{ section.id }} .pbmac-meta {
     margin-top: 9px;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-price-row {
+  #PBMac-{{ section.id }} .pbmac-price-row {
     margin-top: 14px;
     margin-bottom: 24px;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-price {
+  #PBMac-{{ section.id }} .pbmac-price {
     color: #302c2e;
     font-size: 30px;
     font-weight: 700;
     letter-spacing: -.025em;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-compare {
+  #PBMac-{{ section.id }} .pbmac-compare {
     font-size: 16px;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-save {
+  #PBMac-{{ section.id }} .pbmac-save {
     font-size: 12px;
     font-weight: 700;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-form {
+  #PBMac-{{ section.id }} .pbmac-form {
     margin-top: 0;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-option {
+  #PBMac-{{ section.id }} .pbmac-option {
     margin-bottom: 21px;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-option__head {
+  #PBMac-{{ section.id }} .pbmac-option__head {
     margin-bottom: 10px;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-option__head legend {
+  #PBMac-{{ section.id }} .pbmac-option__head legend {
     color: #302c2e;
     font-size: 14px;
     font-weight: 650;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-option__selected {
+  #PBMac-{{ section.id }} .pbmac-option__selected {
     margin-left: 5px;
     color: #9d9598;
     font-size: 12px;
@@ -735,11 +775,11 @@
   }
 
   /* Color pills like the reference */
-  #PBMacProduct-{{ section.id }} .pbmac-colors {
+  #PBMac-{{ section.id }} .pbmac-colors {
     gap: 8px !important;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-color__outer {
+  #PBMac-{{ section.id }} .pbmac-color__outer {
     width: 56px !important;
     height: 36px !important;
     padding: 3px !important;
@@ -748,7 +788,7 @@
     background: #fff !important;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-color__swatch {
+  #PBMac-{{ section.id }} .pbmac-color__swatch {
     width: 100% !important;
     height: 100% !important;
     margin: 0 !important;
@@ -756,16 +796,16 @@
     border-radius: 999px !important;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-color input:checked + .pbmac-color__outer {
+  #PBMac-{{ section.id }} .pbmac-color input:checked + .pbmac-color__outer {
     border-color: #393337 !important;
     box-shadow: 0 0 0 1px #393337 !important;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-color__name {
+  #PBMac-{{ section.id }} .pbmac-color__name {
     display: none !important;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-pill span {
+  #PBMac-{{ section.id }} .pbmac-pill span {
     min-height: 42px;
     padding: 0 15px;
     border-color: #ddd7d2;
@@ -775,7 +815,7 @@
     font-weight: 600;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-personalization {
+  #PBMac-{{ section.id }} .pbmac-personalization {
     padding: 13px 0 0;
     border: 0;
     border-top: 1px solid #ece6e1;
@@ -783,25 +823,182 @@
     background: transparent;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-personalization__head strong {
+  #PBMac-{{ section.id }} .pbmac-personalization__head strong {
     font-size: 13px;
     font-weight: 650;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-input {
+  #PBMac-{{ section.id }} .pbmac-input {
     height: 48px;
     border-radius: 8px;
     font-size: 13px;
   }
 
-  #PBMacProduct-{{ section.id }} .pbmac-trust p {
+  #PBMac-{{ section.id }} .pbmac-trust p {
     font-size: 11px;
   }
 
   @media (max-width: 749px) {
-    #PBMacProduct-{{ section.id }} .pbmac-title {
+    #PBMac-{{ section.id }} .pbmac-title {
       font-size: 29px;
       line-height: 1.16;
+    }
+  }
+
+
+  /* V4: lighter title + fallback 18-color picker */
+  #PBMac-{{ section.id }},
+  #PBMac-{{ section.id }} button,
+  #PBMac-{{ section.id }} input,
+  #PBMac-{{ section.id }} select,
+  #PBMac-{{ section.id }} textarea {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-title {
+    max-width: 760px;
+    color: #2f2d31;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: clamp(30px, 2.2vw, 38px) !important;
+    line-height: 1.19 !important;
+    letter-spacing: -.025em !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__head legend,
+  #PBMac-{{ section.id }} .pbmac-personalization__head strong,
+  #PBMac-{{ section.id }} .pbmac-accordion summary {
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color-card {
+    margin: 2px 0 21px;
+    padding: 16px;
+    border: 1px solid #ead9c8;
+    border-radius: 16px;
+    background: #fffdfa;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color-card__head > strong {
+    color: #543a2b;
+    font-size: 15px;
+    font-weight: 650;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color-card__head > span {
+    padding: 6px 10px;
+    border: 1px solid #ead9c8;
+    border-radius: 999px;
+    background: #fff8f2;
+    color: #9a887c;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color-card__head b {
+    color: #5d473a;
+    font-weight: 650;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color {
+    position: relative;
+    min-width: 0;
+    cursor: pointer;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color__control {
+    position: relative;
+    min-height: 56px;
+    width: 100%;
+    padding: 9px 34px 9px 10px;
+    border: 1px solid #ead9c8;
+    border-radius: 13px;
+    background: #fffdfa;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color:hover .pbmac-custom-color__control {
+    border-color: #cfa477;
+    background: #fff;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color__dot {
+    width: 27px;
+    height: 27px;
+    flex: 0 0 27px;
+    border-radius: 999px;
+    border: 1px solid rgba(48, 38, 31, .14);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color__name {
+    min-width: 0;
+    color: #5b483d;
+    font-size: 13px;
+    line-height: 1.15;
+    font-weight: 600;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color__control em {
+    display: none;
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    place-items: center;
+    border-radius: 999px;
+    background: #c79868;
+    color: #fff;
+    font-size: 11px;
+    line-height: 20px;
+    text-align: center;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color input:checked + .pbmac-custom-color__control {
+    border-color: #d28c4b;
+    box-shadow: inset 0 0 0 1px #d28c4b;
+    background: #fffaf5;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-custom-color input:checked + .pbmac-custom-color__control em {
+    display: grid;
+  }
+
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-title {
+      font-size: 28px !important;
+      line-height: 1.2 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-custom-color-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -815,11 +1012,15 @@
   const byMedia=(id)=>{if(!id)return;const i=slides.findIndex(s=>String(s.dataset.pbmacMediaId)===String(id));if(i>=0)show(i)};
   const groups=[...root.querySelectorAll('[data-pbmac-option-index]')],variantId=root.querySelector('[data-pbmac-variant-id]'),price=root.querySelector('[data-pbmac-price]'),compare=root.querySelector('[data-pbmac-compare]'),save=root.querySelector('[data-pbmac-save]'),atc=root.querySelector('[data-pbmac-atc]'),atcText=root.querySelector('[data-pbmac-atc-text]'),addText={{ section.settings.add_to_cart_text | json }},soldText={{ section.settings.sold_out_text | json }};
   const selected=()=>groups.map(g=>g.querySelector('[data-pbmac-option-value]:checked')?.value||'');const find=()=>{const w=selected();return variants.find(v=>v.options.length===w.length&&v.options.every((x,i)=>x===w[i]))||null};const render=(v)=>{if(!v){variantId.value='';atc.disabled=true;atcText.textContent='UNAVAILABLE';return}variantId.value=v.id;price.textContent=v.price;compare.textContent=v.compare||'';compare.classList.toggle('is-hidden',!v.compare);save.textContent=`Save ${v.save}%`;save.classList.toggle('is-hidden',!v.save);atc.disabled=!v.available;atcText.textContent=v.available?addText:soldText;byMedia(v.mediaId);try{const u=new URL(location.href);u.searchParams.set('variant',v.id);history.replaceState({},'',u)}catch(e){}};const colorSelectedLabel=root.querySelector('[data-pbmac-color-selected]');
-  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value};
-  root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>{render(find());syncColorSelected()}));syncColorSelected();render(find());
+  const customColorSelectedLabel=root.querySelector('[data-pbmac-custom-color-selected]');
+  const customColorInputs=[...root.querySelectorAll('[data-pbmac-custom-color]')];
+  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value;const c=customColorInputs.find(i=>i.checked);if(customColorSelectedLabel&&c)customColorSelectedLabel.textContent=c.value};
+  root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>{render(find());syncColorSelected()}));
+  customColorInputs.forEach(i=>i.addEventListener('change',syncColorSelected));
+  syncColorSelected();render(find());
   const qty=root.querySelector('[data-pbmac-qty]'),clamp=v=>Math.min(99,Math.max(1,parseInt(v||'1',10)||1));root.querySelector('[data-pbmac-minus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)-1));root.querySelector('[data-pbmac-plus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)+1));
   const sizeModal=root.querySelector('[data-pbmac-sizechart]');root.querySelector('[data-pbmac-sizechart-open]')?.addEventListener('click',()=>{sizeModal.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-sizechart-close]').forEach(x=>x.addEventListener('click',()=>{sizeModal.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
-  const preview=root.querySelector('[data-pbmac-preview-modal]'),pers=root.querySelector('[data-pbmac-personalization]');root.querySelector('[data-pbmac-preview-open]')?.addEventListener('click',()=>{if(!preview)return;const opts=selected(),names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||''),get=n=>{const i=names.findIndex(x=>x.includes(n));return i>=0?opts[i]:'—'};preview.querySelector('[data-pbmac-preview-style]').textContent=`Style: ${get('style')}`;preview.querySelector('[data-pbmac-preview-color]').textContent=`Color: ${get('color')}`;preview.querySelector('[data-pbmac-preview-size]').textContent=`Size: ${get('size')}`;preview.querySelector('[data-pbmac-preview-text]').textContent=pers?.value.trim()||'No personalization entered';preview.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-preview-close]').forEach(x=>x.addEventListener('click',()=>{preview.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
+  const preview=root.querySelector('[data-pbmac-preview-modal]'),pers=root.querySelector('[data-pbmac-personalization]');root.querySelector('[data-pbmac-preview-open]')?.addEventListener('click',()=>{if(!preview)return;const opts=selected(),names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||''),get=n=>{const i=names.findIndex(x=>x.includes(n));return i>=0?opts[i]:'—'};preview.querySelector('[data-pbmac-preview-style]').textContent=`Style: ${get('style')}`;const nativeColor=get('color'),customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'—';preview.querySelector('[data-pbmac-preview-color]').textContent=`Color: ${nativeColor!=='—'?nativeColor:customColor}`;preview.querySelector('[data-pbmac-preview-size]').textContent=`Size: ${get('size')}`;preview.querySelector('[data-pbmac-preview-text]').textContent=pers?.value.trim()||'No personalization entered';preview.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-preview-close]').forEach(x=>x.addEventListener('click',()=>{preview.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
 })();
 </script>
 
@@ -1231,7 +1432,7 @@
   ],
   "presets": [
     {
-      "name": "Shirt PDP"
+      "name": "Plastbat Shirt PDP 221231"
     }
   ]
 }

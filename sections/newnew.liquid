@@ -3307,6 +3307,252 @@
     }
   }
 
+
+  /* ==========================================================
+     V14 — COMPACT VERTICAL RHYTHM
+     Tightens the whole purchase column so each element visually
+     belongs to the next, matching the competitor reference.
+     ========================================================== */
+
+  #PBMac-{{ section.id }} .pbmac-info {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  /* TITLE → RATING → PRICE */
+  #PBMac-{{ section.id }} .pbmac-title {
+    margin: 0 !important;
+    max-width: 650px !important;
+    color: #272327 !important;
+    font-size: 17px !important;
+    line-height: 1.42 !important;
+    letter-spacing: -.008em !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-meta {
+    margin: 5px 0 0 !important;
+    min-height: 15px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating,
+  #PBMac-{{ section.id }} .pbmac-rating--manual {
+    min-height: 15px !important;
+    gap: 4px !important;
+    line-height: 1 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price-row {
+    margin: 8px 0 14px !important;
+    gap: 7px !important;
+    min-height: 27px !important;
+    align-items: baseline !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-compare {
+    font-size: 12.5px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price {
+    font-size: 23px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-save {
+    font-size: 9.5px !important;
+  }
+
+  /* FORM STARTS IMMEDIATELY AFTER PRICE */
+  #PBMac-{{ section.id }} .pbmac-form {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* ALL OPTIONS SHARE THE SAME RHYTHM */
+  #PBMac-{{ section.id }} .pbmac-option,
+  #PBMac-{{ section.id }} .pbmac-fallback-option {
+    margin: 0 0 13px !important;
+    padding: 0 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__head,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head {
+    min-height: 16px !important;
+    margin: 0 0 6px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__head legend,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend {
+    margin: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+    font-weight: 500 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__selected,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend > span {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-sizechart-link {
+    margin: 0 !important;
+    font-size: 10.5px !important;
+    line-height: 1.15 !important;
+  }
+
+  /* COLOR ROWS */
+  #PBMac-{{ section.id }} .pbmac-colors,
+  #PBMac-{{ section.id }} .pbmac-fallback-colors {
+    gap: 6px !important;
+    row-gap: 6px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color__outer,
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill__outer {
+    width: 50px !important;
+    height: 31px !important;
+  }
+
+  /* SIZE / STYLE */
+  #PBMac-{{ section.id }} .pbmac-pills,
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pills {
+    gap: 7px !important;
+    row-gap: 7px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-pill span,
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill span {
+    min-height: 39px !important;
+  }
+
+  /* SIZE SHOULD FLOW DIRECTLY INTO PERSONALIZED */
+  #PBMac-{{ section.id }} .pbmac-fallback-size,
+  #PBMac-{{ section.id }} .pbmac-option:has(legend:first-child) {
+    margin-bottom: 13px !important;
+  }
+
+  /* PERSONALIZED */
+  #PBMac-{{ section.id }} .pbmac-personalization-card {
+    margin: 1px 0 11px !important;
+    border-radius: 9px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner {
+    min-height: 36px !important;
+    padding: 0 12px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner strong {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body {
+    padding: 10px 12px 11px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > label {
+    margin: 0 0 6px !important;
+    font-size: 11px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input {
+    height: 43px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > p {
+    margin: 6px 0 0 !important;
+    font-size: 9.8px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* PERSONALIZED → QUANTITY/PREVIEW → ADD TO CART */
+  #PBMac-{{ section.id }} .pbmac-buy-row {
+    margin: 0 !important;
+    gap: 9px !important;
+    grid-template-columns: 110px minmax(0, 1fr) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-qty,
+  #PBMac-{{ section.id }} .pbmac-preview {
+    height: 47px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc {
+    height: 51px !important;
+    margin: 8px 0 0 !important;
+  }
+
+  /* BUY AREA → TRUST */
+  #PBMac-{{ section.id }} .pbmac-trust {
+    margin: 9px 0 0 !important;
+    padding: 0 2px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-trust p {
+    margin: 4px 0 !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* TRUST → ACCORDIONS */
+  #PBMac-{{ section.id }} .pbmac-accordions {
+    margin: 11px 0 0 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion summary {
+    min-height: 48px !important;
+    padding: 0 !important;
+    font-size: 11.5px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion__content {
+    padding: 0 2px 13px !important;
+  }
+
+  /* Keep product-info content visually grouped. */
+  #PBMac-{{ section.id }} .pbmac-info > *:first-child {
+    margin-top: 0 !important;
+  }
+
+  /* MOBILE REFERENCE RHYTHM */
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-info {
+      margin-top: 18px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-title {
+      font-size: 16px !important;
+      line-height: 1.43 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-meta {
+      margin-top: 5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-price-row {
+      margin-top: 8px !important;
+      margin-bottom: 13px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-option,
+    #PBMac-{{ section.id }} .pbmac-fallback-option {
+      margin-bottom: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card {
+      margin-top: 0 !important;
+      margin-bottom: 10px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-trust {
+      margin-top: 8px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordions {
+      margin-top: 10px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -3552,7 +3798,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP13",
+  "name": "Plastbat Shirt PDP14",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -3922,7 +4168,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP13"
+      "name": "Plastbat Shirt PDP14"
     }
   ]
 }

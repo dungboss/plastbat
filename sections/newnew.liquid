@@ -394,15 +394,19 @@
               {% assign idx = 5 | minus: star %}
               {% assign count = pbmac_counts[idx] | plus: 0 %}
               {% assign pct = count | times: 100 | divided_by: pbmac_review_count %}
+              {% assign display_pct = pct %}
+              {% if count > 0 and pct == 0 %}
+                {% assign display_pct = 1 %}
+              {% endif %}
               <div class="pbmac-histogram__row">
                 <span>{{ star }} Star</span>
-                <div><i style="width:{{ pct }}%"></i></div>
-                <b>{{ pct }}%</b>
+                <div><i style="width:{{ display_pct }}%"></i></div>
+                <b>{% if count > 0 and pct == 0 %}&lt;1%{% else %}{{ pct }}%{% endif %}</b>
               </div>
             {% endfor %}
           </div>
 
-          <span class="pbmac-review-static-button">Customer Feedback</span>
+          <span class="pbmac-review-static-button">Write a Review</span>
         {% else %}
           <p class="pbmac-empty-review">No product reviews yet.</p>
         {% endif %}
@@ -2376,6 +2380,564 @@
     }
   }
 
+
+  /* ==========================================================
+     V11 — REVIEW UI RESET / REFERENCE MATCH
+     This block intentionally wins over ALL earlier review styles.
+     ========================================================== */
+
+  .pbmac-reviews,
+  .pbmac-reviews *,
+  .pbmac-review-modal,
+  .pbmac-review-modal * {
+    font-family: Arial, Helvetica, sans-serif !important;
+    box-sizing: border-box;
+  }
+
+  .pbmac-reviews {
+    padding: 26px 0 42px !important;
+    background: #fbf9f7 !important;
+    color: #373236 !important;
+  }
+
+  /* PRODUCT REVIEWS TAB */
+  .pbmac-review-tabs-top {
+    width: min(100%, 1180px) !important;
+    margin: 0 auto 17px !important;
+    border-bottom: 1px solid #e5dfda !important;
+  }
+
+  .pbmac-review-tabs-top span {
+    position: relative !important;
+    display: inline-flex !important;
+    padding: 0 0 12px !important;
+    color: #322d31 !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review-tabs-top span::after {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: -1px !important;
+    height: 2px !important;
+    background: #3b3539 !important;
+  }
+
+  /* MAIN 2-COLUMN REVIEW LAYOUT */
+  .pbmac-reviews-layout {
+    width: min(100%, 1180px) !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: 320px minmax(0, 1fr) !important;
+    gap: 42px !important;
+    align-items: start !important;
+  }
+
+  /* LEFT SUMMARY BOX */
+  .pbmac-reviews-card {
+    padding: 25px 22px 24px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: #f3f0ec !important;
+    box-shadow: none !important;
+  }
+
+  .pbmac-reviews-card h2 {
+    margin: 0 0 22px !important;
+    color: #332f32 !important;
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+  }
+
+  .pbmac-reviews-card__score {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 56px 1px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    align-items: center !important;
+    margin: 0 0 23px !important;
+  }
+
+  /* vertical divider between 4.9 and stars */
+  .pbmac-reviews-card__score::before {
+    content: '' !important;
+    width: 1px !important;
+    height: 38px !important;
+    background: #d8d0cb !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+  }
+
+  .pbmac-reviews-card__score > strong {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    color: #3b2e35 !important;
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: 48px !important;
+    line-height: .92 !important;
+    font-weight: 400 !important;
+    letter-spacing: -.035em !important;
+  }
+
+  .pbmac-reviews-card__score > div {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    display: grid !important;
+    gap: 4px !important;
+    align-content: center !important;
+  }
+
+  .pbmac-reviews-card__stars {
+    color: #f16422 !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    letter-spacing: 1.4px !important;
+    white-space: nowrap !important;
+  }
+
+  .pbmac-reviews-card__score small {
+    color: #454045 !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    font-weight: 400 !important;
+  }
+
+  /* HISTOGRAM */
+  .pbmac-reviews-card .pbmac-histogram {
+    display: grid !important;
+    gap: 13px !important;
+    margin: 0 !important;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram__row {
+    display: grid !important;
+    grid-template-columns: 38px minmax(0, 1fr) 30px !important;
+    gap: 9px !important;
+    align-items: center !important;
+    min-height: 14px !important;
+    color: #514b4e !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram__row > div {
+    height: 7px !important;
+    overflow: hidden !important;
+    border-radius: 999px !important;
+    background: #e4ded8 !important;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram__row i {
+    display: block !important;
+    height: 100% !important;
+    border-radius: inherit !important;
+    background: #ff7040 !important;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram__row b {
+    color: #81797d !important;
+    text-align: right !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-review-static-button {
+    min-height: 42px !important;
+    margin: 21px 0 0 !important;
+    padding: 0 14px !important;
+    border: 1px solid #3f393d !important;
+    border-radius: 999px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    color: #403a3e !important;
+    font-size: 11.5px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+  }
+
+  /* RIGHT COLUMN */
+  .pbmac-reviews-content {
+    min-width: 0 !important;
+  }
+
+  .pbmac-review-images-head,
+  .pbmac-topreviews-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .pbmac-review-images-head h3,
+  .pbmac-topreviews-head h3 {
+    margin: 0 !important;
+    color: #302b2f !important;
+    font-size: 20px !important;
+    line-height: 1.15 !important;
+    font-weight: 600 !important;
+  }
+
+  .pbmac-review-images-arrows {
+    display: flex !important;
+    gap: 7px !important;
+  }
+
+  .pbmac-review-images-arrows button {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #443e42 !important;
+    font-size: 26px !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+  }
+
+  /* IMAGE STRIP */
+  .pbmac-review-images {
+    display: flex !important;
+    gap: 8px !important;
+    margin: 15px 0 0 !important;
+    padding: 0 0 2px !important;
+    overflow-x: auto !important;
+    scroll-behavior: smooth !important;
+    scrollbar-width: none !important;
+  }
+
+  .pbmac-review-images::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .pbmac-review-image-card {
+    width: 166px !important;
+    flex: 0 0 166px !important;
+    aspect-ratio: 1 / 1 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: #f0eeec !important;
+    cursor: pointer !important;
+  }
+
+  .pbmac-review-image-card__image {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    object-fit: cover !important;
+  }
+
+  .pbmac-topreviews-head {
+    margin: 31px 0 12px !important;
+  }
+
+  /* FILTERS */
+  .pbmac-review-filters {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 7px !important;
+    margin: 0 0 7px !important;
+  }
+
+  .pbmac-review-filters button {
+    min-height: 36px !important;
+    padding: 0 13px !important;
+    border: 1px solid #e5ddd7 !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    color: #70676c !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    cursor: pointer !important;
+  }
+
+  .pbmac-review-filters button.is-active {
+    border-color: #3d373b !important;
+    box-shadow: inset 0 0 0 1px #3d373b !important;
+    color: #332d31 !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review-filters button:disabled {
+    opacity: .32 !important;
+    cursor: not-allowed !important;
+  }
+
+  /* REVIEW ROWS */
+  .pbmac-review {
+    padding: 16px 0 !important;
+    border-bottom: 1px solid #eee6e1 !important;
+    background: transparent !important;
+    cursor: pointer !important;
+  }
+
+  .pbmac-review[hidden] {
+    display: none !important;
+  }
+
+  .pbmac-review:hover {
+    background: transparent !important;
+  }
+
+  .pbmac-review__headline {
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+  }
+
+  /* CRITICAL STAR FIX:
+     old theme used var(--orange), which was undefined. */
+  .pbmac-review__stars {
+    display: inline-flex !important;
+    gap: 0 !important;
+    color: #d8d2ce !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    letter-spacing: .15px !important;
+  }
+
+  .pbmac-review__stars i {
+    color: #d8d2ce !important;
+    font-style: normal !important;
+  }
+
+  .pbmac-review__stars i.is-on,
+  .pbmac-review__stars .is-on {
+    color: #f16422 !important;
+  }
+
+  .pbmac-review__headline strong {
+    color: #3b3539 !important;
+    font-size: 12.5px !important;
+    line-height: 1.1 !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review__meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    margin: 6px 0 0 !important;
+    color: #a0979b !important;
+    font-size: 10.5px !important;
+    line-height: 1.1 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-review h4 {
+    margin: 9px 0 4px !important;
+    color: #423c40 !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review__body {
+    color: #544d51 !important;
+    font-size: 12.5px !important;
+    line-height: 1.48 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-review__body > :first-child,
+  .pbmac-review__body > :last-child {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .pbmac-review__thumb {
+    width: 70px !important;
+    height: 70px !important;
+    margin: 9px 0 0 !important;
+    border: 1px solid #e2dad5 !important;
+    border-radius: 7px !important;
+    object-fit: cover !important;
+  }
+
+  /* PAGINATION */
+  .pbmac-pagination {
+    display: flex !important;
+    gap: 5px !important;
+    margin: 14px 0 0 !important;
+  }
+
+  .pbmac-pagination button {
+    min-width: 31px !important;
+    height: 31px !important;
+    padding: 0 8px !important;
+    border: 1px solid #e5ddd7 !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    color: #766d72 !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-pagination button.is-active {
+    border-color: #4b4348 !important;
+    background: #4b4348 !important;
+    color: #fff !important;
+  }
+
+  /* REVIEW MODAL STARS — FIXED TOO */
+  .pbmac-review-modal .pbmac-review__stars i {
+    color: #d8d2ce !important;
+  }
+
+  .pbmac-review-modal .pbmac-review__stars i.is-on,
+  .pbmac-review-modal .pbmac-review__stars .is-on {
+    color: #f16422 !important;
+  }
+
+  /* MOBILE — MATCH THE USER'S REFERENCE SCREENSHOT */
+  @media (max-width: 749px) {
+    .pbmac-reviews {
+      padding: 0 0 34px !important;
+      background: #fbf9f7 !important;
+    }
+
+    .pbmac-review-tabs-top {
+      width: 100% !important;
+      margin: 0 0 13px !important;
+      padding: 0 !important;
+    }
+
+    .pbmac-review-tabs-top span {
+      margin-left: 0 !important;
+      font-size: 12px !important;
+    }
+
+    .pbmac-reviews-layout {
+      width: 100% !important;
+      display: block !important;
+      margin: 0 !important;
+    }
+
+    .pbmac-reviews-card {
+      width: 100% !important;
+      margin: 0 0 18px !important;
+      padding: 25px 16px 21px !important;
+      border-radius: 8px !important;
+    }
+
+    .pbmac-reviews-card h2 {
+      margin-bottom: 23px !important;
+      font-size: 14px !important;
+    }
+
+    .pbmac-reviews-card__score {
+      grid-template-columns: 52px 1px minmax(0, 1fr) !important;
+      gap: 11px !important;
+      margin-bottom: 23px !important;
+    }
+
+    .pbmac-reviews-card__score > strong {
+      font-size: 46px !important;
+    }
+
+    .pbmac-reviews-card__stars {
+      font-size: 18px !important;
+    }
+
+    .pbmac-reviews-card__score small {
+      font-size: 11.5px !important;
+    }
+
+    .pbmac-reviews-card .pbmac-histogram {
+      gap: 13px !important;
+    }
+
+    .pbmac-reviews-card .pbmac-histogram__row {
+      grid-template-columns: 36px minmax(0, 1fr) 29px !important;
+      gap: 8px !important;
+      font-size: 10.5px !important;
+    }
+
+    .pbmac-review-static-button {
+      min-height: 41px !important;
+      margin-top: 21px !important;
+      font-size: 11px !important;
+    }
+
+    .pbmac-review-images-head,
+    .pbmac-topreviews-head,
+    .pbmac-review-filters,
+    .pbmac-review-list,
+    .pbmac-pagination {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .pbmac-review-images-head h3,
+    .pbmac-topreviews-head h3 {
+      font-size: 18px !important;
+    }
+
+    .pbmac-review-images {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin-left: calc(50% - 50vw) !important;
+      padding-left: 0 !important;
+      gap: 7px !important;
+    }
+
+    .pbmac-review-image-card {
+      width: 88px !important;
+      flex-basis: 88px !important;
+      height: 92px !important;
+      aspect-ratio: auto !important;
+      border-radius: 6px !important;
+    }
+
+    .pbmac-review-images-arrows {
+      display: none !important;
+    }
+
+    .pbmac-topreviews-head {
+      margin-top: 29px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .pbmac-review-filters {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin-left: calc(50% - 50vw) !important;
+      padding: 0 0 4px !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      scrollbar-width: none !important;
+    }
+
+    .pbmac-review-filters::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    .pbmac-review-filters button {
+      flex: 0 0 auto !important;
+      min-height: 34px !important;
+      padding: 0 11px !important;
+      font-size: 10.5px !important;
+    }
+
+    .pbmac-review {
+      padding: 15px 0 !important;
+    }
+
+    .pbmac-review__body {
+      font-size: 12px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -2621,7 +3183,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP V10",
+  "name": "Plastbat Shirt PDP V11",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -2961,7 +3523,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP V10"
+      "name": "Plastbat Shirt PDP V11"
     }
   ]
 }

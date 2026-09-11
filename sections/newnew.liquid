@@ -265,7 +265,11 @@
           {% if section.settings.show_personalization %}
             <div class="pbmac-personalization-card">
               <div class="pbmac-personalization-card__banner">
-                <span>✦</span>
+                <span class="pbmac-personalization-card__sparkles" aria-hidden="true">
+                  <i class="pbmac-sparkle pbmac-sparkle--1">✦</i>
+                  <i class="pbmac-sparkle pbmac-sparkle--2">✦</i>
+                  <i class="pbmac-sparkle pbmac-sparkle--3">✦</i>
+                </span>
                 <strong>{{ section.settings.personalization_heading | escape }}</strong>
               </div>
 
@@ -569,6 +573,64 @@
 </section>
 {% endif %}
 
+
+
+{% if section.settings.show_more_items %}
+  {% liquid
+    assign pbmac_more_source = blank
+
+    if section.settings.more_items_collection != blank
+      assign pbmac_more_source = collections[section.settings.more_items_collection]
+    elsif product.collections.first != blank
+      assign pbmac_more_source = product.collections.first
+    endif
+  %}
+
+  {% if pbmac_more_source != blank %}
+    <section class="pbmac-more-items" aria-labelledby="pbmac-more-items-title-{{ section.id }}">
+      <div class="page-width">
+        <div class="pbmac-more-items__inner">
+          <h2 id="pbmac-more-items-title-{{ section.id }}">{{ section.settings.more_items_heading | escape }}</h2>
+
+          <div class="pbmac-more-items__grid">
+            {% assign pbmac_more_rendered = 0 %}
+            {% for pbmac_more_product in pbmac_more_source.products %}
+              {% if pbmac_more_product.id != product.id %}
+                <a class="pbmac-more-card" href="{{ pbmac_more_product.url }}">
+                  <div class="pbmac-more-card__media">
+                    {% if pbmac_more_product.featured_image != blank %}
+                      {{ pbmac_more_product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'pbmac-more-card__image', alt: pbmac_more_product.title }}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'pbmac-more-card__image pbmac-more-card__image--placeholder' }}
+                    {% endif %}
+                  </div>
+
+                  <div class="pbmac-more-card__content">
+                    <h3>{{ pbmac_more_product.title | escape }}</h3>
+
+                    <div class="pbmac-more-card__stars" aria-hidden="true">★★★★★</div>
+
+                    <div class="pbmac-more-card__price">
+                      <span class="pbmac-more-card__sale">{{ pbmac_more_product.price | money }}</span>
+                      {% if pbmac_more_product.compare_at_price > pbmac_more_product.price %}
+                        <span class="pbmac-more-card__compare">{{ pbmac_more_product.compare_at_price | money }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </a>
+
+                {% assign pbmac_more_rendered = pbmac_more_rendered | plus: 1 %}
+                {% if pbmac_more_rendered >= section.settings.more_items_limit %}
+                  {% break %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endif %}
 
 {% if section.settings.show_newsletter %}
 <section class="pbmac-newsletter" aria-labelledby="pbmac-newsletter-title-{{ section.id }}">
@@ -3040,6 +3102,211 @@
     }
   }
 
+
+  /* ==========================================================
+     V13 — PERSONALIZED SPARKLES + MORE ITEMS TO CONSIDER
+     ========================================================== */
+
+  /* 3 sparkle stars in Personalized banner */
+  #PBMac-{{ section.id }} .pbmac-personalization-card__sparkles {
+    position: relative;
+    width: 16px;
+    min-width: 16px;
+    height: 14px;
+    display: inline-block;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__sparkles .pbmac-sparkle {
+    position: absolute;
+    color: #fff9f3;
+    font-style: normal;
+    line-height: 1;
+    transform-origin: center;
+    animation: pbmacSparkleTwinkle 1.9s ease-in-out infinite;
+    opacity: .95;
+    text-shadow: 0 0 8px rgba(255,255,255,.24);
+  }
+
+  #PBMac-{{ section.id }} .pbmac-sparkle--1 {
+    left: 0;
+    top: 5px;
+    font-size: 9px;
+    animation-delay: 0s;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-sparkle--2 {
+    left: 7px;
+    top: 0;
+    font-size: 12px;
+    animation-delay: .25s;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-sparkle--3 {
+    left: 11px;
+    top: 8px;
+    font-size: 7px;
+    animation-delay: .5s;
+  }
+
+  @keyframes pbmacSparkleTwinkle {
+    0%, 100% {
+      opacity: .65;
+      transform: scale(.8);
+      filter: brightness(.95);
+    }
+    35% {
+      opacity: 1;
+      transform: scale(1.1);
+      filter: brightness(1.12);
+    }
+    60% {
+      opacity: .82;
+      transform: scale(.92);
+      filter: brightness(1);
+    }
+  }
+
+  /* More Items to Consider */
+  .pbmac-more-items {
+    padding: 12px 0 18px;
+    background: #fbf9f7;
+  }
+
+  .pbmac-more-items__inner h2 {
+    margin: 0 0 14px;
+    color: #363136;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 1.25;
+    font-weight: 500;
+  }
+
+  .pbmac-more-items__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .pbmac-more-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .pbmac-more-card__media {
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f3eee9;
+    aspect-ratio: 1 / 1;
+  }
+
+  .pbmac-more-card__image,
+  .pbmac-more-card__image--placeholder {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .pbmac-more-card__content {
+    padding-top: 9px;
+  }
+
+  .pbmac-more-card h3 {
+    margin: 0 0 7px;
+    color: #373236;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(1.35em * 2);
+  }
+
+  .pbmac-more-card__stars {
+    margin: 0 0 6px;
+    color: #f16422;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .pbmac-more-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pbmac-more-card__sale {
+    color: #f16422;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 600;
+  }
+
+  .pbmac-more-card__compare {
+    color: #7d767a;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 400;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  @media (max-width: 989px) {
+    .pbmac-more-items__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .pbmac-more-items {
+      padding: 10px 0 14px;
+    }
+
+    .pbmac-more-items__inner h2 {
+      margin-bottom: 12px;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .pbmac-more-items__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 14px;
+    }
+
+    .pbmac-more-card__content {
+      padding-top: 8px;
+    }
+
+    .pbmac-more-card h3 {
+      font-size: 13px;
+      line-height: 1.32;
+      min-height: calc(1.32em * 2);
+      margin-bottom: 6px;
+    }
+
+    .pbmac-more-card__stars {
+      font-size: 14px;
+      letter-spacing: .8px;
+      margin-bottom: 6px;
+    }
+
+    .pbmac-more-card__sale {
+      font-size: 13px;
+    }
+
+    .pbmac-more-card__compare {
+      font-size: 11px;
+    }
+  }
+
 </style>
 
 <script>
@@ -3285,7 +3552,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP V12",
+  "name": "Plastbat Shirt PDP13",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -3572,6 +3839,36 @@
       "step": 4,
       "unit": "px",
       "default": 28
+    },
+    {
+      "type": "header",
+      "content": "More items section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_more_items",
+      "label": "Show more items to consider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "more_items_heading",
+      "label": "More items heading",
+      "default": "More Items to Consider"
+    },
+    {
+      "type": "collection",
+      "id": "more_items_collection",
+      "label": "More items collection"
+    },
+    {
+      "type": "range",
+      "id": "more_items_limit",
+      "label": "Number of items",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
     }
   ],
   "blocks": [
@@ -3625,7 +3922,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP V12"
+      "name": "Plastbat Shirt PDP13"
     }
   ]
 }

@@ -2191,6 +2191,191 @@
     }
   }
 
+
+  /* ==========================================================
+     V10 — REVIEW TYPOGRAPHY MATCH
+     Tuned to the supplied Macorner review reference.
+     ========================================================== */
+
+  .pbmac-reviews,
+  .pbmac-reviews button,
+  .pbmac-reviews input,
+  .pbmac-reviews textarea,
+  .pbmac-reviews select {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  /* top Product Reviews tab */
+  .pbmac-review-tabs-top span {
+    color: #373236 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+  }
+
+  /* left summary card */
+  .pbmac-reviews-card h2 {
+    margin-bottom: 21px !important;
+    color: #302c2f !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 15.5px !important;
+    line-height: 1.25 !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .pbmac-reviews-card__score > strong {
+    color: #382d33 !important;
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: 48px !important;
+    line-height: .98 !important;
+    font-weight: 400 !important;
+    letter-spacing: -.03em !important;
+  }
+
+  .pbmac-reviews-card__stars {
+    color: #f16422 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 19px !important;
+    line-height: 1 !important;
+    letter-spacing: 1.5px !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-reviews-card__score small {
+    color: #4f484c !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram__row {
+    color: #514b4e !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11.5px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram__row b {
+    color: #82797d !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-review-static-button {
+    color: #3f393d !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+  }
+
+  /* right column headings */
+  .pbmac-review-images-head h3,
+  .pbmac-topreviews-head h3 {
+    color: #322d31 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+  }
+
+  /* star filter chips */
+  .pbmac-review-filters button {
+    color: #6d6569 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11.5px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-review-filters button.is-active {
+    color: #383236 !important;
+    font-weight: 500 !important;
+  }
+
+  /* each review */
+  .pbmac-review__stars {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13.5px !important;
+    line-height: 1 !important;
+    letter-spacing: .2px !important;
+  }
+
+  .pbmac-review__headline strong {
+    color: #3e383c !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12.5px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review__meta {
+    color: #9c9498 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+    font-weight: 400 !important;
+  }
+
+  .pbmac-review h4 {
+    color: #423b3f !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review__body,
+  .pbmac-review-modal-source__details .rte {
+    color: #514a4e !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12.5px !important;
+    line-height: 1.52 !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+  }
+
+  /* modal typography */
+  .pbmac-review-modal-source__details strong {
+    color: #3d373b !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+  }
+
+  .pbmac-review-modal-source__details h4 {
+    color: #3f393d !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+  }
+
+  /* Mobile keeps the same hierarchy but slightly tighter */
+  @media (max-width: 749px) {
+    .pbmac-reviews-card h2 {
+      font-size: 15px !important;
+    }
+
+    .pbmac-reviews-card__score > strong {
+      font-size: 46px !important;
+    }
+
+    .pbmac-review-images-head h3,
+    .pbmac-topreviews-head h3 {
+      font-size: 19px !important;
+    }
+
+    .pbmac-review__body {
+      font-size: 12px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -2436,7 +2621,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP V9",
+  "name": "Plastbat Shirt PDP V10",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -2776,7 +2961,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP V9"
+      "name": "Plastbat Shirt PDP V10"
     }
   ]
 }

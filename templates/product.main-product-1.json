@@ -28,26 +28,26 @@
         "padding_bottom": 28
       }
     },
-    "newnew_ymbQDn": {
+    "newnew_kFwWTg": {
       "type": "newnew",
       "blocks": {
-        "manual_review_fnPEq7": {
+        "manual_review_8K6tLJ": {
           "type": "manual_review",
           "settings": {
             "author": "Customer",
             "rating": 5,
-            "date": "28/25/24545",
+            "date": "25/07/2026",
             "verified": true,
-            "title": "đâssadsa",
-            "body": "<p>hfsdgfsdgsfd</p>",
+            "title": "ádsadsad",
+            "body": "<p>ádasdasdsa</p>",
             "image": "shopify://shop_images/1787825817245_5864500917613633006_5864500917613633006_h.jpg"
           }
         }
       },
       "block_order": [
-        "manual_review_fnPEq7"
+        "manual_review_8K6tLJ"
       ],
-      "name": "Plastbat Shirt PDP15",
+      "name": "Plastbat Shirt PDP16",
       "settings": {
         "color_scheme": "",
         "sticky_gallery": true,
@@ -97,6 +97,6 @@
   },
   "order": [
     "related-products",
-    "newnew_ymbQDn"
+    "newnew_kFwWTg"
   ]
 }

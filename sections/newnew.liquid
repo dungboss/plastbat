@@ -3865,6 +3865,217 @@
     }
   }
 
+
+  /* ==========================================================
+     V16 — MOBILE READABILITY
+     Match Macorner's readable mobile scale without reopening
+     the large vertical gaps from older versions.
+     ========================================================== */
+
+  @media (max-width: 749px) {
+    /* Product title / price / options */
+    #PBMac-{{ section.id }} .pbmac-title {
+      font-size: 18px !important;
+      line-height: 1.4 !important;
+      font-weight: 600 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-rating,
+    #PBMac-{{ section.id }} .pbmac-rating--manual {
+      font-size: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-rating__stars {
+      font-size: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-rating em {
+      font-size: 11px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-compare {
+      font-size: 13.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-price {
+      font-size: 25px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-save {
+      font-size: 10.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-option__head legend,
+    #PBMac-{{ section.id }} .pbmac-fallback-option__head legend {
+      font-size: 14px !important;
+      font-weight: 500 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-option__selected,
+    #PBMac-{{ section.id }} .pbmac-fallback-option__head legend > span {
+      font-size: 12.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-sizechart-link {
+      font-size: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-pill span,
+    #PBMac-{{ section.id }} .pbmac-fallback-size-pill span {
+      min-height: 42px !important;
+      font-size: 13px !important;
+    }
+
+    /* Personalized card */
+    #PBMac-{{ section.id }} .pbmac-personalization-card {
+      margin-bottom: 16px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__banner {
+      min-height: 42px !important;
+      padding: 0 14px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__banner strong {
+      font-size: 15px !important;
+      font-weight: 700 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__body {
+      padding: 14px 13px 15px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__body > label {
+      margin-bottom: 8px !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input {
+      height: 50px !important;
+      font-size: 15px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input::placeholder {
+      font-size: 15px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__counter {
+      font-size: 11.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-personalization-card__body > p {
+      margin-top: 8px !important;
+      font-size: 13px !important;
+      line-height: 1.45 !important;
+    }
+
+    /* Quantity */
+    #PBMac-{{ section.id }} .pbmac-quantity-block {
+      margin-bottom: 13px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-quantity-label {
+      margin-bottom: 8px !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-qty {
+      width: 114px !important;
+      height: 47px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-qty button {
+      font-size: 21px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-qty input {
+      font-size: 15px !important;
+      font-weight: 500 !important;
+    }
+
+    /* Preview / Add to Cart */
+    #PBMac-{{ section.id }} .pbmac-preview--full {
+      height: 51px !important;
+      margin-bottom: 11px !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-button-icon--eye {
+      width: 18px !important;
+      height: 18px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-atc {
+      height: 54px !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-button-icon--cart {
+      width: 19px !important;
+      height: 19px !important;
+    }
+
+    /* Trust lines */
+    #PBMac-{{ section.id }} .pbmac-trust {
+      margin-top: 16px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-trust p {
+      margin: 8px 0 !important;
+      gap: 8px !important;
+      color: #514b4f !important;
+      font-size: 13.5px !important;
+      line-height: 1.4 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-trust__check {
+      font-size: 17px !important;
+    }
+
+    /* Accordions */
+    #PBMac-{{ section.id }} .pbmac-accordions {
+      margin-top: 17px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion summary {
+      min-height: 57px !important;
+      padding-left: 11px !important;
+      padding-right: 11px !important;
+      font-size: 15px !important;
+      line-height: 1.2 !important;
+      font-weight: 500 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion summary > span:first-child {
+      font-size: 16px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion summary b {
+      font-size: 16px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion[open] summary {
+      margin-bottom: 12px !important;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion__content {
+      padding: 3px 13px 20px !important;
+      color: #554f53 !important;
+      font-size: 15px !important;
+      line-height: 1.68 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion__content p {
+      margin-bottom: 13px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -4110,7 +4321,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP15",
+  "name": "Plastbat Shirt PDP16",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -4486,7 +4697,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP15"
+      "name": "Plastbat Shirt PDP16"
     }
   ]
 }

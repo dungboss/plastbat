@@ -63,13 +63,11 @@
       <div class="pbmac-info">
         <h1 class="pbmac-title">{{ product.title }}</h1>
 
-        <div class="pbmac-meta">
-          {% if rating_object != blank %}
+        {% if rating_object != blank %}
+          <div class="pbmac-meta">
             <a href="#pbmac-reviews-{{ section.id }}" class="pbmac-rating"><span>★★★★★</span><b>{{ rating_object.rating | round: 1 }}</b>{% if rating_count != blank %}<em>({{ rating_count }})</em>{% endif %}</a>
-          {% elsif section.settings.fallback_social_proof != blank %}
-            <span class="pbmac-social">{{ section.settings.fallback_social_proof | escape }}</span>
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
 
         <div class="pbmac-price-row" aria-live="polite">
           <span class="pbmac-price" data-pbmac-price>{{ current_variant.price | money }}</span>
@@ -77,24 +75,7 @@
           <span class="pbmac-save{% if initial_save == 0 %} is-hidden{% endif %}" data-pbmac-save>Save {{ initial_save }}%</span>
         </div>
 
-        {% if section.settings.show_bundle_offer %}
-          <div class="pbmac-bundle">
-            <strong>{{ section.settings.bundle_heading | escape }}</strong>
-            <div><span>{{ section.settings.bundle_1 | escape }}</span><span>{{ section.settings.bundle_2 | escape }}</span><span>{{ section.settings.bundle_3 | escape }}</span></div>
-            <small>{{ section.settings.bundle_note | escape }}</small>
-          </div>
-        {% endif %}
 
-        {% if section.settings.show_shipping_card %}
-          <div class="pbmac-shipping">
-            <div class="pbmac-shipping__head"><span>📦</span><div><strong>{{ section.settings.shipping_card_heading | escape }}</strong><small>{{ section.settings.shipping_card_subtext | escape }}</small></div></div>
-            <div class="pbmac-shipping__timeline">
-              <div><i>1</i><span><b>Order Placed</b><small>{{ section.settings.order_placed_text | escape }}</small></span></div>
-              <div><i>2</i><span><b>Order Ships</b><small>{{ section.settings.order_ships_text | escape }}</small></span></div>
-              <div><i>3</i><span><b>Delivered</b><small>{{ section.settings.delivered_text | escape }}</small></span></div>
-            </div>
-          </div>
-        {% endif %}
 
         {% form 'product', product, id: product_form_id, class: 'pbmac-form' %}
           <input type="hidden" name="id" value="{{ current_variant.id }}" data-pbmac-variant-id>
@@ -683,6 +664,147 @@
     }
   }
 
+
+  /* V3 CLEAN TOP AREA */
+  #PBMacProduct-{{ section.id }},
+  #PBMacProduct-{{ section.id }} button,
+  #PBMacProduct-{{ section.id }} input,
+  #PBMacProduct-{{ section.id }} select,
+  #PBMacProduct-{{ section.id }} textarea {
+    font-family: "Montserrat", "Avenir Next", "Helvetica Neue", Arial, sans-serif !important;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-title {
+    max-width: 720px;
+    color: #2f2b2d;
+    font-family: "Montserrat", "Avenir Next", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: clamp(30px, 2.35vw, 39px);
+    line-height: 1.16;
+    letter-spacing: -.035em;
+    font-weight: 700;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-meta {
+    margin-top: 9px;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-price-row {
+    margin-top: 14px;
+    margin-bottom: 24px;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-price {
+    color: #302c2e;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -.025em;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-compare {
+    font-size: 16px;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-save {
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-form {
+    margin-top: 0;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-option {
+    margin-bottom: 21px;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-option__head {
+    margin-bottom: 10px;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-option__head legend {
+    color: #302c2e;
+    font-size: 14px;
+    font-weight: 650;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-option__selected {
+    margin-left: 5px;
+    color: #9d9598;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* Color pills like the reference */
+  #PBMacProduct-{{ section.id }} .pbmac-colors {
+    gap: 8px !important;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-color__outer {
+    width: 56px !important;
+    height: 36px !important;
+    padding: 3px !important;
+    border: 1px solid #e1dbd6 !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-color__swatch {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-color input:checked + .pbmac-color__outer {
+    border-color: #393337 !important;
+    box-shadow: 0 0 0 1px #393337 !important;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-color__name {
+    display: none !important;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-pill span {
+    min-height: 42px;
+    padding: 0 15px;
+    border-color: #ddd7d2;
+    border-radius: 8px;
+    color: #443e41;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-personalization {
+    padding: 13px 0 0;
+    border: 0;
+    border-top: 1px solid #ece6e1;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-personalization__head strong {
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-input {
+    height: 48px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+
+  #PBMacProduct-{{ section.id }} .pbmac-trust p {
+    font-size: 11px;
+  }
+
+  @media (max-width: 749px) {
+    #PBMacProduct-{{ section.id }} .pbmac-title {
+      font-size: 29px;
+      line-height: 1.16;
+    }
+  }
+
 </style>
 
 <script>
@@ -848,67 +970,269 @@
   "name": "Plastbat Shirt PDP",
   "tag": "section",
   "class": "section",
-  "enabled_on": {"templates": ["product"]},
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
   "settings": [
-    {"type":"header","content":"Style"},
-    {"type":"color_scheme","id":"color_scheme","label":"Color scheme","default":"scheme-1"},
-    {"type":"checkbox","id":"sticky_gallery","label":"Sticky gallery","default":true},
-    {"type":"range","id":"sticky_top","label":"Sticky top offset","min":50,"max":160,"step":5,"unit":"px","default":90},
-    {"type":"header","content":"Top product area"},
-    {"type":"text","id":"fallback_social_proof","label":"Fallback social proof","default":"Personalized • Made to order"},
-    {"type":"checkbox","id":"show_bundle_offer","label":"Show buy-more offer","default":true},
-    {"type":"text","id":"bundle_heading","label":"Bundle heading","default":"Buy More, Save More"},
-    {"type":"text","id":"bundle_1","label":"Bundle line 1","default":"Buy 2 Get 10% Off"},
-    {"type":"text","id":"bundle_2","label":"Bundle line 2","default":"Buy 3 Get 15% Off"},
-    {"type":"text","id":"bundle_3","label":"Bundle line 3","default":"Buy 4+ Get 20% Off"},
-    {"type":"text","id":"bundle_note","label":"Bundle note","default":"Auto apply discounts on Cart Page"},
-    {"type":"checkbox","id":"show_shipping_card","label":"Show shipping estimate","default":true},
-    {"type":"text","id":"shipping_card_heading","label":"Shipping card heading","default":"Standard Shipping"},
-    {"type":"text","id":"shipping_card_subtext","label":"Shipping card subtext","default":"Estimated delivery timeline"},
-    {"type":"text","id":"order_placed_text","label":"Order placed text","default":"Today"},
-    {"type":"text","id":"order_ships_text","label":"Order ships text","default":"3–5 business days"},
-    {"type":"text","id":"delivered_text","label":"Delivered text","default":"After carrier transit"},
-    {"type":"header","content":"Personalization"},
-    {"type":"checkbox","id":"show_personalization","label":"Show personalization","default":true},
-    {"type":"text","id":"personalization_heading","label":"Personalization heading","default":"Personalized"},
-    {"type":"text","id":"personalization_placeholder","label":"Personalization placeholder","default":"Enter your custom text"},
-    {"type":"checkbox","id":"personalization_required","label":"Require personalization","default":false},
-    {"type":"range","id":"personalization_max","label":"Maximum characters","min":5,"max":50,"step":1,"default":20},
-    {"type":"checkbox","id":"show_preview_button","label":"Show Preview button","default":true},
-    {"type":"text","id":"preview_button_text","label":"Preview button text","default":"Preview"},
-    {"type":"header","content":"Purchase"},
-    {"type":"text","id":"add_to_cart_text","label":"Add to Cart text","default":"Add to Cart"},
-    {"type":"text","id":"sold_out_text","label":"Sold out text","default":"Sold out"},
-    {"type":"text","id":"trust_1","label":"Trust line 1","default":"Full refund for faulty production. No question asked"},
-    {"type":"text","id":"trust_2","label":"Trust line 2","default":"Made to order with secure checkout"},
-    {"type":"header","content":"Size chart"},
-    {"type":"checkbox","id":"show_size_chart","label":"Show Size Chart","default":true},
-    {"type":"header","content":"Accordions"},
-    {"type":"text","id":"description_heading","label":"Description heading","default":"Description"},
-    {"type":"richtext","id":"description_body","label":"Description","default":"<p>Add your product description here, or clear this field to use the Shopify product description.</p>"},
-    {"type":"checkbox","id":"open_description","label":"Open description by default","default":false},
-    {"type":"text","id":"shipping_heading","label":"Shipping heading","default":"Shipping & Returns"},
-    {"type":"richtext","id":"shipping_text","label":"Shipping text","default":"<p>Add your processing, delivery, return and replacement policy here.</p>"},
-    {"type":"text","id":"personalization_info_heading","label":"Personalization info heading","default":"Personalization"},
-    {"type":"richtext","id":"personalization_info","label":"Personalization info","default":"<p>Please review all custom text and selected options before checkout. Preview colors may vary slightly from the finished item.</p>"},
-    {"type":"header","content":"Reviews"},
-    {"type":"checkbox","id":"show_reviews","label":"Show reviews","default":true},
-    {"type":"text","id":"reviews_heading","label":"Reviews heading","default":"Customer Reviews"},
-    {"type":"header","content":"Spacing"},
-    {"type":"range","id":"padding_top","label":"Top padding","min":0,"max":80,"step":4,"unit":"px","default":24},
-    {"type":"range","id":"padding_bottom","label":"Bottom padding","min":0,"max":100,"step":4,"unit":"px","default":28}
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_gallery",
+      "label": "Sticky gallery",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "sticky_top",
+      "label": "Sticky top offset",
+      "min": 50,
+      "max": 160,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "header",
+      "content": "Top product area"
+    },
+    {
+      "type": "header",
+      "content": "Personalization"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_personalization",
+      "label": "Show personalization",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "personalization_heading",
+      "label": "Personalization heading",
+      "default": "Personalized"
+    },
+    {
+      "type": "text",
+      "id": "personalization_placeholder",
+      "label": "Personalization placeholder",
+      "default": "Enter your custom text"
+    },
+    {
+      "type": "checkbox",
+      "id": "personalization_required",
+      "label": "Require personalization",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "personalization_max",
+      "label": "Maximum characters",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preview_button",
+      "label": "Show Preview button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "preview_button_text",
+      "label": "Preview button text",
+      "default": "Preview"
+    },
+    {
+      "type": "header",
+      "content": "Purchase"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to Cart text",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Sold out text",
+      "default": "Sold out"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust line 1",
+      "default": "Full refund for faulty production. No question asked"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust line 2",
+      "default": "Made to order with secure checkout"
+    },
+    {
+      "type": "header",
+      "content": "Size chart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size_chart",
+      "label": "Show Size Chart",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Accordions"
+    },
+    {
+      "type": "text",
+      "id": "description_heading",
+      "label": "Description heading",
+      "default": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "description_body",
+      "label": "Description",
+      "default": "<p>Add your product description here, or clear this field to use the Shopify product description.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_description",
+      "label": "Open description by default",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "shipping_heading",
+      "label": "Shipping heading",
+      "default": "Shipping & Returns"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_text",
+      "label": "Shipping text",
+      "default": "<p>Add your processing, delivery, return and replacement policy here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "personalization_info_heading",
+      "label": "Personalization info heading",
+      "default": "Personalization"
+    },
+    {
+      "type": "richtext",
+      "id": "personalization_info",
+      "label": "Personalization info",
+      "default": "<p>Please review all custom text and selected options before checkout. Preview colors may vary slightly from the finished item.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Reviews"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Show reviews",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_heading",
+      "label": "Reviews heading",
+      "default": "Customer Reviews"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    }
   ],
   "blocks": [
-    {"type":"manual_review","name":"Manual review","settings":[
-      {"type":"text","id":"author","label":"Customer name","default":"Customer"},
-      {"type":"range","id":"rating","label":"Rating","min":1,"max":5,"step":1,"default":5},
-      {"type":"text","id":"date","label":"Date"},
-      {"type":"checkbox","id":"verified","label":"Verified Purchase","default":false},
-      {"type":"text","id":"title","label":"Review title"},
-      {"type":"richtext","id":"body","label":"Review text"},
-      {"type":"image_picker","id":"image","label":"Customer photo"}
-    ]}
+    {
+      "type": "manual_review",
+      "name": "Manual review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Customer name",
+          "default": "Customer"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified Purchase",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Review title"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Review text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer photo"
+        }
+      ]
+    }
   ],
-  "presets": [{"name":"Plastbat Shirt PDP"}]
+  "presets": [
+    {
+      "name": "Plastbat Shirt PDP"
+    }
+  ]
 }
 {% endschema %}

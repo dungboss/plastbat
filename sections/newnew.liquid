@@ -22,6 +22,24 @@
 
   assign pbmac_fallback_color_names = 'Red|Orange|Yellow|Beige|Gold|Brown|Green|Blue|Navy|Grey|Purple|Black|White|Turquoise|Olive|Light Pink|Cyan|Light Purple' | split: '|'
   assign pbmac_fallback_color_hexes = '#EF2B2D|#FF8500|#FFD400|#E9D8AF|#D79B00|#9D5E3B|#0AAE4F|#126BD1|#292C97|#909497|#A250D6|#050607|#FFFFFF|#42CDC8|#7A7F0B|#F7B7C3|#16D8DF|#A34FD3' | split: '|'
+
+  assign pbmac_manual_review_count = 0
+  assign pbmac_manual_rating_total = 0
+  for pbmac_review_block in section.blocks
+    if pbmac_review_block.type == 'manual_review'
+      assign pbmac_manual_review_count = pbmac_manual_review_count | plus: 1
+      assign pbmac_manual_rating_total = pbmac_manual_rating_total | plus: pbmac_review_block.settings.rating
+    endif
+  endfor
+
+  if pbmac_manual_review_count > 0
+    assign pbmac_manual_average = pbmac_manual_rating_total | times: 1.0 | divided_by: pbmac_manual_review_count
+    assign pbmac_manual_average_rounded = pbmac_manual_average | round
+  else
+    assign pbmac_manual_average = 0
+    assign pbmac_manual_average_rounded = 0
+  endif
+
   if current_variant.compare_at_price > current_variant.price
     assign initial_save = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price
   else
@@ -74,15 +92,29 @@
       <div class="pbmac-info">
         <h1 class="pbmac-title">{{ product.title }}</h1>
 
-        {% if rating_object != blank %}
+        {% if pbmac_manual_review_count > 0 %}
           <div class="pbmac-meta">
-            <a href="#pbmac-reviews-{{ section.id }}" class="pbmac-rating"><span>★★★★★</span><b>{{ rating_object.rating | round: 1 }}</b>{% if rating_count != blank %}<em>({{ rating_count }})</em>{% endif %}</a>
+            <a href="#pbmac-reviews-{{ section.id }}" class="pbmac-rating pbmac-rating--manual" aria-label="Read product reviews">
+              <span class="pbmac-rating__stars" aria-hidden="true">
+                {% for i in (1..5) %}
+                  <i class="{% if i <= pbmac_manual_average_rounded %}is-on{% endif %}">★</i>
+                {% endfor %}
+              </span>
+              <em>({{ pbmac_manual_review_count }})</em>
+            </a>
+          </div>
+        {% elsif rating_object != blank %}
+          <div class="pbmac-meta">
+            <a href="#pbmac-reviews-{{ section.id }}" class="pbmac-rating" aria-label="Read product reviews">
+              <span>★★★★★</span>
+              {% if rating_count != blank %}<em>({{ rating_count }})</em>{% endif %}
+            </a>
           </div>
         {% endif %}
 
         <div class="pbmac-price-row" aria-live="polite">
-          <span class="pbmac-price" data-pbmac-price>{{ current_variant.price | money }}</span>
-          <span class="pbmac-compare{% unless current_variant.compare_at_price > current_variant.price %} is-hidden{% endunless %}" data-pbmac-compare>{% if current_variant.compare_at_price > current_variant.price %}{{ current_variant.compare_at_price | money }}{% endif %}</span>
+          <span class="pbmac-compare{% unless current_variant.compare_at_price > current_variant.price %} is-hidden{% endunless %}" data-pbmac-compare>{% if current_variant.compare_at_price > current_variant.price %}{{ current_variant.compare_at_price | money_with_currency }}{% endif %}</span>
+          <span class="pbmac-price" data-pbmac-price>{{ current_variant.price | money_with_currency }}</span>
           <span class="pbmac-save{% if initial_save == 0 %} is-hidden{% endif %}" data-pbmac-save>Save {{ initial_save }}%</span>
         </div>
 
@@ -444,6 +476,46 @@
       <button type="button" class="pbmac-review-modal__arrow pbmac-review-modal__arrow--prev" data-pbmac-review-prev>‹</button>
       <button type="button" class="pbmac-review-modal__arrow pbmac-review-modal__arrow--next" data-pbmac-review-next>›</button>
       <div class="pbmac-review-modal__content"></div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+{% if section.settings.show_newsletter %}
+<section class="pbmac-newsletter" aria-labelledby="pbmac-newsletter-title-{{ section.id }}">
+  <div class="page-width">
+    <div class="pbmac-newsletter__inner">
+      <div class="pbmac-newsletter__copy">
+        <h2 id="pbmac-newsletter-title-{{ section.id }}">{{ section.settings.newsletter_heading | escape }}</h2>
+        <p>{{ section.settings.newsletter_subtext | escape }}</p>
+      </div>
+
+      {% form 'customer', class: 'pbmac-newsletter__form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="pbmac-newsletter__field">
+          <input
+            type="email"
+            name="contact[email]"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="{{ section.settings.newsletter_placeholder | escape }}"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            aria-label="{{ section.settings.newsletter_placeholder | escape }}"
+          >
+          <button type="submit">{{ section.settings.newsletter_button | escape }}</button>
+        </div>
+
+        {% if form.posted_successfully? %}
+          <p class="pbmac-newsletter__success">{{ section.settings.newsletter_success | escape }}</p>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="pbmac-newsletter__error">{{ form.errors | default_errors }}</div>
+        {% endif %}
+      {% endform %}
     </div>
   </div>
 </section>
@@ -1002,12 +1074,186 @@
     }
   }
 
+
+  /* ==========================================================
+     V5 — TOP REVIEW SUMMARY + PRICE + FOOTER NEWSLETTER
+     ========================================================== */
+
+  #PBMac-{{ section.id }} .pbmac-rating--manual {
+    gap: 7px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars {
+    display: inline-flex;
+    gap: 1px;
+    color: #c9c3c6;
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars i {
+    font-style: normal;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating__stars .is-on {
+    color: #2f2930;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-rating em {
+    color: #6f686c;
+    font-size: 11px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price-row {
+    gap: 8px;
+    align-items: baseline;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-compare {
+    order: 1;
+    color: #777174 !important;
+    font-size: 14px !important;
+    font-weight: 500;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price {
+    order: 2;
+    color: #f16422 !important;
+    font-size: 25px !important;
+    line-height: 1;
+    font-weight: 750 !important;
+    letter-spacing: -.025em;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-save {
+    order: 3;
+    color: #d95b27;
+    font-size: 11px !important;
+    font-weight: 700;
+  }
+
+  .pbmac-newsletter {
+    padding: 36px 0 38px;
+    background: #e9e3dd;
+    color: #1f1b1f;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .pbmac-newsletter__inner {
+    width: min(100%, 780px);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .pbmac-newsletter__copy h2 {
+    margin: 0;
+    color: #171417;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+
+  .pbmac-newsletter__copy p {
+    margin: 7px 0 15px;
+    color: #2f2a2d;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  .pbmac-newsletter__form {
+    width: min(100%, 620px);
+    margin: 0 auto;
+  }
+
+  .pbmac-newsletter__field {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .pbmac-newsletter__field input {
+    width: 100%;
+    height: 51px;
+    padding: 0 17px;
+    border: 1px solid #393338;
+    border-radius: 999px;
+    background: transparent;
+    color: #2f292d;
+    font: inherit;
+    font-size: 13px;
+    outline: 0;
+  }
+
+  .pbmac-newsletter__field input::placeholder {
+    color: #72696d;
+    opacity: 1;
+  }
+
+  .pbmac-newsletter__field input:focus {
+    box-shadow: 0 0 0 2px rgba(47, 41, 45, .08);
+  }
+
+  .pbmac-newsletter__field button {
+    height: 51px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: #302a31;
+    color: #fff;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .pbmac-newsletter__field button:hover {
+    background: #211d22;
+  }
+
+  .pbmac-newsletter__success,
+  .pbmac-newsletter__error {
+    margin: 10px 0 0;
+    font-size: 12px;
+  }
+
+  .pbmac-newsletter__success {
+    color: #2d6f4d;
+  }
+
+  .pbmac-newsletter__error {
+    color: #a84a3d;
+  }
+
+  @media (max-width: 749px) {
+    .pbmac-newsletter {
+      padding: 30px 0 32px;
+    }
+
+    .pbmac-newsletter__inner {
+      width: 100%;
+    }
+
+    .pbmac-newsletter__field {
+      grid-template-columns: 1fr;
+      gap: 9px;
+    }
+
+    .pbmac-newsletter__field button {
+      width: 100%;
+    }
+  }
+
 </style>
 
 <script>
 (() => {
   const root=document.getElementById('PBMac-{{ section.id }}'); if(!root||root.dataset.ready==='true')return; root.dataset.ready='true';
-  const variants=[{% for variant in product.variants %}{id:{{ variant.id | json }},options:{{ variant.options | json }},available:{{ variant.available | json }},price:{{ variant.price | money | json }},compare:{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}""{% endif %},save:{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | minus: variant.price | times:100 | divided_by:variant.compare_at_price }}{% else %}0{% endif %},mediaId:{% if variant.featured_media %}{{ variant.featured_media.id | json }}{% else %}null{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}];
+  const variants=[{% for variant in product.variants %}{id:{{ variant.id | json }},options:{{ variant.options | json }},available:{{ variant.available | json }},price:{{ variant.price | money_with_currency | json }},compare:{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money_with_currency | json }}{% else %}""{% endif %},save:{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | minus: variant.price | times:100 | divided_by:variant.compare_at_price }}{% else %}0{% endif %},mediaId:{% if variant.featured_media %}{{ variant.featured_media.id | json }}{% else %}null{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}];
   const slides=[...root.querySelectorAll('[data-pbmac-media]')],thumbs=[...root.querySelectorAll('[data-pbmac-thumb]')];let active=0;const show=(i)=>{if(!slides.length)return;active=(i+slides.length)%slides.length;slides.forEach((s,x)=>{s.hidden=x!==active;s.classList.toggle('is-active',x===active)});thumbs.forEach((t,x)=>t.classList.toggle('is-active',x===active))};thumbs.forEach(t=>t.addEventListener('click',()=>show(Number(t.dataset.pbmacThumb))));root.querySelector('[data-pbmac-prev]')?.addEventListener('click',()=>show(active-1));root.querySelector('[data-pbmac-next]')?.addEventListener('click',()=>show(active+1));
   const byMedia=(id)=>{if(!id)return;const i=slides.findIndex(s=>String(s.dataset.pbmacMediaId)===String(id));if(i>=0)show(i)};
   const groups=[...root.querySelectorAll('[data-pbmac-option-index]')],variantId=root.querySelector('[data-pbmac-variant-id]'),price=root.querySelector('[data-pbmac-price]'),compare=root.querySelector('[data-pbmac-compare]'),save=root.querySelector('[data-pbmac-save]'),atc=root.querySelector('[data-pbmac-atc]'),atcText=root.querySelector('[data-pbmac-atc-text]'),addText={{ section.settings.add_to_cart_text | json }},soldText={{ section.settings.sold_out_text | json }};
@@ -1358,6 +1604,46 @@
     },
     {
       "type": "header",
+      "content": "Newsletter near footer"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Unlock Your 10% OFF!"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtext",
+      "label": "Newsletter subtext",
+      "default": "Join us for gift inspiration, extra savings, and alerts on our latest drops."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Subscribe button",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success",
+      "label": "Success message",
+      "default": "Thanks for subscribing!"
+    },
+    {
+      "type": "header",
       "content": "Spacing"
     },
     {
@@ -1432,7 +1718,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP 221231"
+      "name": "Plastbat Shirt PDP 77777"
     }
   ]
 }

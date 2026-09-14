@@ -4611,6 +4611,99 @@
     font-weight: 700 !important;
   }
 
+
+  /* ==========================================================
+     V23 — MOBILE REVIEW MODAL: SHOW FULL IMAGE
+     Removes the fixed 280px media crop on phones.
+     ========================================================== */
+
+  @media (max-width: 749px) {
+    .pbmac-review-modal {
+      padding: 10px !important;
+      align-items: center !important;
+    }
+
+    .pbmac-review-modal__dialog {
+      width: calc(100vw - 20px) !important;
+      max-width: 520px !important;
+      max-height: calc(100dvh - 20px) !important;
+      overflow: hidden !important;
+      border-radius: 14px !important;
+    }
+
+    .pbmac-review-modal__content {
+      width: 100% !important;
+      max-height: calc(100dvh - 20px) !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      border-radius: 14px !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .pbmac-review-modal-source {
+      display: block !important;
+      width: 100% !important;
+      min-height: 0 !important;
+      max-height: none !important;
+    }
+
+    .pbmac-review-modal-source__media {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      padding: 12px !important;
+      border-right: 0 !important;
+      border-bottom: 1px solid #eee6df !important;
+      background: #fffdfb !important;
+      display: block !important;
+      overflow: visible !important;
+    }
+
+    .pbmac-review-modal-source__image {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100% !important;
+      max-height: none !important;
+      display: block !important;
+      object-fit: contain !important;
+      object-position: center !important;
+      border-radius: 8px !important;
+    }
+
+    .pbmac-review-modal-source__details {
+      width: 100% !important;
+      padding: 17px 16px 22px !important;
+      overflow: visible !important;
+    }
+
+    .pbmac-review-modal__close {
+      position: absolute !important;
+      top: 8px !important;
+      right: 8px !important;
+      z-index: 20 !important;
+      width: 34px !important;
+      height: 34px !important;
+      background: rgba(255,255,255,.96) !important;
+      box-shadow: 0 3px 12px rgba(0,0,0,.12) !important;
+    }
+
+    .pbmac-review-modal__arrow {
+      z-index: 15 !important;
+      width: 36px !important;
+      height: 36px !important;
+      background: rgba(255,255,255,.95) !important;
+    }
+
+    .pbmac-review-modal__arrow--prev {
+      left: 7px !important;
+    }
+
+    .pbmac-review-modal__arrow--next {
+      right: 7px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -4879,7 +4972,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP22",
+  "name": "Plastbat Shirt PDP23",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -5279,7 +5372,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP22"
+      "name": "Plastbat Shirt PDP23"
     }
   ]
 }

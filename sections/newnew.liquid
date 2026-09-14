@@ -55,6 +55,10 @@
   endif
 %}
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
 <section id="PBMac-{{ section.id }}" class="pbmac color-{{ section.settings.color_scheme }}">
   <div class="page-width pbmac__wrap">
     <div class="pbmac__grid">
@@ -342,7 +346,11 @@
                 </svg>
               </span>
               {{ section.settings.description_heading | escape }}
-              <b>⌄</b>
+              <span class="pbmac-accordion__chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 9.5 12 14.5 17 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </summary>
             <div class="pbmac-accordion__content rte">
               {% if section.settings.description_body != blank %}
@@ -363,7 +371,11 @@
                 </svg>
               </span>
               {{ section.settings.shipping_heading | escape }}
-              <b>⌄</b>
+              <span class="pbmac-accordion__chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 9.5 12 14.5 17 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </summary>
             <div class="pbmac-accordion__content rte">{{ section.settings.shipping_text }}</div>
           </details>
@@ -378,7 +390,11 @@
                 </svg>
               </span>
               {{ section.settings.personalization_info_heading | escape }}
-              <b>⌄</b>
+              <span class="pbmac-accordion__chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 9.5 12 14.5 17 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </summary>
             <div class="pbmac-accordion__content rte">{{ section.settings.personalization_info }}</div>
           </details>
@@ -4482,6 +4498,108 @@
     }
   }
 
+
+  /* ==========================================================
+     V20 — SMALLER PRICE / MONTSERRAT CTA / FIXED CHEVRONS
+     ========================================================== */
+
+  /* Price: slightly less dominant */
+  #PBMac-{{ section.id }} .pbmac-price {
+    font-size: 22px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: -.015em !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-compare {
+    font-size: 12.5px !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-save {
+    font-size: 10px !important;
+  }
+
+  /* CTA typography: softer / more polished */
+  #PBMac-{{ section.id }} .pbmac-atc,
+  #PBMac-{{ section.id }} .pbmac-atc--inline,
+  #PBMac-{{ section.id }} .pbmac-atc span,
+  #PBMac-{{ section.id }} [data-pbmac-atc-text] {
+    font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc--inline {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc__arrow {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 400 !important;
+  }
+
+  /* Replace the rotating text glyph with a stable SVG chevron */
+  #PBMac-{{ section.id }} .pbmac-accordion summary b {
+    display: none !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion__chevron {
+    width: 18px !important;
+    height: 18px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #342f33 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion__chevron svg {
+    width: 16px !important;
+    height: 16px !important;
+    display: block !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    transform: none !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion[open] .pbmac-accordion__chevron,
+  #PBMac-{{ section.id }} .pbmac-accordion[open] .pbmac-accordion__chevron svg {
+    transform: none !important;
+  }
+
+  /* Existing old rotate rules cannot affect the new SVG */
+  #PBMac-{{ section.id }} .pbmac-accordion[open] summary b {
+    transform: none !important;
+  }
+
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-price {
+      font-size: 21px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-compare {
+      font-size: 12.5px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-atc--inline {
+      font-size: 14px !important;
+      font-weight: 700 !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion__chevron {
+      width: 18px !important;
+      height: 18px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion__chevron svg {
+      width: 15px !important;
+      height: 15px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -4750,7 +4868,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP19",
+  "name": "Plastbat Shirt PDP20",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -5150,7 +5268,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP19"
+      "name": "Plastbat Shirt PDP20"
     }
   ]
 }

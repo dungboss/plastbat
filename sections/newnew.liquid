@@ -303,34 +303,28 @@
             </div>
           {% endif %}
 
-          <div class="pbmac-quantity-block">
-            <span class="pbmac-quantity-label">{{ section.settings.quantity_label | escape }}</span>
+          {% if section.settings.show_personalization %}
+            <div class="pbmac-customization-summary" data-pbmac-summary>
+              <div class="pbmac-customization-summary__icon" aria-hidden="true">✓</div>
+              <div class="pbmac-customization-summary__content">
+                <strong>{{ section.settings.customization_summary_heading | escape }}</strong>
+                <span><b data-pbmac-summary-color>—</b> · <em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em></span>
+              </div>
+            </div>
+          {% endif %}
 
+          <div class="pbmac-buy-row pbmac-buy-row--compact">
             <div class="pbmac-qty">
               <button type="button" data-pbmac-minus aria-label="Decrease quantity">−</button>
               <input type="number" name="quantity" value="1" min="1" max="99" data-pbmac-qty aria-label="Quantity">
               <button type="button" data-pbmac-plus aria-label="Increase quantity">+</button>
             </div>
-          </div>
 
-          {% if section.settings.show_preview_button %}
-            <button type="button" class="pbmac-preview pbmac-preview--full" data-pbmac-preview-open>
-              <svg class="pbmac-button-icon pbmac-button-icon--eye" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M2.5 12s3.4-5.2 9.5-5.2S21.5 12 21.5 12 18.1 17.2 12 17.2 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
-              </svg>
-              <span>{{ section.settings.preview_button_text | escape }}</span>
+            <button type="submit" name="add" class="pbmac-atc pbmac-atc--inline" data-pbmac-atc {% unless current_variant.available %}disabled{% endunless %}>
+              <span data-pbmac-atc-text>{% if current_variant.available %}{% if section.settings.show_personalization %}{{ section.settings.personalized_add_to_cart_text | escape }}{% else %}{{ section.settings.add_to_cart_text | escape }}{% endif %}{% else %}{{ section.settings.sold_out_text | escape }}{% endif %}</span>
+              <span class="pbmac-atc__arrow" aria-hidden="true">→</span>
             </button>
-          {% endif %}
-
-          <button type="submit" name="add" class="pbmac-atc" data-pbmac-atc {% unless current_variant.available %}disabled{% endunless %}>
-            <svg class="pbmac-button-icon pbmac-button-icon--cart" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 4h2l1.6 9.1a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 1.9-1.4L20 7H6.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="9" cy="19" r="1.4" fill="currentColor"/>
-              <circle cx="17" cy="19" r="1.4" fill="currentColor"/>
-            </svg>
-            <span data-pbmac-atc-text>{% if current_variant.available %}{{ section.settings.add_to_cart_text | escape }}{% else %}{{ section.settings.sold_out_text | escape }}{% endif %}</span>
-          </button>
+          </div>
         {% endform %}
 
         <div class="pbmac-trust">
@@ -395,10 +389,6 @@
 
   {% if section.settings.show_size_chart %}
     <div class="pbmac-modal" data-pbmac-sizechart hidden><div class="pbmac-modal__backdrop" data-pbmac-sizechart-close></div><div class="pbmac-modal__dialog pbmac-sizechart"><button type="button" class="pbmac-modal__close" data-pbmac-sizechart-close>×</button><h3>Size Chart</h3><p>There might be ±1.5 inches difference due to manual measurement and production processes.</p><div class="pbmac-sizechart__table-wrap"><h4>Classic Tee</h4><table><thead><tr><th>Size</th><th>Chest (Front Only)</th><th>Body Length</th></tr></thead><tbody><tr><td>S</td><td>18</td><td>28</td></tr><tr><td>M</td><td>20</td><td>29</td></tr><tr><td>L</td><td>22</td><td>30</td></tr><tr><td>XL</td><td>24</td><td>31</td></tr><tr><td>2XL</td><td>26</td><td>32</td></tr><tr><td>3XL</td><td>28</td><td>33</td></tr><tr><td>4XL</td><td>30</td><td>34</td></tr><tr><td>5XL</td><td>32</td><td>35</td></tr></tbody></table></div></div></div>
-  {% endif %}
-
-  {% if section.settings.show_preview_button %}
-    <div class="pbmac-modal" data-pbmac-preview-modal hidden><div class="pbmac-modal__backdrop" data-pbmac-preview-close></div><div class="pbmac-modal__dialog pbmac-preview-modal"><button type="button" class="pbmac-modal__close" data-pbmac-preview-close>×</button><span class="pbmac-preview-modal__eyebrow">Preview Your Personalization</span><h3>{{ product.title }}</h3><div class="pbmac-preview-card"><strong data-pbmac-preview-style>—</strong><span data-pbmac-preview-color>—</span><span data-pbmac-preview-size>—</span><em data-pbmac-preview-text>No personalization entered</em></div></div></div>
   {% endif %}
 </section>
 
@@ -4339,6 +4329,159 @@
     }
   }
 
+
+  /* ==========================================================
+     V19 — REMOVE PREVIEW / ADD CUSTOMIZATION SUMMARY + INLINE CTA
+     Layout like the reference, but colors remain aligned to this theme.
+     ========================================================== */
+  #PBMac-{{ section.id }} .pbmac-preview,
+  #PBMac-{{ section.id }} [data-pbmac-preview-open],
+  #PBMac-{{ section.id }} [data-pbmac-preview-modal] {
+    display: none !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary {
+    margin: 2px 0 14px !important;
+    padding: 12px 14px !important;
+    border: 1px solid #ead7c5 !important;
+    border-radius: 14px !important;
+    background: #fffaf6 !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0,1fr) !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__icon {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 999px !important;
+    background: #d77c3d !important;
+    color: #fff !important;
+    display: grid !important;
+    place-items: center !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__content strong {
+    display: block !important;
+    margin: 0 0 4px !important;
+    color: #54423a !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__content span {
+    display: block !important;
+    color: #8b7669 !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__content b {
+    color: #d77c3d !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__content em {
+    color: #8b7669 !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-buy-row--compact {
+    display: grid !important;
+    grid-template-columns: 124px minmax(0,1fr) !important;
+    gap: 12px !important;
+    align-items: stretch !important;
+    margin: 0 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-buy-row--compact .pbmac-qty {
+    width: 100% !important;
+    height: 50px !important;
+    border-color: #dfd6d0 !important;
+    background: #fff !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc--inline {
+    width: 100% !important;
+    height: 50px !important;
+    margin: 0 !important;
+    border-radius: 14px !important;
+    background: #d86e35 !important;
+    color: #fff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .02em !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc--inline:disabled {
+    opacity: .45 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc--inline .pbmac-atc__arrow {
+    font-size: 18px !important;
+    line-height: 1 !important;
+    transform: translateY(-.5px);
+  }
+
+  /* Quantity label removed for this layout */
+  #PBMac-{{ section.id }} .pbmac-quantity-block,
+  #PBMac-{{ section.id }} .pbmac-quantity-label {
+    display: none !important;
+  }
+
+  @media (max-width: 749px) {
+    #PBMac-{{ section.id }} .pbmac-customization-summary {
+      margin-bottom: 14px !important;
+      padding: 12px 13px !important;
+      grid-template-columns: 27px minmax(0,1fr) !important;
+      gap: 10px !important;
+      border-radius: 14px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-customization-summary__icon {
+      width: 27px !important;
+      height: 27px !important;
+      font-size: 14px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-customization-summary__content strong {
+      font-size: 14px !important;
+      margin-bottom: 4px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-customization-summary__content span {
+      font-size: 13px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-buy-row--compact {
+      grid-template-columns: 122px minmax(0,1fr) !important;
+      gap: 12px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-buy-row--compact .pbmac-qty {
+      height: 50px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-atc--inline {
+      height: 50px !important;
+      border-radius: 14px !important;
+      font-size: 14px !important;
+    }
+  }
+
 </style>
 
 <script>
@@ -4432,11 +4575,34 @@
 
   const qty=root.querySelector('[data-pbmac-qty]'),clamp=v=>Math.min(99,Math.max(1,parseInt(v||'1',10)||1));root.querySelector('[data-pbmac-minus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)-1));root.querySelector('[data-pbmac-plus]')?.addEventListener('click',()=>qty.value=clamp(Number(qty.value)+1));
   const sizeModal=root.querySelector('[data-pbmac-sizechart]');root.querySelector('[data-pbmac-sizechart-open]')?.addEventListener('click',()=>{sizeModal.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-sizechart-close]').forEach(x=>x.addEventListener('click',()=>{sizeModal.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
-  const preview=root.querySelector('[data-pbmac-preview-modal]'),pers=root.querySelector('[data-pbmac-personalization]');
+  const pers=root.querySelector('[data-pbmac-personalization]');
   const persCount=root.querySelector('[data-pbmac-personalization-count]');
+  const summaryColor=root.querySelector('[data-pbmac-summary-color]');
+  const summaryText=root.querySelector('[data-pbmac-summary-text]');
+  const summaryEmpty={{ section.settings.customization_summary_empty | json }};
+  const optionValueByName=(needle)=>{
+    const names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||'');
+    const opts=selected();
+    const i=names.findIndex(x=>x.includes(needle));
+    return i>=0?opts[i]:'';
+  };
   const syncPersCount=()=>{if(pers&&persCount)persCount.textContent=pers.value.length};
-  pers?.addEventListener('input',syncPersCount);
-  syncPersCount();root.querySelector('[data-pbmac-preview-open]')?.addEventListener('click',()=>{if(!preview)return;const opts=selected(),names=groups.map(g=>g.querySelector('legend')?.textContent?.trim().toLowerCase()||''),get=n=>{const i=names.findIndex(x=>x.includes(n));return i>=0?opts[i]:'—'};preview.querySelector('[data-pbmac-preview-style]').textContent=`Style: ${get('style')}`;const nativeColor=get('color'),customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'—';preview.querySelector('[data-pbmac-preview-color]').textContent=`Color: ${nativeColor!=='—'?nativeColor:customColor}`;const nativeSize=get('size'),customSize=root.querySelector('[data-pbmac-custom-size]:checked')?.value||'—';preview.querySelector('[data-pbmac-preview-size]').textContent=`Size: ${nativeSize!=='—'?nativeSize:customSize}`;preview.querySelector('[data-pbmac-preview-text]').textContent=pers?.value.trim()||'No personalization entered';preview.hidden=false;document.body.classList.add('pbmac-modal-open')});root.querySelectorAll('[data-pbmac-preview-close]').forEach(x=>x.addEventListener('click',()=>{preview.hidden=true;document.body.classList.remove('pbmac-modal-open')}));
+  const syncSummary=()=>{
+    if(summaryColor){
+      const nativeColor=optionValueByName('color');
+      const customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'';
+      const fallbackColor={{ section.settings.default_color_label | json }};
+      summaryColor.textContent=(customColor||nativeColor||fallbackColor||'—');
+    }
+    if(summaryText){
+      const txt=(pers?.value||'').trim();
+      summaryText.textContent=txt||summaryEmpty;
+    }
+  };
+  pers?.addEventListener('input',()=>{syncPersCount();syncSummary()});
+  root.querySelectorAll('[data-pbmac-option-value],[data-pbmac-custom-color],[data-pbmac-custom-size]').forEach(el=>el.addEventListener('change',syncSummary));
+  syncPersCount();
+  syncSummary();
 })();
 </script>
 
@@ -4584,7 +4750,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP18",
+  "name": "Plastbat Shirt PDP19",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -4717,6 +4883,30 @@
       "id": "quantity_label",
       "label": "Quantity label",
       "default": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "customization_summary_heading",
+      "label": "Customization summary heading",
+      "default": "Your customization"
+    },
+    {
+      "type": "text",
+      "id": "customization_summary_empty",
+      "label": "Customization summary empty text",
+      "default": "Add your text above"
+    },
+    {
+      "type": "text",
+      "id": "default_color_label",
+      "label": "Default color label",
+      "default": "Selected color"
+    },
+    {
+      "type": "text",
+      "id": "personalized_add_to_cart_text",
+      "label": "Personalized add to cart text",
+      "default": "PERSONALIZE & ADD TO CART"
     },
     {
       "type": "text",
@@ -4960,12 +5150,8 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP18"
+      "name": "Plastbat Shirt PDP19"
     }
   ]
 }
 {% endschema %}
-
-
-
-

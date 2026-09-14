@@ -103,22 +103,7 @@ assign custom_colors_arr = block.settings.swatches_custom_colors_list | split: '
       <span class="visually-hidden">{{ value | escape }}</span>
       {{ label_unavailable }}
     {%- endcapture -%}
-    {%
-      render 'swatch-input',
-      id: input_id,
-      name: input_name,
-      value: value | escape,
-      swatch: value.swatch,
-      product_form_id: product_form_id,
-      checked: value.selected,
-      visually_disabled: option_disabled,
-      shape: 'circle',
-      help_text: help_text,
-      additional_props: input_dataset,
-      block:block,
-      custom_color_swatch: custom_color_swatch
-      swatch_type: swatch_type
-    %}
+    {% render 'swatch-input', id: input_id, name: input_name, value: value, swatch: value.swatch, product_form_id: product_form_id, checked: value.selected, visually_disabled: option_disabled, shape: 'circle', help_text: help_text, additional_props: input_dataset, block: block, custom_color_swatch: custom_color_swatch, swatch_type: swatch_type %}
   {%- elsif picker_type == 'button' -%}
     <input
       type="radio"
@@ -161,3 +146,33 @@ assign custom_colors_arr = block.settings.swatches_custom_colors_list | split: '
     </option>
   {%- endif -%}
 {%- endfor -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+          render 'swatch-input',
+          id: input_id,
+          name: input_name,
+          value: value | escape,
+          swatch: value.swatch,
+          product_form_id: product_form_id,
+          checked: value.selected,
+          visually_disabled: option_disabled,
+          shape: 'circle',
+          help_text: help_text,
+          additional_props: input_dataset,
+          block:block,
+          custom_color_swatch: custom_color_swatch
+          swatch_type: swatch_type
+        %}
+  to: "{% render 'swatch-input', id: input_id, name: input_name, value: value, swatch:
+    value.swatch, product_form_id: product_form_id, checked: value.selected, visually_disabled:
+    option_disabled, shape: 'circle', help_text: help_text, additional_props: input_dataset,
+    block: block, custom_color_swatch: custom_color_swatch, swatch_type: swatch_type
+    %}"
+  position: 3226..3570
+{% endcomment %}

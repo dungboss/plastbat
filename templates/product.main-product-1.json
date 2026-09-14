@@ -28,26 +28,26 @@
         "padding_bottom": 28
       }
     },
-    "newnew_JUT8TD": {
+    "newnew_WD9QbA": {
       "type": "newnew",
       "blocks": {
-        "manual_review_DHrYdK": {
+        "manual_review_3CfBtJ": {
           "type": "manual_review",
           "settings": {
-            "author": "Câm Lỳ Hồn Lằng",
+            "author": "Mendy Hazard",
             "rating": 5,
             "date": "09/09/2026",
             "verified": true,
-            "title": "saddasdasdasdsa",
-            "body": "<p>ádasdasdas</p>",
-            "image": "shopify://shop_images/1787825817265_5864500917613633006_5864500917613633006_o.jpg"
+            "title": "asadaasasdasdsa",
+            "body": "<p>ádsadasdasdasd</p>",
+            "image": "shopify://shop_images/1787825817245_5864500917613633006_5864500917613633006_h.jpg"
           }
         }
       },
       "block_order": [
-        "manual_review_DHrYdK"
+        "manual_review_3CfBtJ"
       ],
-      "name": "Plastbat Shirt PDP22",
+      "name": "Plastbat Shirt PDP23",
       "settings": {
         "color_scheme": "",
         "sticky_gallery": true,
@@ -101,6 +101,6 @@
   },
   "order": [
     "related-products",
-    "newnew_JUT8TD"
+    "newnew_WD9QbA"
   ]
 }

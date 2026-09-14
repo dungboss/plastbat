@@ -28,26 +28,26 @@
         "padding_bottom": 28
       }
     },
-    "newnew_UJ3qzK": {
+    "newnew_JUT8TD": {
       "type": "newnew",
       "blocks": {
-        "manual_review_KdrMaK": {
+        "manual_review_DHrYdK": {
           "type": "manual_review",
           "settings": {
-            "author": "jamees",
+            "author": "Câm Lỳ Hồn Lằng",
             "rating": 5,
-            "date": "24/25/2222",
+            "date": "09/09/2026",
             "verified": true,
-            "title": "saddasdsadsa",
-            "body": "<p>ádasdasdasdasd</p>",
-            "image": "shopify://shop_images/1787825817232_5864500917613633006_5864500917613633006_h_e0a69ef2-9ac0-413f-b1dc-a7ac6635aed6.jpg"
+            "title": "saddasdasdasdsa",
+            "body": "<p>ádasdasdas</p>",
+            "image": "shopify://shop_images/1787825817265_5864500917613633006_5864500917613633006_o.jpg"
           }
         }
       },
       "block_order": [
-        "manual_review_KdrMaK"
+        "manual_review_DHrYdK"
       ],
-      "name": "Plastbat Shirt PDP18",
+      "name": "Plastbat Shirt PDP22",
       "settings": {
         "color_scheme": "",
         "sticky_gallery": true,
@@ -66,6 +66,10 @@
         "show_preview_button": true,
         "preview_button_text": "Preview",
         "quantity_label": "Quantity",
+        "customization_summary_heading": "Your customization",
+        "customization_summary_empty": "Add your text above",
+        "default_color_label": "Selected color",
+        "personalized_add_to_cart_text": "PERSONALIZE & ADD TO CART",
         "add_to_cart_text": "Add to Cart",
         "sold_out_text": "Sold out",
         "trust_1": "Full refund for faulty production. No question asked",
@@ -97,6 +101,6 @@
   },
   "order": [
     "related-products",
-    "newnew_UJ3qzK"
+    "newnew_JUT8TD"
   ]
 }

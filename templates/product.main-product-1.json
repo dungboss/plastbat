@@ -480,7 +480,7 @@
         "sticky_top": 90,
         "show_style_option": true,
         "show_color_option": true,
-        "show_size_option": true,
+        "show_size_option": false,
         "show_save_badge": false,
         "show_personalization": true,
         "personalization_heading": "Personalized",

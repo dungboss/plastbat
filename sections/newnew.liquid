@@ -7,6 +7,7 @@
 {% endcomment %}
 
 {% liquid
+  assign pb_personalization_limit = 10
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'pbmac-form-' | append: section.id
   assign rating_object = product.metafields.reviews.rating.value
@@ -285,14 +286,14 @@
                     type="text"
                     class="pbmac-input"
                     name="properties[Personalization]"
-                    maxlength="{{ section.settings.personalization_max }}"
+                    maxlength="{{ pb_personalization_limit }}"
                     placeholder="{{ section.settings.personalization_placeholder | escape }}"
                     data-pbmac-personalization
                     {% if section.settings.personalization_required %}required{% endif %}
                   >
 
                   <span class="pbmac-personalization-card__counter">
-                    <b data-pbmac-personalization-count>0</b>/{{ section.settings.personalization_max }}
+                    <b data-pbmac-personalization-count>0</b>/{{ pb_personalization_limit }}
                   </span>
                 </div>
 
@@ -5380,7 +5381,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat PDP Brand",
+  "name": "Plastbat PDP V27",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -5490,7 +5491,7 @@
       "min": 5,
       "max": 50,
       "step": 1,
-      "default": 20
+      "default": 10
     },
     {
       "type": "checkbox",
@@ -5780,7 +5781,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat PDP Brand"
+      "name": "Plastbat PDP V27"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {% comment %}
   PLASTBAT — Macorner-style Shirt Product Page
-  File: sections/plastbat-macorner-shirt-product.liquid
+  File: sections/plastbat-pdp-v24.liquid
   Native Shopify options: Style / Color / Size.
   Includes size chart, personalization preview, shipping card, accordions,
   and manual product reviews with filters, 10-per-page pagination, and modal.
@@ -54,10 +54,6 @@
     assign initial_save = 0
   endif
 %}
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 
 <section id="PBMac-{{ section.id }}" class="pbmac color-{{ section.settings.color_scheme }}">
   <div class="page-width pbmac__wrap">
@@ -657,7 +653,7 @@
     assign pbmac_more_source = blank
 
     if section.settings.more_items_collection != blank
-      assign pbmac_more_source = collections[section.settings.more_items_collection]
+      assign pbmac_more_source = section.settings.more_items_collection
     elsif product.collections.first != blank
       assign pbmac_more_source = product.collections.first
     endif
@@ -4704,6 +4700,418 @@
     }
   }
 
+
+  /* ==========================================================
+     V25 MOBILE SAFE — STOP ALL PRODUCT-INFO OVERFLOW
+     This final override intentionally wins over older mobile CSS.
+     ========================================================== */
+
+  @media (max-width: 749px) {
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    #PBMac-{{ section.id }} {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: clip;
+    }
+
+    #PBMac-{{ section.id }} .pbmac__wrap {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+      box-sizing: border-box;
+      overflow: visible;
+    }
+
+    #PBMac-{{ section.id }} .pbmac__grid {
+      display: block !important;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-gallery,
+    #PBMac-{{ section.id }} .pbmac-info,
+    #PBMac-{{ section.id }} .pbmac-form,
+    #PBMac-{{ section.id }} .pbmac-options,
+    #PBMac-{{ section.id }} fieldset,
+    #PBMac-{{ section.id }} .pbmac-personalization-card,
+    #PBMac-{{ section.id }} .pbmac-customization-summary,
+    #PBMac-{{ section.id }} .pbmac-buy-row,
+    #PBMac-{{ section.id }} .pbmac-accordions {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0 !important;
+      box-sizing: border-box;
+    }
+
+    /* Keep product title and long text inside viewport */
+    #PBMac-{{ section.id }} .pbmac-title,
+    #PBMac-{{ section.id }} .pbmac-accordion__content,
+    #PBMac-{{ section.id }} .pbmac-personalization-card__body,
+    #PBMac-{{ section.id }} .pbmac-customization-summary__content {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-title {
+      width: 100% !important;
+    }
+
+    /* Native option headings: Size Chart can never push the row wider */
+    #PBMac-{{ section.id }} .pbmac-option__head,
+    #PBMac-{{ section.id }} .pbmac-fallback-option__head {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-option__head legend,
+    #PBMac-{{ section.id }} .pbmac-fallback-option__head legend {
+      min-width: 0;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-sizechart-link {
+      max-width: 110px;
+      white-space: nowrap;
+      justify-self: end;
+    }
+
+    /* All option choices wrap instead of overflowing */
+    #PBMac-{{ section.id }} .pbmac-pills,
+    #PBMac-{{ section.id }} .pbmac-colors,
+    #PBMac-{{ section.id }} .pbmac-fallback-colors,
+    #PBMac-{{ section.id }} .pbmac-fallback-size-pills {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      display: flex !important;
+      flex-wrap: wrap !important;
+      overflow: visible !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-pill,
+    #PBMac-{{ section.id }} .pbmac-color,
+    #PBMac-{{ section.id }} .pbmac-fallback-color-pill,
+    #PBMac-{{ section.id }} .pbmac-fallback-size-pill {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-pill span,
+    #PBMac-{{ section.id }} .pbmac-fallback-size-pill span {
+      max-width: 100%;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    /* Personalization input/card */
+    #PBMac-{{ section.id }} .pbmac-personalization-card__input-wrap,
+    #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    /* Summary and buy row */
+    #PBMac-{{ section.id }} .pbmac-customization-summary {
+      grid-template-columns: 27px minmax(0, 1fr) !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-customization-summary__content {
+      min-width: 0;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-buy-row--compact {
+      width: 100%;
+      max-width: 100%;
+      grid-template-columns: 112px minmax(0, 1fr) !important;
+      gap: 10px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-buy-row--compact .pbmac-qty,
+    #PBMac-{{ section.id }} .pbmac-atc--inline {
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-atc--inline {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      white-space: normal !important;
+      text-align: center;
+      line-height: 1.15 !important;
+    }
+
+    /* Accordions */
+    #PBMac-{{ section.id }} .pbmac-accordion summary {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      grid-template-columns: 20px minmax(0, 1fr) 18px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-accordion summary > :nth-child(2) {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    /* Gallery main + thumbs stay inside page.
+       Thumbnails may scroll horizontally, but cannot widen the page. */
+    #PBMac-{{ section.id }} .pbmac-gallery__main {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-gallery__thumbs {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-gallery__thumbs::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Modals never exceed phone width */
+    #PBMac-{{ section.id }} .pbmac-modal__dialog,
+    .pbmac-review-modal__dialog {
+      width: calc(100vw - 24px) !important;
+      max-width: calc(100vw - 24px) !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      box-sizing: border-box;
+    }
+
+    /* More Items / review / newsletter stay contained too */
+    .pbmac-more-items,
+    .pbmac-reviews,
+    .pbmac-newsletter {
+      max-width: 100vw;
+      overflow-x: clip;
+    }
+
+    .pbmac-more-items .page-width,
+    .pbmac-reviews .page-width,
+    .pbmac-newsletter .page-width {
+      width: 100%;
+      max-width: 100%;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+      box-sizing: border-box;
+    }
+
+    .pbmac-more-items__grid,
+    .pbmac-reviews-layout,
+    .pbmac-newsletter__inner {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+    }
+  }
+
+  @media (max-width: 389px) {
+    #PBMac-{{ section.id }} .pbmac__wrap {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-buy-row--compact {
+      grid-template-columns: 104px minmax(0, 1fr) !important;
+      gap: 8px !important;
+    }
+
+    #PBMac-{{ section.id }} .pbmac-atc--inline {
+      font-size: 13px !important;
+    }
+  }
+
+
+  /* V26 — PLASTBAT BRAND TONE */
+  #PBMac-{{ section.id }} {
+    --pb26-bg: #FBF7F2;
+    --pb26-panel: #FFFDFC;
+    --pb26-soft: #F3E7DA;
+    --pb26-border: #E7D7C7;
+    --pb26-brown: #9A6848;
+    --pb26-dark: #5B3B2A;
+    --pb26-text: #4D3B31;
+    --pb26-muted: #8F7D71;
+    --pb26-sale: #B86F43;
+    background: var(--pb26-bg) !important;
+    color: var(--pb26-text) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-title,
+  #PBMac-{{ section.id }} .pbmac-option__head legend,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend,
+  #PBMac-{{ section.id }} .pbmac-personalization-card__body > label,
+  #PBMac-{{ section.id }} .pbmac-customization-summary__content strong,
+  #PBMac-{{ section.id }} .pbmac-accordion summary {
+    color: var(--pb26-dark) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-price,
+  #PBMac-{{ section.id }} .pbmac-rating__stars .is-on,
+  #PBMac-{{ section.id }} .pbmac-rating > span:not(.pbmac-rating__stars) {
+    color: var(--pb26-brown) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-save {
+    color: var(--pb26-sale) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-compare,
+  #PBMac-{{ section.id }} .pbmac-option__selected,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head legend > span,
+  #PBMac-{{ section.id }} .pbmac-sizechart-link {
+    color: var(--pb26-muted) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-gallery__main,
+  #PBMac-{{ section.id }} .pbmac-gallery__thumb,
+  #PBMac-{{ section.id }} .pbmac-pill span,
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill span,
+  #PBMac-{{ section.id }} .pbmac-color__outer,
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill__outer,
+  #PBMac-{{ section.id }} .pbmac-qty {
+    background: var(--pb26-panel) !important;
+    border-color: var(--pb26-border) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-pill input:checked + span,
+  #PBMac-{{ section.id }} .pbmac-fallback-size-pill input:checked + span,
+  #PBMac-{{ section.id }} .pbmac-color input:checked + .pbmac-color__outer,
+  #PBMac-{{ section.id }} .pbmac-fallback-color-pill input:checked + .pbmac-fallback-color-pill__outer {
+    border-color: var(--pb26-brown) !important;
+    box-shadow: inset 0 0 0 1px var(--pb26-brown) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card {
+    background: #F8EFE6 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card__banner {
+    background: linear-gradient(90deg,#936044 0%,#B37C59 45%,#F3E7DA 100%) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-personalization-card .pbmac-input {
+    background: var(--pb26-panel) !important;
+    border-color: #CDBAA8 !important;
+    color: var(--pb26-text) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary {
+    background: #FFF9F3 !important;
+    border-color: var(--pb26-border) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__icon {
+    background: var(--pb26-brown) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__content b {
+    color: var(--pb26-brown) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc,
+  #PBMac-{{ section.id }} .pbmac-atc--inline {
+    background: var(--pb26-dark) !important;
+    color: #FFFDFC !important;
+    box-shadow: 0 10px 22px rgba(91,59,42,.14) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc:hover,
+  #PBMac-{{ section.id }} .pbmac-atc--inline:hover {
+    background: #4A3023 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-trust__check {
+    color: var(--pb26-brown) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion {
+    border-color: var(--pb26-border) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion[open] summary {
+    background: var(--pb26-soft) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-accordion__icon,
+  #PBMac-{{ section.id }} .pbmac-accordion__icon svg,
+  #PBMac-{{ section.id }} .pbmac-accordion__chevron {
+    color: var(--pb26-dark) !important;
+  }
+
+  .pbmac-reviews,
+  .pbmac-more-items {
+    background: #FBF7F2 !important;
+  }
+
+  .pbmac-reviews-card {
+    background: #F4E9DD !important;
+  }
+
+  .pbmac-reviews-card__stars,
+  .pbmac-review__stars i.is-on,
+  .pbmac-review-modal .pbmac-review__stars i.is-on,
+  .pbmac-more-card__stars,
+  .pbmac-more-card__sale {
+    color: #9A6848 !important;
+  }
+
+  .pbmac-reviews-card .pbmac-histogram__row i {
+    background: #9A6848 !important;
+  }
+
+  .pbmac-review-tabs-top span::after,
+  .pbmac-pagination button.is-active {
+    background: #5B3B2A !important;
+    border-color: #5B3B2A !important;
+  }
+
+  .pbmac-newsletter {
+    background: #EEDDC9 !important;
+    color: #5B3B2A !important;
+  }
+
+  .pbmac-newsletter__copy h2 {
+    color: #5B3B2A !important;
+  }
+
+  .pbmac-newsletter__copy p {
+    color: #735847 !important;
+  }
+
+  .pbmac-newsletter__field input {
+    border-color: #9A6848 !important;
+    color: #5B3B2A !important;
+  }
+
+  .pbmac-newsletter__field button {
+    background: #5B3B2A !important;
+  }
+
 </style>
 
 <script>
@@ -4972,7 +5380,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat Shirt PDP23",
+  "name": "Plastbat PDP Brand",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -5372,7 +5780,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat Shirt PDP23"
+      "name": "Plastbat PDP Brand"
     }
   ]
 }

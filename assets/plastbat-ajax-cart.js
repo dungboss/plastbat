@@ -1,5 +1,6 @@
 (() => {
-  const productFormSelector = 'form.pb-product-form';
+  // Product forms (main-product + pbmac product sections) that add to cart via AJAX and open the cart drawer.
+  const productFormSelector = 'form.pb-product-form, form.pbmac-form';
 
   const showError = (form, message) => {
     let error = form.querySelector('[data-pb-cart-error]');
@@ -15,7 +16,8 @@
 
   document.addEventListener('submit', async (event) => {
     const form = event.target.closest(productFormSelector);
-    if (!form || form.dataset.pbCartSubmitting === 'true') return;
+    // Respect section-level validators that already cancelled the submit (e.g. sold out, empty personalization).
+    if (!form || event.defaultPrevented || form.dataset.pbCartSubmitting === 'true') return;
 
     event.preventDefault();
 

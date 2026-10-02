@@ -75,7 +75,10 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') && this.querySelector('.drawer__inner').classList.remove('is-empty');
+    // renderContents runs after a successful add, so the cart is no longer empty. Clear the flag on the
+    // drawer element itself too, otherwise the empty-cart CSS hides the header, footer and Checkout.
+    this.classList.remove('is-empty');
+    this.querySelector('.drawer__inner')?.classList.remove('is-empty');
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section => {
       const sectionElement = section.selector ? document.querySelector(section.selector) : document.getElementById(section.id);

@@ -5,6 +5,19 @@ class CartDrawer extends HTMLElement {
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
     this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
+    this.bindCartDrawerToggles();
+  }
+
+  // Plastbat sticky-nav cart icon: open the drawer instead of navigating to /cart (href stays as no-JS fallback).
+  bindCartDrawerToggles() {
+    document.querySelectorAll('[data-pb-cart-drawer-toggle]').forEach((toggle) => {
+      toggle.setAttribute('aria-haspopup', 'dialog');
+      toggle.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+        event.preventDefault();
+        this.open(toggle);
+      });
+    });
   }
 
   setHeaderCartIconAccessibility() {

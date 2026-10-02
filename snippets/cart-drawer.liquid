@@ -607,23 +607,6 @@
           </small>
         </div>
 
-        <!-- CTAs -->
-
-        <div class="cart__ctas" {{ block.shopify_attributes }}>
-          <button
-            type="submit"
-            id="CartDrawer-Checkout"
-            class="cart__checkout-button button"
-            name="checkout"
-            form="CartDrawer-Form"
-            {% if cart == empty %}
-              disabled
-            {% endif %}
-          >
-            {{ 'sections.cart.checkout' | t }}
-          </button>
-        </div>
-
         {% if settings.show_cart_payment_badges %}
           <div class="cart__badges">
             <ul class="payment-badges" role="list">
@@ -652,6 +635,22 @@
             >
           </div>
         {% endif %}
+
+        <!-- CTAs: kept last so Checkout always sits at the very bottom of the drawer -->
+        <div class="cart__ctas" {{ block.shopify_attributes }}>
+          <button
+            type="submit"
+            id="CartDrawer-Checkout"
+            class="cart__checkout-button button"
+            name="checkout"
+            form="CartDrawer-Form"
+            {% if cart == empty %}
+              disabled
+            {% endif %}
+          >
+            {{ 'sections.cart.checkout' | t }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

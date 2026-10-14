@@ -321,10 +321,10 @@
         "padding_bottom": 64
       }
     },
-    "testimonials": {
+    "ds_testimonials_eekbwW": {
       "type": "ds-testimonials",
       "blocks": {
-        "r1": {
+        "column_Jnedy8": {
           "type": "column",
           "settings": {
             "image": "shopify://shop_images/iap_640x640.8332915771_lubs2pz4.avif",
@@ -333,19 +333,19 @@
             "author": "David"
           }
         },
-        "r2": {
+        "column_aWARDj": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/iap_640x640.8227561686_6hhha9nx.avif",
+            "image": "shopify://shop_images/iap_600x600.8649815051_4vydbqi1.webp",
             "title": "“Exactly What I Wanted”",
             "text": "<p>A cutepiece, responsive customization support and careful packaging.</p>",
             "author": "Sara"
           }
         },
-        "r3": {
+        "column_MYp9br": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/iap_640x640.8223220757_1idzhrmf.jpg",
+            "image": "shopify://shop_images/iap_600x600.8673816576_6chva9v9.webp",
             "title": "“Excellent Craftsmanship”",
             "text": "<p>The finished product matched expectations and looked great in person.</p>",
             "author": "Jennifer"
@@ -353,9 +353,9 @@
         }
       },
       "block_order": [
-        "r1",
-        "r2",
-        "r3"
+        "column_Jnedy8",
+        "column_aWARDj",
+        "column_MYp9br"
       ],
       "settings": {
         "title": "Loved by Plastbat Customers",
@@ -434,7 +434,7 @@
         "swipe_on_mobile": true,
         "padding_top": 48,
         "padding_bottom": 56,
-        "custom_colors_background": "#C99B6B",
+        "custom_colors_background": "#c99b6b",
         "custom_gradient_background": "",
         "custom_colors_text": "#5f493d"
       }
@@ -480,7 +480,7 @@
     "h_etrending_6tgfqL",
     "story",
     "process",
-    "testimonials",
+    "ds_testimonials_eekbwW",
     "promise",
     "newsletter"
   ]

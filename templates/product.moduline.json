@@ -1,0 +1,532 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "newnew_WD9QbA": {
+      "type": "newnew",
+      "blocks": {
+        "manual_review_3CfBtJ": {
+          "type": "manual_review",
+          "settings": {
+            "author": "James Madders",
+            "rating": 5,
+            "date": "09/19/2026",
+            "verified": true,
+            "title": "Love this product so much. Better than expected",
+            "body": "",
+            "image": "shopify://shop_images/1787825817245_5864500917613633006_5864500917613633006_h.jpg"
+          }
+        },
+        "manual_review_cjWKCD": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ethan Parker",
+            "rating": 5,
+            "date": "09/18/2026",
+            "verified": true,
+            "title": "I was looking for something different for a car lover and this was perfect. Personalized, useful, and actually looks great on the wall.",
+            "body": "",
+            "image": "shopify://shop_images/a580ee54-4351-4381-a54c-ee9e62d7b480.png"
+          }
+        },
+        "manual_review_HiqaWF": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Mason Turner",
+            "rating": 5,
+            "date": "09/15/2026",
+            "verified": true,
+            "title": "Bought this as a gift for my husband because he is obsessed with cars. The personalized plate with his name made it feel so special. He put it up in the garage immediately.",
+            "body": "",
+            "image": "shopify://shop_images/1787814817807_119966994728092966_7852098855956265588_h.jpg"
+          }
+        },
+        "manual_review_CXNiAr": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ava Collins",
+            "rating": 5,
+            "date": "09/14/2026",
+            "verified": true,
+            "title": "Honestly much nicer than I expected. The 3D car details really stand out once it is mounted.",
+            "body": "",
+            "image": "shopify://shop_images/9413ebbc-8b3a-464a-8de0-b320fe25cbaf.png"
+          }
+        },
+        "manual_review_ipKaw6": {
+          "type": "manual_review",
+          "settings": {
+            "author": "James Hayden",
+            "rating": 5,
+            "date": "10/09/2026",
+            "verified": true,
+            "title": "Good quality at an affordable price",
+            "body": "",
+            "image": "shopify://shop_images/ce191079-eeb8-427a-9538-315a716114b7.png"
+          }
+        },
+        "manual_review_kj3h4d": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Chloe Morgan",
+            "rating": 5,
+            "date": "09/09/2026",
+            "verified": true,
+            "title": "Never seen a key holder designed like a car before. Such a fun and creative product.",
+            "body": "",
+            "image": "shopify://shop_images/1789793345621_119966994728092966_5648609375229576175_h.jpg"
+          }
+        },
+        "manual_review_AhDT3K": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Owen Hayes",
+            "rating": 5,
+            "date": "08/09/2026",
+            "verified": true,
+            "title": "Pictures really do not show the depth of the car. It looks awesome hanging on the wall.",
+            "body": "",
+            "image": "shopify://shop_images/1789793345640_119966994728092966_5648609375229576175_h.jpg"
+          }
+        },
+        "manual_review_Y7PzBj": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Stella Watson",
+            "rating": 5,
+            "date": "06/09/2026",
+            "verified": true,
+            "title": "The personalization is definitely what makes it. It turned a cool car decoration into something that actually felt made for him.",
+            "body": ""
+          }
+        },
+        "manual_review_kmVTmk": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Grace Palmer",
+            "rating": 5,
+            "date": "05/09/2026",
+            "verified": true,
+            "title": "If your husband is into cars, get this. Mine spent more time looking at the details than actually hanging his keys on it 😂",
+            "body": ""
+          }
+        },
+        "manual_review_EX4bhX": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Henry Ward",
+            "rating": 5,
+            "date": "04/09/2026",
+            "verified": true,
+            "title": "Ordered this for my brother who loves sports cars. He immediately asked me where I found it because he had never seen anything like it before.",
+            "body": ""
+          }
+        },
+        "manual_review_qj9xCY": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Lucas Price",
+            "rating": 5,
+            "date": "09/02/2026",
+            "verified": true,
+            "title": "Looks fantastic next to my husband's car posters and tools. It blends right into the garage but still stands out.",
+            "body": ""
+          }
+        },
+        "manual_review_ggArzx": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Lily Cooper",
+            "rating": 5,
+            "date": "09/01/2026",
+            "verified": true,
+            "title": "Definitely not another boring personalized gift.",
+            "body": ""
+          }
+        },
+        "manual_review_rEUP8J": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Henry Ward",
+            "rating": 5,
+            "date": "30/08/2026",
+            "verified": true,
+            "title": "Ordered this for my brother who loves sports cars. He immediately asked me where I found it because he had never seen anything like it before.",
+            "body": ""
+          }
+        },
+        "manual_review_wte6Ki": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Zoe Jenkins",
+            "rating": 5,
+            "date": "08/28/2026",
+            "verified": true,
+            "title": "He normally does not get excited about decorative gifts, but this one got his attention.",
+            "body": ""
+          }
+        },
+        "manual_review_MYeGwi": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Wyatt Perry",
+            "rating": 5,
+            "date": "08/27/2026",
+            "verified": true,
+            "title": "Looks great, holds the keys, and the personalized plate is adorable.",
+            "body": ""
+          }
+        },
+        "manual_review_KEeJex": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Hannah Morris",
+            "rating": 5,
+            "date": "08/25/2026",
+            "verified": true,
+            "title": "Everyone who sees it asks about it. Really unique concept for a car key holder.",
+            "body": ""
+          }
+        },
+        "manual_review_iKYYaJ": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Levi Powell",
+            "rating": 5,
+            "date": "08/22/2026",
+            "verified": true,
+            "title": "Bought it as a gift and I am very happy I did. It feels much more personal than giving another generic car accessory.",
+            "body": ""
+          }
+        },
+        "manual_review_JGMVXx": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Caleb Russell",
+            "rating": 5,
+            "date": "08/20/2026",
+            "verified": true,
+            "title": "The name came out clean and easy to read. I love how the personalization is incorporated into the car instead of just being printed somewhere randomly.",
+            "body": ""
+          }
+        },
+        "manual_review_3ezEMr": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Julian Cox",
+            "rating": 5,
+            "date": "08/19/2026",
+            "verified": true,
+            "title": "Really impressed with how detailed it looks on the wall. The design feels much more interesting than a standard key rack.",
+            "body": ""
+          }
+        },
+        "manual_review_LnKUTT": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Natalie Gray",
+            "rating": 5,
+            "date": "08/18/2026",
+            "verified": true,
+            "title": "Gave one to my dad and now he wants a second car design for his other set of keys. I think that says everything 😂",
+            "body": ""
+          }
+        },
+        "manual_review_FP7QLd": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Adrian Kelly",
+            "rating": 5,
+            "date": "08/17/2026",
+            "verified": true,
+            "title": "Nice car details, useful hooks and beautiful personalization. Would definitely make a good gift for someone who loves cars.",
+            "body": ""
+          }
+        },
+        "manual_review_nymVHw": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Logan Murphy",
+            "rating": 5,
+            "date": "08/16/2026",
+            "verified": false,
+            "title": "Such a cool idea. Definitely not something you see everywhere.",
+            "body": ""
+          }
+        },
+        "manual_review_YehrBx": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Mia Peterson",
+            "rating": 5,
+            "date": "08/15/2026",
+            "verified": true,
+            "title": "My boyfriend is a huge car guy and this was the perfect birthday gift for him.",
+            "body": ""
+          }
+        },
+        "manual_review_9eP7GE": {
+          "type": "manual_review",
+          "settings": {
+            "author": "James Griffin",
+            "rating": 5,
+            "date": "08/12/2026",
+            "verified": true,
+            "title": "My dad has a garage full of car stuff and somehow this still managed to stand out.",
+            "body": ""
+          }
+        },
+        "manual_review_VYaE93": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Amelia Foster",
+            "rating": 5,
+            "date": "08/10/2026",
+            "verified": true,
+            "title": "I had no idea what to get my husband this year. He loves cars, so I took a chance on this and he was genuinely impressed",
+            "body": ""
+          }
+        },
+        "manual_review_gYP7Ng": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Luke Morgan",
+            "rating": 5,
+            "date": "08/09/2026",
+            "verified": true,
+            "title": "Clean, detailed and unique. Exactly what I wanted.",
+            "body": ""
+          }
+        },
+        "manual_review_VDWwMK": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Amelia Foster",
+            "rating": 5,
+            "date": "08/09/2026",
+            "verified": true,
+            "title": "I had no idea what to get my husband this year. He loves cars, so I took a chance on this and he was genuinely impressed.",
+            "body": ""
+          }
+        },
+        "manual_review_GHa8hc": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Grace Sullivan",
+            "rating": 5,
+            "date": "07/27/2026",
+            "verified": true,
+            "title": "Bought this for my dad and he immediately wanted to hang it in his garage. He loved it.",
+            "body": ""
+          }
+        },
+        "manual_review_PzYHiU": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Emily Carter",
+            "rating": 5,
+            "date": "07/25/2026",
+            "verified": true,
+            "title": "I ordered this for my husband and he smiled as soon as he opened it. Such a fun idea.",
+            "body": ""
+          }
+        },
+        "manual_review_DaDcni": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Lucas Anderson",
+            "rating": 4,
+            "date": "07/24/2026",
+            "verified": true,
+            "title": "Clean design and perfect for someone who loves cars.",
+            "body": ""
+          }
+        },
+        "manual_review_rhXGUC": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ava Richardson",
+            "rating": 5,
+            "date": "07/23/2026",
+            "verified": true,
+            "title": "This was one of the easiest gifts to choose and it turned out to be one of the best ones.",
+            "body": ""
+          }
+        },
+        "manual_review_hU9ifR": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Benjamin Scott",
+            "rating": 5,
+            "date": "07/22/2026",
+            "verified": true,
+            "title": "Awesome gift idea. It feels personal and different from the usual garage decor.",
+            "body": ""
+          }
+        },
+        "manual_review_GgYWkQ": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Sophie Walker",
+            "rating": 5,
+            "date": "",
+            "verified": true,
+            "title": "Really cool design and the personalization makes it feel much more special.",
+            "body": ""
+          }
+        },
+        "manual_review_We6gzc": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Jacob Harris",
+            "rating": 4,
+            "date": "07/20/2026",
+            "verified": true,
+            "title": "Looks great in my garage and finally gives me one place to keep all my keys.",
+            "body": ""
+          }
+        },
+        "manual_review_U4UpD4": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "07/19/2026",
+            "verified": true,
+            "title": "Got this for my boyfriend and he absolutely loved it. Such a unique gift idea.",
+            "body": ""
+          }
+        },
+        "manual_review_X4XtPz": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Zachary Allen",
+            "rating": 5,
+            "date": "07/04/2026",
+            "verified": true,
+            "title": "Really happy with how it looks. Clean finish and a cool concept.",
+            "body": ""
+          }
+        }
+      },
+      "block_order": [
+        "manual_review_3CfBtJ",
+        "manual_review_cjWKCD",
+        "manual_review_HiqaWF",
+        "manual_review_CXNiAr",
+        "manual_review_ipKaw6",
+        "manual_review_kj3h4d",
+        "manual_review_AhDT3K",
+        "manual_review_Y7PzBj",
+        "manual_review_kmVTmk",
+        "manual_review_EX4bhX",
+        "manual_review_qj9xCY",
+        "manual_review_ggArzx",
+        "manual_review_rEUP8J",
+        "manual_review_wte6Ki",
+        "manual_review_MYeGwi",
+        "manual_review_KEeJex",
+        "manual_review_iKYYaJ",
+        "manual_review_JGMVXx",
+        "manual_review_3ezEMr",
+        "manual_review_LnKUTT",
+        "manual_review_FP7QLd",
+        "manual_review_nymVHw",
+        "manual_review_YehrBx",
+        "manual_review_9eP7GE",
+        "manual_review_VYaE93",
+        "manual_review_gYP7Ng",
+        "manual_review_VDWwMK",
+        "manual_review_GHa8hc",
+        "manual_review_PzYHiU",
+        "manual_review_DaDcni",
+        "manual_review_rhXGUC",
+        "manual_review_hU9ifR",
+        "manual_review_GgYWkQ",
+        "manual_review_We6gzc",
+        "manual_review_U4UpD4",
+        "manual_review_X4XtPz"
+      ],
+      "name": "Plastbat Shirt PDP23",
+      "settings": {
+        "color_scheme": "",
+        "sticky_gallery": true,
+        "sticky_top": 90,
+        "show_style_option": true,
+        "show_color_option": true,
+        "show_size_option": false,
+        "show_save_badge": false,
+        "show_personalization": true,
+        "personalization_heading": "Personalized",
+        "personalization_field_label": "Enter Your Text",
+        "personalization_helper": "Press Space On The Keyboard If You Don't Want To Include Text",
+        "personalization_placeholder": "Enter your custom text",
+        "personalization_required": false,
+        "personalization_max": 20,
+        "show_preview_button": true,
+        "preview_button_text": "Preview",
+        "quantity_label": "Quantity",
+        "customization_summary_heading": "Your customization",
+        "customization_summary_empty": "Add your text above",
+        "default_color_label": "Selected color",
+        "personalized_add_to_cart_text": "PERSONALIZE & ADD TO CART",
+        "add_to_cart_text": "Add to Cart",
+        "sold_out_text": "Sold out",
+        "trust_1": "Full refund for faulty production. No question asked",
+        "trust_2": "Made to order with secure checkout",
+        "show_size_chart": true,
+        "description_heading": "Description",
+        "description_body": "<p>This <strong>3D-printed wall key holder </strong>combines everyday function with personalized decor. Customize it with your preferred color and name to create a unique piece for a garage, office, entryway, or man cave. A practical and thoughtful choice for <strong>car lovers</strong>, it also makes a memorable personalized gift for birthdays, Father’s Day, Christmas, and other special occasions.</p>",
+        "open_description": false,
+        "shipping_heading": "Shipping & Returns",
+        "shipping_text": "<p>Each item is made to order to help reduce waste and ensure careful attention to detail. Please allow <strong>7–9 business days </strong>for processing and production, as every piece is individually crafted and requires time to achieve the best quality. Once your order is ready and shipped, delivery typically takes <strong>3–7 business days</strong>, depending on your location and the shipping carrier.</p>",
+        "personalization_info_heading": "Personalization",
+        "personalization_info": "<p>Please complete all required personalization fields, such as <strong>Name, Color, Style, or other available options</strong>, and double-check your selections carefully before placing your order.</p><p>For personalized text, please use <strong>standard English letters and numbers only</strong>. Avoid special characters or emojis unless otherwise stated, as they may not display clearly on the finished product.</p><p>Please note that actual product colors may vary slightly from the images shown on our website due to lighting conditions during photography, screen settings, and differences between digital displays and the physical product.</p>",
+        "show_reviews": true,
+        "reviews_heading": "Customer Reviews",
+        "show_newsletter": true,
+        "newsletter_heading": "Unlock Your 10% OFF!",
+        "newsletter_subtext": "Join us for gift inspiration, extra savings, and alerts on our latest drops.",
+        "newsletter_placeholder": "Enter your email",
+        "newsletter_button": "Subscribe",
+        "newsletter_success": "Thanks for subscribing!",
+        "padding_top": 24,
+        "padding_bottom": 28,
+        "show_more_items": true,
+        "more_items_heading": "More Items to Consider",
+        "more_items_collection": "",
+        "more_items_limit": 4
+      }
+    }
+  },
+  "order": [
+    "related-products",
+    "newnew_WD9QbA"
+  ]
+}

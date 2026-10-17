@@ -132,56 +132,136 @@
         {% form 'product', product, id: product_form_id, class: 'pbmac-form' %}
           <input type="hidden" name="id" value="{{ current_variant.id }}" data-pbmac-variant-id>
 
-          {% comment %}
-            DYNAMIC SHOPIFY VARIANTS
-            - Shows every native Shopify product option automatically.
-            - Supports any option name: Door Color, Set Size, Material, Style, Pack, etc.
-            - If the product has no native options (Default Title only), nothing is shown.
-            - No fallback/fake Color or Size options are added.
-          {% endcomment %}
           {% unless product.has_only_default_variant %}
             {% for option in product.options_with_values %}
               {% assign option_name_down = option.name | downcase %}
-              {% assign is_color_option = false %}
+              {% assign option_type = 'pill' %}
+              {% assign option_visible = true %}
+
               {% if option_name_down contains 'color' or option_name_down contains 'colour' %}
-                {% assign is_color_option = true %}
+                {% assign option_type = 'color' %}
+                {% assign option_visible = section.settings.show_color_option %}
+              {% elsif option_name_down contains 'size' %}
+                {% assign option_visible = section.settings.show_size_option %}
+              {% elsif option_name_down contains 'style' %}
+                {% assign option_visible = section.settings.show_style_option %}
               {% endif %}
 
               <fieldset
-                class="pbmac-option pbmac-option--dynamic"
+                class="pbmac-option"
                 data-pbmac-option-index="{{ forloop.index0 }}"
+                {% unless option_visible %}hidden{% endunless %}
               >
                 <div class="pbmac-option__head">
                   <legend>
                     {{ option.name }}
-                    {% if is_color_option %}
+                    {% if option_type == 'color' %}
                       <span class="pbmac-option__selected" data-pbmac-color-selected>{{ option.selected_value }}</span>
                     {% endif %}
                   </legend>
-
                   {% if option_name_down contains 'size' and section.settings.show_size_chart %}
                     <button type="button" class="pbmac-sizechart-link" data-pbmac-sizechart-open>Size Chart</button>
                   {% endif %}
                 </div>
 
-                <div class="pbmac-pills pbmac-pills--dynamic" role="radiogroup" aria-label="{{ option.name | escape }}">
-                  {% for option_value in option.values %}
-                    <label class="pbmac-pill{% unless option_value.available %} is-unavailable{% endunless %}">
-                      <input
-                        type="radio"
-                        name="pbmac-opt-{{ section.id }}-{{ option.position }}"
-                        value="{{ option_value.name | escape }}"
-                        data-pbmac-option-value
-                        {% if is_color_option %}data-pbmac-color-value{% endif %}
-                        {% if option_value.selected %}checked{% endif %}
+                {% if option_type == 'color' %}
+                  <div class="pbmac-colors">
+                    {% for option_value in option.values %}
+                      {% assign value_name = option_value.name %}
+                      <label
+                        class="pbmac-color{% unless option_value.available %} is-unavailable{% endunless %}"
+                        title="{{ value_name | escape }}"
+                        aria-label="{{ value_name | escape }}"
                       >
-                      <span>{{ option_value.name }}</span>
-                    </label>
-                  {% endfor %}
-                </div>
+                        <input
+                          type="radio"
+                          name="pbmac-opt-{{ section.id }}-{{ option.position }}"
+                          value="{{ value_name | escape }}"
+                          data-pbmac-option-value
+                          data-pbmac-color-value
+                          {% if option_value.selected %}checked{% endif %}
+                        >
+                        <span class="pbmac-color__outer">
+                          <span
+                            class="pbmac-color__swatch pbmac-color--{{ value_name | handleize }}"
+                            {% if option_value.swatch.color != blank %}style="background:{{ option_value.swatch.color }}"{% endif %}
+                          ></span>
+                        </span>
+                      </label>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <div class="pbmac-pills">
+                    {% for option_value in option.values %}
+                      <label class="pbmac-pill{% unless option_value.available %} is-unavailable{% endunless %}"><input type="radio" name="pbmac-opt-{{ section.id }}-{{ option.position }}" value="{{ option_value.name | escape }}" data-pbmac-option-value {% if option_value.selected %}checked{% endif %}><span>{{ option_value.name }}</span></label>
+                    {% endfor %}
+                  </div>
+                {% endif %}
               </fieldset>
             {% endfor %}
           {% endunless %}
+
+          {% if section.settings.show_color_option %}
+            {% unless has_native_color_option %}
+            <fieldset class="pbmac-fallback-option pbmac-fallback-color">
+              <div class="pbmac-fallback-option__head">
+                <legend>
+                  Color
+                  <span data-pbmac-custom-color-selected>Black</span>
+                </legend>
+              </div>
+
+              <div class="pbmac-fallback-colors" role="radiogroup" aria-label="Color">
+                {% for pbmac_color_name in pbmac_fallback_color_names %}
+                  {% assign pbmac_color_hex = pbmac_fallback_color_hexes[forloop.index0] %}
+                  <label class="pbmac-fallback-color-pill" title="{{ pbmac_color_name | escape }}">
+                    <input
+                      type="radio"
+                      name="properties[Color]"
+                      value="{{ pbmac_color_name | escape }}"
+                      data-pbmac-custom-color
+                      {% if forloop.first %}checked{% endif %}
+                    >
+                    <span class="pbmac-fallback-color-pill__outer">
+                      <i style="background: {{ pbmac_color_hex }};"></i>
+                    </span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+            {% endunless %}
+          {% endif %}
+
+          {% if section.settings.show_size_option %}
+            {% unless has_native_size_option %}
+            <fieldset class="pbmac-fallback-option pbmac-fallback-size">
+              <div class="pbmac-fallback-option__head">
+                <legend>Size</legend>
+
+                {% if section.settings.show_size_chart %}
+                  <button type="button" class="pbmac-sizechart-link" data-pbmac-sizechart-open>
+                    ⚖ Size Chart
+                  </button>
+                {% endif %}
+              </div>
+
+              <div class="pbmac-fallback-size-pills" role="radiogroup" aria-label="Size">
+                {% for pbmac_size in pbmac_fallback_sizes %}
+                  <label class="pbmac-fallback-size-pill">
+                    <input
+                      type="radio"
+                      name="properties[Size]"
+                      value="{{ pbmac_size | escape }}"
+                      data-pbmac-custom-size
+                      {% if forloop.first %}checked{% endif %}
+                    >
+                    <span>{{ pbmac_size }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+            {% endunless %}
+          {% endif %}
 
           {% if section.settings.show_personalization %}
             <div class="pbmac-personalization-card">

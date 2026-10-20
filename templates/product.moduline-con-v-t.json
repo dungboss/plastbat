@@ -525,7 +525,7 @@
         "show_personalization": true,
         "personalization_heading": "Personalized",
         "personalization_field_label": "Enter Your Text",
-        "personalization_helper": "Press Space On The Keyboard If You Don't Want To Include Text",
+        "personalization_helper": "Please enter your baby's birth details: Baby's Name, Date of Birth, Time of Birth, Birth Weight, Birth Length",
         "personalization_placeholder": "Enter your custom text",
         "personalization_required": false,
         "personalization_max": 20,

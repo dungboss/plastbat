@@ -523,7 +523,7 @@
         "show_color_option": false,
         "show_size_option": false,
         "show_save_badge": false,
-        "show_personalization": true,
+        "show_personalization": false,
         "personalization_heading": "Personalized",
         "personalization_field_label": "Enter Your Text",
         "personalization_helper": "Press Space On The Keyboard If You Don't Want To Include Text",

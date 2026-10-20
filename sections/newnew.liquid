@@ -277,9 +277,10 @@
               <div class="pbmac-customization-summary__icon" aria-hidden="true">✓</div>
               <div class="pbmac-customization-summary__content">
                 <strong>{{ section.settings.customization_summary_heading | escape }}</strong>
-                <span>
+                <span class="pbmac-customization-summary__line">
                   {% if has_native_color_option %}
-                    <b data-pbmac-summary-color>{{ pbmac_selected_color | escape }}</b><span data-pbmac-summary-separator> · </span>
+                    <b data-pbmac-summary-color>{{ pbmac_selected_color | escape }}</b>
+                    <i data-pbmac-summary-separator>·</i>
                   {% endif %}
                   <em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em>
                 </span>
@@ -5112,6 +5113,48 @@
   #PBMac-{{ section.id }} .pbmac-color--cyan { background: #16D8DF !important; }
   #PBMac-{{ section.id }} .pbmac-color--light-purple { background: #A34FD3 !important; }
 
+
+  /* V31 — FIX CUSTOMIZATION SUMMARY LINE */
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line {
+    display: flex !important;
+    align-items: baseline !important;
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    color: #8b7669 !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line b,
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line em,
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line i {
+    display: inline !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line b {
+    color: #9A6848 !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line i {
+    color: #9A8477 !important;
+    font-style: normal !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line em {
+    color: #8b7669 !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
 </style>
 
 <script>
@@ -5375,7 +5418,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat PDP AutoColor",
+  "name": "Plastbat PDP AutoColor31",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -5763,7 +5806,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat PDP AutoColor"
+      "name": "Plastbat PDP AutoColor31"
     }
   ]
 }

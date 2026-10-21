@@ -7,7 +7,7 @@
 {% endcomment %}
 
 {% liquid
-  assign pb_personalization_limit = 35
+  assign pb_personalization_limit = 20
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'pbmac-form-' | append: section.id
   assign rating_object = product.metafields.reviews.rating.value

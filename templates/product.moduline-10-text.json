@@ -178,13 +178,16 @@
         "manual_review_NtXQzq",
         "manual_review_QHRpyK"
       ],
+      "custom_css": [
+        ".pbmac-color--green {background: #4F8A5B !important;}"
+      ],
       "name": "Plastbat PDP V27",
       "settings": {
         "color_scheme": "",
         "sticky_gallery": true,
         "sticky_top": 90,
         "show_style_option": true,
-        "show_color_option": false,
+        "show_color_option": true,
         "show_size_option": false,
         "show_save_badge": false,
         "show_personalization": true,

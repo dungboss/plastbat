@@ -168,6 +168,48 @@
                   <div class="pbmac-colors">
                     {% for option_value in option.values %}
                       {% assign value_name = option_value.name %}
+                      {% assign value_handle = value_name | handleize %}
+                      {% assign value_hex = blank %}
+
+                      {% if option_value.swatch.color != blank %}
+                        {% assign value_hex = option_value.swatch.color %}
+                      {% else %}
+                        {% case value_handle %}
+                          {% when 'black' %}{% assign value_hex = '#111111' %}
+                          {% when 'white' %}{% assign value_hex = '#FFFFFF' %}
+                          {% when 'green' %}{% assign value_hex = '#4F8A5B' %}
+                          {% when 'forest-green' %}{% assign value_hex = '#234C37' %}
+                          {% when 'sage-green' %}{% assign value_hex = '#A3B18A' %}
+                          {% when 'olive' %}{% assign value_hex = '#747A12' %}
+                          {% when 'navy' %}{% assign value_hex = '#17233F' %}
+                          {% when 'navy-blue' %}{% assign value_hex = '#17233F' %}
+                          {% when 'blue' %}{% assign value_hex = '#1467C9' %}
+                          {% when 'light-blue' %}{% assign value_hex = '#A8C9E9' %}
+                          {% when 'carolina-blue' %}{% assign value_hex = '#7FAAD7' %}
+                          {% when 'red' %}{% assign value_hex = '#D72D2D' %}
+                          {% when 'deep-red' %}{% assign value_hex = '#7A2430' %}
+                          {% when 'cardinal-red' %}{% assign value_hex = '#9F2730' %}
+                          {% when 'burgundy' %}{% assign value_hex = '#7B1E3A' %}
+                          {% when 'orange' %}{% assign value_hex = '#E8732D' %}
+                          {% when 'gold' %}{% assign value_hex = '#DFAC2F' %}
+                          {% when 'yellow' %}{% assign value_hex = '#FFD400' %}
+                          {% when 'beige' %}{% assign value_hex = '#E8D7AE' %}
+                          {% when 'brown' %}{% assign value_hex = '#9D5E3B' %}
+                          {% when 'natural-wood' %}{% assign value_hex = '#C8A47A' %}
+                          {% when 'gray' %}{% assign value_hex = '#92979B' %}
+                          {% when 'grey' %}{% assign value_hex = '#92979B' %}
+                          {% when 'sport-gray' %}{% assign value_hex = '#B8B7B6' %}
+                          {% when 'sport-grey' %}{% assign value_hex = '#B8B7B6' %}
+                          {% when 'charcoal' %}{% assign value_hex = '#4A4A4A' %}
+                          {% when 'purple' %}{% assign value_hex = '#A250D6' %}
+                          {% when 'light-purple' %}{% assign value_hex = '#B15DDC' %}
+                          {% when 'light-pink' %}{% assign value_hex = '#F7B7C3' %}
+                          {% when 'pink' %}{% assign value_hex = '#ECA0B5' %}
+                          {% when 'turquoise' %}{% assign value_hex = '#42CDC8' %}
+                          {% when 'cyan' %}{% assign value_hex = '#16D8DF' %}
+                        {% endcase %}
+                      {% endif %}
+
                       <label
                         class="pbmac-color{% unless option_value.available %} is-unavailable{% endunless %}"
                         title="{{ value_name | escape }}"
@@ -183,8 +225,8 @@
                         >
                         <span class="pbmac-color__outer">
                           <span
-                            class="pbmac-color__swatch pbmac-color--{{ value_name | handleize }}"
-                            {% if option_value.swatch.color != blank %}style="background:{{ option_value.swatch.color }}"{% endif %}
+                            class="pbmac-color__swatch pbmac-color--{{ value_handle }}"
+                            {% if value_hex != blank %}style="background:{{ value_hex }}"{% endif %}
                           ></span>
                         </span>
                       </label>
@@ -201,67 +243,10 @@
             {% endfor %}
           {% endunless %}
 
-          {% if section.settings.show_color_option %}
-            {% unless has_native_color_option %}
-            <fieldset class="pbmac-fallback-option pbmac-fallback-color">
-              <div class="pbmac-fallback-option__head">
-                <legend>
-                  Color
-                  <span data-pbmac-custom-color-selected>Black</span>
-                </legend>
-              </div>
-
-              <div class="pbmac-fallback-colors" role="radiogroup" aria-label="Color">
-                {% for pbmac_color_name in pbmac_fallback_color_names %}
-                  {% assign pbmac_color_hex = pbmac_fallback_color_hexes[forloop.index0] %}
-                  <label class="pbmac-fallback-color-pill" title="{{ pbmac_color_name | escape }}">
-                    <input
-                      type="radio"
-                      name="properties[Color]"
-                      value="{{ pbmac_color_name | escape }}"
-                      data-pbmac-custom-color
-                      {% if forloop.first %}checked{% endif %}
-                    >
-                    <span class="pbmac-fallback-color-pill__outer">
-                      <i style="background: {{ pbmac_color_hex }};"></i>
-                    </span>
-                  </label>
-                {% endfor %}
-              </div>
-            </fieldset>
-            {% endunless %}
-          {% endif %}
-
-          {% if section.settings.show_size_option %}
-            {% unless has_native_size_option %}
-            <fieldset class="pbmac-fallback-option pbmac-fallback-size">
-              <div class="pbmac-fallback-option__head">
-                <legend>Size</legend>
-
-                {% if section.settings.show_size_chart %}
-                  <button type="button" class="pbmac-sizechart-link" data-pbmac-sizechart-open>
-                    ⚖ Size Chart
-                  </button>
-                {% endif %}
-              </div>
-
-              <div class="pbmac-fallback-size-pills" role="radiogroup" aria-label="Size">
-                {% for pbmac_size in pbmac_fallback_sizes %}
-                  <label class="pbmac-fallback-size-pill">
-                    <input
-                      type="radio"
-                      name="properties[Size]"
-                      value="{{ pbmac_size | escape }}"
-                      data-pbmac-custom-size
-                      {% if forloop.first %}checked{% endif %}
-                    >
-                    <span>{{ pbmac_size }}</span>
-                  </label>
-                {% endfor %}
-              </div>
-            </fieldset>
-            {% endunless %}
-          {% endif %}
+          {%- comment -%}
+            Native variants only: do not generate fallback Color or Size choices.
+            Product options render only when they actually exist in Shopify.
+          {%- endcomment -%}
 
           {% if section.settings.show_personalization %}
             <div class="pbmac-personalization-card">
@@ -309,7 +294,7 @@
               <div class="pbmac-customization-summary__icon" aria-hidden="true">✓</div>
               <div class="pbmac-customization-summary__content">
                 <strong>{{ section.settings.customization_summary_heading | escape }}</strong>
-                <span><b data-pbmac-summary-color>—</b> · <em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em></span>
+                <span>{% if has_native_color_option and section.settings.show_color_option %}<b data-pbmac-summary-color>—</b><span data-pbmac-summary-separator> · </span>{% endif %}<em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em></span>
               </div>
             </div>
           {% endif %}
@@ -5182,11 +5167,8 @@
       history.replaceState({},'',u);
     }catch(e){}
   };const colorSelectedLabel=root.querySelector('[data-pbmac-color-selected]');
-  const customColorSelectedLabel=root.querySelector('[data-pbmac-custom-color-selected]');
-  const customColorInputs=[...root.querySelectorAll('[data-pbmac-custom-color]')];
-  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value;const c=customColorInputs.find(i=>i.checked);if(customColorSelectedLabel&&c)customColorSelectedLabel.textContent=c.value};
+  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value};
   root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>{render(find());syncColorSelected()}));
-  customColorInputs.forEach(i=>i.addEventListener('change',syncColorSelected));
   syncColorSelected();render(find());
 
   // Final cart safeguard: never submit an empty variant id on a simple product.
@@ -5221,9 +5203,7 @@
   const syncSummary=()=>{
     if(summaryColor){
       const nativeColor=optionValueByName('color');
-      const customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'';
-      const fallbackColor={{ section.settings.default_color_label | json }};
-      summaryColor.textContent=(customColor||nativeColor||fallbackColor||'—');
+      summaryColor.textContent=(nativeColor||'—');
     }
     if(summaryText){
       const txt=(pers?.value||'').trim();
@@ -5231,7 +5211,7 @@
     }
   };
   pers?.addEventListener('input',()=>{syncPersCount();syncSummary()});
-  root.querySelectorAll('[data-pbmac-option-value],[data-pbmac-custom-color],[data-pbmac-custom-size]').forEach(el=>el.addEventListener('change',syncSummary));
+  root.querySelectorAll('[data-pbmac-option-value]').forEach(el=>el.addEventListener('change',syncSummary));
   syncPersCount();
   syncSummary();
 })();

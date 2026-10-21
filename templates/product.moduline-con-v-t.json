@@ -562,10 +562,62 @@
         "more_items_collection": "",
         "more_items_limit": 4
       }
+    },
+    "newnew_n4mrnh": {
+      "type": "newnew",
+      "name": "Plastbat PDP AutoColor33",
+      "settings": {
+        "color_scheme": "",
+        "sticky_gallery": true,
+        "sticky_top": 90,
+        "show_style_option": true,
+        "show_size_option": false,
+        "show_save_badge": false,
+        "show_personalization": true,
+        "personalization_heading": "Personalized",
+        "personalization_field_label": "Enter Your Text",
+        "personalization_helper": "Press Space On The Keyboard If You Don't Want To Include Text",
+        "personalization_placeholder": "Enter your custom text",
+        "personalization_required": false,
+        "personalization_max": 10,
+        "show_preview_button": true,
+        "preview_button_text": "Preview",
+        "quantity_label": "Quantity",
+        "customization_summary_heading": "Your customization",
+        "customization_summary_empty": "Add your text above",
+        "personalized_add_to_cart_text": "PERSONALIZE & ADD TO CART",
+        "add_to_cart_text": "Add to Cart",
+        "sold_out_text": "Sold out",
+        "trust_1": "Full refund for faulty production. No question asked",
+        "trust_2": "Made to order with secure checkout",
+        "show_size_chart": true,
+        "description_heading": "Description",
+        "description_body": "<p>Add your product description here, or clear this field to use the Shopify product description.</p>",
+        "open_description": false,
+        "shipping_heading": "Shipping & Returns",
+        "shipping_text": "<p>Add your processing, delivery, return and replacement policy here.</p>",
+        "personalization_info_heading": "Personalization",
+        "personalization_info": "<p>Please review all custom text and selected options before checkout. Preview colors may vary slightly from the finished item.</p>",
+        "show_reviews": true,
+        "reviews_heading": "Customer Reviews",
+        "show_newsletter": true,
+        "newsletter_heading": "Unlock Your 10% OFF!",
+        "newsletter_subtext": "Join us for gift inspiration, extra savings, and alerts on our latest drops.",
+        "newsletter_placeholder": "Enter your email",
+        "newsletter_button": "Subscribe",
+        "newsletter_success": "Thanks for subscribing!",
+        "padding_top": 24,
+        "padding_bottom": 28,
+        "show_more_items": true,
+        "more_items_heading": "More Items to Consider",
+        "more_items_collection": "",
+        "more_items_limit": 4
+      }
     }
   },
   "order": [
     "related-products",
-    "newnew_WD9QbA"
+    "newnew_WD9QbA",
+    "newnew_n4mrnh"
   ]
 }

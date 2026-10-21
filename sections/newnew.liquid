@@ -7,8 +7,7 @@
 {% endcomment %}
 
 {% liquid
-  assign pb_personalization_limit = 20
-
+  assign pb_personalization_limit = 35
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'pbmac-form-' | append: section.id
   assign rating_object = product.metafields.reviews.rating.value
@@ -5486,7 +5485,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat PDP AutoColor33",
+  "name": "Plastbat PDP AutoColor34",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -5590,7 +5589,7 @@
       "min": 5,
       "max": 50,
       "step": 1,
-      "default": 10
+      "default": 35
     },
     {
       "type": "checkbox",
@@ -5874,7 +5873,7 @@
   ],
   "presets": [
     {
-      "name": "Plastbat PDP AutoColor33"
+      "name": "Plastbat PDP AutoColor34"
     }
   ]
 }

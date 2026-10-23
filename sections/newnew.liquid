@@ -7,7 +7,7 @@
 {% endcomment %}
 
 {% liquid
-  assign pb_personalization_limit = 35
+  assign pb_personalization_limit = 10
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'pbmac-form-' | append: section.id
   assign rating_object = product.metafields.reviews.rating.value
@@ -243,10 +243,67 @@
             {% endfor %}
           {% endunless %}
 
-          {%- comment -%}
-            Native variants only: do not generate fallback Color or Size choices.
-            Product options render only when they actually exist in Shopify.
-          {%- endcomment -%}
+          {% if section.settings.show_color_option %}
+            {% unless has_native_color_option %}
+            <fieldset class="pbmac-fallback-option pbmac-fallback-color">
+              <div class="pbmac-fallback-option__head">
+                <legend>
+                  Color
+                  <span data-pbmac-custom-color-selected>Black</span>
+                </legend>
+              </div>
+
+              <div class="pbmac-fallback-colors" role="radiogroup" aria-label="Color">
+                {% for pbmac_color_name in pbmac_fallback_color_names %}
+                  {% assign pbmac_color_hex = pbmac_fallback_color_hexes[forloop.index0] %}
+                  <label class="pbmac-fallback-color-pill" title="{{ pbmac_color_name | escape }}">
+                    <input
+                      type="radio"
+                      name="properties[Color]"
+                      value="{{ pbmac_color_name | escape }}"
+                      data-pbmac-custom-color
+                      {% if forloop.first %}checked{% endif %}
+                    >
+                    <span class="pbmac-fallback-color-pill__outer">
+                      <i style="background: {{ pbmac_color_hex }};"></i>
+                    </span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+            {% endunless %}
+          {% endif %}
+
+          {% if section.settings.show_size_option %}
+            {% unless has_native_size_option %}
+            <fieldset class="pbmac-fallback-option pbmac-fallback-size">
+              <div class="pbmac-fallback-option__head">
+                <legend>Size</legend>
+
+                {% if section.settings.show_size_chart %}
+                  <button type="button" class="pbmac-sizechart-link" data-pbmac-sizechart-open>
+                    ⚖ Size Chart
+                  </button>
+                {% endif %}
+              </div>
+
+              <div class="pbmac-fallback-size-pills" role="radiogroup" aria-label="Size">
+                {% for pbmac_size in pbmac_fallback_sizes %}
+                  <label class="pbmac-fallback-size-pill">
+                    <input
+                      type="radio"
+                      name="properties[Size]"
+                      value="{{ pbmac_size | escape }}"
+                      data-pbmac-custom-size
+                      {% if forloop.first %}checked{% endif %}
+                    >
+                    <span>{{ pbmac_size }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+            {% endunless %}
+          {% endif %}
 
           {% if section.settings.show_personalization %}
             <div class="pbmac-personalization-card">
@@ -294,7 +351,7 @@
               <div class="pbmac-customization-summary__icon" aria-hidden="true">✓</div>
               <div class="pbmac-customization-summary__content">
                 <strong>{{ section.settings.customization_summary_heading | escape }}</strong>
-                <span>{% if has_native_color_option and section.settings.show_color_option %}<b data-pbmac-summary-color>—</b><span data-pbmac-summary-separator> · </span>{% endif %}<em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em></span>
+                <span><b data-pbmac-summary-color>—</b> · <em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em></span>
               </div>
             </div>
           {% endif %}
@@ -5167,8 +5224,11 @@
       history.replaceState({},'',u);
     }catch(e){}
   };const colorSelectedLabel=root.querySelector('[data-pbmac-color-selected]');
-  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value};
+  const customColorSelectedLabel=root.querySelector('[data-pbmac-custom-color-selected]');
+  const customColorInputs=[...root.querySelectorAll('[data-pbmac-custom-color]')];
+  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value;const c=customColorInputs.find(i=>i.checked);if(customColorSelectedLabel&&c)customColorSelectedLabel.textContent=c.value};
   root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>{render(find());syncColorSelected()}));
+  customColorInputs.forEach(i=>i.addEventListener('change',syncColorSelected));
   syncColorSelected();render(find());
 
   // Final cart safeguard: never submit an empty variant id on a simple product.
@@ -5203,7 +5263,9 @@
   const syncSummary=()=>{
     if(summaryColor){
       const nativeColor=optionValueByName('color');
-      summaryColor.textContent=(nativeColor||'—');
+      const customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'';
+      const fallbackColor={{ section.settings.default_color_label | json }};
+      summaryColor.textContent=(customColor||nativeColor||fallbackColor||'—');
     }
     if(summaryText){
       const txt=(pers?.value||'').trim();
@@ -5211,7 +5273,7 @@
     }
   };
   pers?.addEventListener('input',()=>{syncPersCount();syncSummary()});
-  root.querySelectorAll('[data-pbmac-option-value]').forEach(el=>el.addEventListener('change',syncSummary));
+  root.querySelectorAll('[data-pbmac-option-value],[data-pbmac-custom-color],[data-pbmac-custom-size]').forEach(el=>el.addEventListener('change',syncSummary));
   syncPersCount();
   syncSummary();
 })();

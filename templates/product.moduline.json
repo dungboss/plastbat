@@ -67,121 +67,165 @@
         "manual_review_mcmJa8": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Olivia Bennett",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-16",
+            "verified": true,
+            "title": "The overall finish looks neat and thoughtfully designed. A lovely idea for someone who enjoys unique home accessories.",
             "body": ""
           }
         },
         "manual_review_73qLLJ": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Michael Thompson",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-04",
+            "verified": true,
+            "title": "This would look adorable on a desk or bookshelf. I like how it adds character without taking up too much space.",
             "body": ""
           }
         },
         "manual_review_9mqjwL": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Jessica Parker",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-01",
+            "verified": true,
+            "title": "The design is fun, sweet, and different from ordinary decorations. A lovely choice for a small personalized gift.",
             "body": ""
           }
         },
         "manual_review_8Feyhz": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Daniel Brooks",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-28",
+            "verified": true,
+            "title": "Such a pleasing combination of shape and color. The piece has a cozy, handmade-inspired appearance.",
+            "body": ""
+          }
+        },
+        "manual_review_yXt4QL": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ashley Morgan",
+            "rating": 5,
+            "date": "2026-09-25",
+            "verified": true,
+            "title": "Personal touches make gifts feel more meaningful, and this design captures that idea beautifully.",
             "body": ""
           }
         },
         "manual_review_btemJL": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Rachel Cooper",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-22",
+            "verified": true,
+            "title": "A nice balance between functional design and decoration. The style is simple but still catches the eye.",
+            "body": ""
+          }
+        },
+        "manual_review_DGykHn": {
+          "type": "manual_review",
+          "settings": {
+            "author": "David Collins",
+            "rating": 5,
+            "date": "2026-09-19",
+            "verified": true,
+            "title": "The colors and overall composition look really nice. I particularly like its cheerful personality.",
             "body": ""
           }
         },
         "manual_review_KyNa4x": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Amanda Reed",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-16",
+            "verified": true,
+            "title": "This has a cute decorative look that could work well on a shelf, table, or in a cozy corner.",
+            "body": ""
+          }
+        },
+        "manual_review_tCzXTf": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Lauren Bailey",
+            "rating": 5,
+            "date": "2026-09-13",
+            "verified": true,
+            "title": "The personalization concept is my favorite part. It gives a small decorative item a more personal meaning.",
             "body": ""
           }
         },
         "manual_review_Wpg8EJ": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Christopher Hall",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-10",
+            "verified": true,
+            "title": "I love the charming style and friendly appearance. It feels playful without being overly bright or busy.",
             "body": ""
           }
         },
         "manual_review_4GbB49": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Megan Foster",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-07",
+            "verified": true,
+            "title": "The color palette looks soft and pleasant. Everything works together for a polished decorative finish.",
             "body": ""
           }
         },
         "manual_review_UJCzNW": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "author": "Sophie Turner",
+            "rating": 4,
+            "date": "2026-09-04",
+            "verified": true,
+            "title": "A thoughtful design with nice proportions and interesting little accents. Great inspiration for a gift",
             "body": ""
           }
         },
         "manual_review_cwhNwq": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Matthew Green",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-01",
+            "verified": true,
+            "title": "Super cute item",
             "body": ""
           }
         },
         "manual_review_HPGy9c": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Hannah Edwards",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-08-29",
+            "verified": true,
+            "title": "A decorative item like this can bring personality to a small space. I like the unique shape and styling.",
+            "body": ""
+          }
+        },
+        "manual_review_WHjiRb": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ryan Phillips",
+            "rating": 5,
+            "date": "2026-08-26",
+            "verified": true,
+            "title": "The concept is creative and memorable. It feels different from the usual home decoration designs.",
             "body": ""
           }
         }
@@ -194,13 +238,17 @@
         "manual_review_73qLLJ",
         "manual_review_9mqjwL",
         "manual_review_8Feyhz",
+        "manual_review_yXt4QL",
         "manual_review_btemJL",
+        "manual_review_DGykHn",
         "manual_review_KyNa4x",
+        "manual_review_tCzXTf",
         "manual_review_Wpg8EJ",
         "manual_review_4GbB49",
         "manual_review_UJCzNW",
         "manual_review_cwhNwq",
-        "manual_review_HPGy9c"
+        "manual_review_HPGy9c",
+        "manual_review_WHjiRb"
       ],
       "name": "Plastbat PDP V27",
       "settings": {

@@ -31,6 +31,17 @@
     "newnew_WD9QbA": {
       "type": "newnew",
       "blocks": {
+        "manual_review_J3XnYg": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
         "manual_review_3CfBtJ": {
           "type": "manual_review",
           "settings": {
@@ -436,6 +447,7 @@
         }
       },
       "block_order": [
+        "manual_review_J3XnYg",
         "manual_review_3CfBtJ",
         "manual_review_cjWKCD",
         "manual_review_HiqaWF",

@@ -216,7 +216,7 @@
         "show_personalization": true,
         "personalization_heading": "Personalized",
         "personalization_field_label": "Enter Your Text",
-        "personalization_helper": "Press Space On The Keyboard If You Don't Want To Include Text",
+        "personalization_helper": "Names & Custom Choices: Enter: Main Header | Name 1 – Choice 1 | Name 2 – Choice 2 | ... Example: The Smiths | Dad – Design A | Mom – Design B | Kid – Design C",
         "personalization_placeholder": "Enter your custom text",
         "personalization_required": false,
         "personalization_max": 250,

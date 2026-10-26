@@ -178,9 +178,7 @@
         "manual_review_NtXQzq",
         "manual_review_QHRpyK"
       ],
-      "custom_css": [
-        ".pbmac-color--green {background: #4F8A5B !important;}"
-      ],
+      "custom_css": [],
       "name": "Plastbat PDP V27",
       "settings": {
         "color_scheme": "",

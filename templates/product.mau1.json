@@ -86,152 +86,108 @@
           "settings": {
             "author": "James Wilson",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-13",
+            "verified": true,
+            "title": "Beautiful little decoration",
             "body": ""
           }
         },
         "manual_review_xtHEAi": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Sarah Mitchell",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-10",
+            "verified": true,
+            "title": "I especially like the little details and the playful style. It has a lot of personality without being too complicated.",
             "body": ""
           }
         },
         "manual_review_ePLz9w": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Olivia Bennett",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-16",
+            "verified": true,
+            "title": "The overall finish looks neat and thoughtfully designed. A lovely idea for someone who enjoys unique home accessories.",
             "body": ""
           }
         },
         "manual_review_iLx88H": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Michael Thompson",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-04",
+            "verified": true,
+            "title": "This would look adorable on a desk or bookshelf. I like how it adds character without taking up too much space.",
             "body": ""
           }
         },
         "manual_review_HLVUNC": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Jessica Parker",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-10-01",
+            "verified": true,
+            "title": "The design is fun, sweet, and different from ordinary decorations. A lovely choice for a small personalized gift.",
             "body": ""
           }
         },
         "manual_review_jKCjtE": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Daniel Brooks",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-28",
+            "verified": true,
+            "title": "Such a pleasing combination of shape and color. The piece has a cozy, handmade-inspired appearance.",
             "body": ""
           }
         },
         "manual_review_8wUKRG": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Ashley Morgan",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-25",
+            "verified": true,
+            "title": "Personal touches make gifts feel more meaningful, and this design captures that idea beautifully.",
             "body": ""
           }
         },
         "manual_review_6F4WXF": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "Rachel Cooper",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-28",
+            "verified": true,
+            "title": "A nice balance between functional design and decoration. The style is simple but still catches the eye.",
+            "body": ""
+          }
+        },
+        "manual_review_UP7ah4": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ashley Morgan",
+            "rating": 5,
+            "date": "2026-09-25",
+            "verified": true,
+            "title": "Personal touches make gifts feel more meaningful, and this design captures that idea beautifully.",
             "body": ""
           }
         },
         "manual_review_T3QLzh": {
           "type": "manual_review",
           "settings": {
-            "author": "Customer",
+            "author": "David Collins",
             "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
-          }
-        },
-        "manual_review_JreU3V": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
-          }
-        },
-        "manual_review_E9AJfH": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
-          }
-        },
-        "manual_review_CENayF": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
-          }
-        },
-        "manual_review_Qi8kxG": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
-            "body": ""
-          }
-        },
-        "manual_review_egtqxn": {
-          "type": "manual_review",
-          "settings": {
-            "author": "Customer",
-            "rating": 5,
-            "date": "",
-            "verified": false,
-            "title": "",
+            "date": "2026-09-19",
+            "verified": true,
+            "title": "The colors and overall composition look really nice. I particularly like its cheerful personality.",
             "body": ""
           }
         }
@@ -246,12 +202,8 @@
         "manual_review_jKCjtE",
         "manual_review_8wUKRG",
         "manual_review_6F4WXF",
-        "manual_review_T3QLzh",
-        "manual_review_JreU3V",
-        "manual_review_E9AJfH",
-        "manual_review_CENayF",
-        "manual_review_Qi8kxG",
-        "manual_review_egtqxn"
+        "manual_review_UP7ah4",
+        "manual_review_T3QLzh"
       ],
       "name": "Plastbat PDP 250",
       "settings": {

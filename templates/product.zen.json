@@ -122,15 +122,247 @@
     },
     "capybara_product_CGriKp": {
       "type": "capybara-product",
+      "blocks": {
+        "manual_review_L7aXyx": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_fjy9Ww": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_9YhgNJ": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_XjpQTz": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_yDJyPY": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_qdBcN7": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_xyTFa7": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_NWxEQq": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_4aWQMp": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_CPQTk6": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_WHh3gB": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_7d6eDb": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_x6kNRj": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_DkYPrp": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_qcwN4b": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_MNnC4x": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_WPB7RM": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_KD78HA": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_pwkAf8": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        }
+      },
+      "block_order": [
+        "manual_review_L7aXyx",
+        "manual_review_fjy9Ww",
+        "manual_review_9YhgNJ",
+        "manual_review_XjpQTz",
+        "manual_review_yDJyPY",
+        "manual_review_qdBcN7",
+        "manual_review_xyTFa7",
+        "manual_review_NWxEQq",
+        "manual_review_4aWQMp",
+        "manual_review_CPQTk6",
+        "manual_review_WHh3gB",
+        "manual_review_7d6eDb",
+        "manual_review_x6kNRj",
+        "manual_review_DkYPrp",
+        "manual_review_qcwN4b",
+        "manual_review_MNnC4x",
+        "manual_review_WPB7RM",
+        "manual_review_KD78HA",
+        "manual_review_pwkAf8"
+      ],
       "custom_css": [
-        ".pbmac-color--gray{background:#909497!important}",
-        ".pbmac-color--black{background:#080808!important}",
-        ".pbmac-color--white{background:#fff!important}",
-        ".pbmac-color--blue{background:#176CCF!important}",
-        ".pbmac-color--red{background:#D92F35!important}",
-        ".pbmac-color--yellow{background:#FFD400!important}",
-        ".pbmac-color--brown{background:#9D5E3B!important}",
-        ".pbmac-color--other-color-pm-me{background:linear-gradient(135deg,#ef2b2d,#ffd400,#0aae4f,#126bd1,#a250d6)!important}"
+        ".pbmac-color--gray {background: #909497 !important;}",
+        ".pbmac-color--black {background: #080808 !important;}",
+        ".pbmac-color--white {background: #fff !important;}",
+        ".pbmac-color--blue {background: #176ccf !important;}",
+        ".pbmac-color--red {background: #d92f35 !important;}",
+        ".pbmac-color--yellow {background: #ffd400 !important;}",
+        ".pbmac-color--brown {background: #9d5e3b !important;}",
+        ".pbmac-color--other-color-pm-me {background: linear-gradient( 135deg, #ef2b2d, #ffd400, #0aae4f, #126bd1, #a250d6 ) !important;}"
       ],
       "name": "Plastbat Capybara",
       "settings": {

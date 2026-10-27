@@ -122,6 +122,16 @@
     },
     "capybara_product_CGriKp": {
       "type": "capybara-product",
+      "custom_css": [
+        ".pbmac-color--gray{background:#909497!important}",
+        ".pbmac-color--black{background:#080808!important}",
+        ".pbmac-color--white{background:#fff!important}",
+        ".pbmac-color--blue{background:#176CCF!important}",
+        ".pbmac-color--red{background:#D92F35!important}",
+        ".pbmac-color--yellow{background:#FFD400!important}",
+        ".pbmac-color--brown{background:#9D5E3B!important}",
+        ".pbmac-color--other-color-pm-me{background:linear-gradient(135deg,#ef2b2d,#ffd400,#0aae4f,#126bd1,#a250d6)!important}"
+      ],
       "name": "Plastbat Capybara",
       "settings": {
         "color_scheme": "",

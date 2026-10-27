@@ -138,7 +138,16 @@
       "block_order": [
         "manual_review_mxJrhE"
       ],
-      "custom_css": [],
+      "custom_css": [
+        ".pbmac-color--light-green{background:#89C99A}",
+        ".pbmac-color--green{background:#16A356}",
+        ".pbmac-color--blue{background:#176CCF}",
+        ".pbmac-color--pink{background:#F4A7B9}",
+        ".pbmac-color--light-purple{background:#BD83E3}",
+        ".pbmac-color--purple{background:#9B51D1}",
+        ".pbmac-color--brown{background:#9D5E3B}",
+        ".pbmac-color--other-color-pm-me{background:linear-gradient(135deg,#ef2b2d,#ffd400,#16a356,#176ccf,#9b51d1)}"
+      ],
       "name": "Plastbat Book Counter",
       "settings": {
         "color_scheme": "",

@@ -331,10 +331,6 @@
           </div>
         {% endform %}
 
-        <div class="pbmac-trust">
-          <p><span class="pbmac-trust__check" aria-hidden="true">✓</span><span>{{ section.settings.trust_1 | escape }}</span></p>
-          <p><span class="pbmac-trust__check" aria-hidden="true">✓</span><span>{{ section.settings.trust_2 | escape }}</span></p>
-        </div>
 
         <div class="pbmac-accordions">
           <details class="pbmac-accordion" {% if section.settings.open_description %}open{% endif %}>

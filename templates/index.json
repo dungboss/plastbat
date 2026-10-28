@@ -16,7 +16,7 @@
         "show_brand_banner": false,
         "banner_max_height": 370,
         "mobile_banner_max_height": 120,
-        "product_image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_29_34_PM.png",
+        "product_image": "shopify://shop_images/il_794xN.8741105605_29we.webp",
         "image_fit": "contain",
         "image_position": "right",
         "media_badge": "Made layer by layer",
@@ -141,9 +141,9 @@
         "c7": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_Jul_29_2026_03_35_03_PM.png",
-            "title": "Halloween Decor",
-            "cta": "Shop spooky designs",
+            "image": "shopify://shop_images/il_794xN.8741105223_6nbo.webp",
+            "title": "Christmas & Holiday Decor Collection",
+            "cta": "Explore Christmas collection",
             "link": "shopify://collections/frontpage"
           }
         },

@@ -1,13 +1,13 @@
 {% comment %}
   PLASTBAT — Macorner-style Shirt Product Page
-  File: sections/plastbat-pdp-v24.liquid
+  File: sections/plastbat-car-new.liquid
   Native Shopify options: Style / Color / Size.
   Includes size chart, personalization preview, shipping card, accordions,
   and manual product reviews with filters, 10-per-page pagination, and modal.
 {% endcomment %}
 
 {% liquid
-  assign pb_personalization_limit = 25
+  assign pb_personalization_limit = 10
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'pbmac-form-' | append: section.id
   assign rating_object = product.metafields.reviews.rating.value
@@ -15,22 +15,22 @@
 
   assign has_native_color_option = false
   assign has_native_size_option = false
+  assign pbmac_selected_color = blank
 
   for pbmac_option in product.options_with_values
     assign pbmac_option_name = pbmac_option.name | downcase
 
     if pbmac_option_name contains 'color' or pbmac_option_name contains 'colour'
       assign has_native_color_option = true
+      assign pbmac_selected_color = pbmac_option.selected_value
     endif
 
     if pbmac_option_name contains 'size'
       assign has_native_size_option = true
     endif
   endfor
-
-  assign pbmac_fallback_color_names = 'Red|Orange|Yellow|Beige|Gold|Brown|Green|Blue|Navy|Grey|Purple|Black|White|Turquoise|Olive|Light Pink|Cyan|Light Purple' | split: '|'
-  assign pbmac_fallback_color_hexes = '#EF2B2D|#FF8500|#FFD400|#E9D8AF|#D79B00|#9D5E3B|#0AAE4F|#126BD1|#292C97|#909497|#A250D6|#050607|#FFFFFF|#42CDC8|#7A7F0B|#F7B7C3|#16D8DF|#A34FD3' | split: '|'
   assign pbmac_fallback_sizes = 'S|M|L|XL|2XL|3XL|4XL|5XL' | split: '|'
+  assign pbmac_car_color_names = 'Light Green|Green|Black|White|Red|Blue|Light Blue|Light Pink|Pink|Light Purple|Purple|Brown|Navy|Other Color-PM Me' | split: '|'
 
   assign pbmac_manual_review_count = 0
   assign pbmac_manual_rating_total = 0
@@ -140,7 +140,7 @@
 
               {% if option_name_down contains 'color' or option_name_down contains 'colour' %}
                 {% assign option_type = 'color' %}
-                {% assign option_visible = section.settings.show_color_option %}
+                {% assign option_visible = false %}
               {% elsif option_name_down contains 'size' %}
                 {% assign option_visible = section.settings.show_size_option %}
               {% elsif option_name_down contains 'style' %}
@@ -201,36 +201,35 @@
             {% endfor %}
           {% endunless %}
 
-          {% if section.settings.show_color_option %}
-            {% unless has_native_color_option %}
-            <fieldset class="pbmac-fallback-option pbmac-fallback-color">
-              <div class="pbmac-fallback-option__head">
-                <legend>
-                  Color
-                  <span data-pbmac-custom-color-selected>Black</span>
-                </legend>
-              </div>
+          <fieldset class="pbmac-option pbmac-car-color-option">
+            <div class="pbmac-option__head">
+              <legend>
+                Color
+                <span class="pbmac-option__selected" data-pbmac-car-color-selected>Light Green</span>
+              </legend>
+            </div>
 
-              <div class="pbmac-fallback-colors" role="radiogroup" aria-label="Color">
-                {% for pbmac_color_name in pbmac_fallback_color_names %}
-                  {% assign pbmac_color_hex = pbmac_fallback_color_hexes[forloop.index0] %}
-                  <label class="pbmac-fallback-color-pill" title="{{ pbmac_color_name | escape }}">
-                    <input
-                      type="radio"
-                      name="properties[Color]"
-                      value="{{ pbmac_color_name | escape }}"
-                      data-pbmac-custom-color
-                      {% if forloop.first %}checked{% endif %}
-                    >
-                    <span class="pbmac-fallback-color-pill__outer">
-                      <i style="background: {{ pbmac_color_hex }};"></i>
-                    </span>
-                  </label>
-                {% endfor %}
-              </div>
-            </fieldset>
-            {% endunless %}
-          {% endif %}
+            <div class="pbmac-colors pbmac-car-colors" role="radiogroup" aria-label="Color">
+              {% for pbmac_car_color in pbmac_car_color_names %}
+                <label
+                  class="pbmac-color"
+                  title="{{ pbmac_car_color | escape }}"
+                  aria-label="{{ pbmac_car_color | escape }}"
+                >
+                  <input
+                    type="radio"
+                    name="properties[Color]"
+                    value="{{ pbmac_car_color | escape }}"
+                    data-pbmac-car-color
+                    {% if forloop.first %}checked{% endif %}
+                  >
+                  <span class="pbmac-color__outer">
+                    <span class="pbmac-color__swatch pbmac-car-color--{{ pbmac_car_color | handleize }}"></span>
+                  </span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
 
           {% if section.settings.show_size_option %}
             {% unless has_native_size_option %}
@@ -309,7 +308,11 @@
               <div class="pbmac-customization-summary__icon" aria-hidden="true">✓</div>
               <div class="pbmac-customization-summary__content">
                 <strong>{{ section.settings.customization_summary_heading | escape }}</strong>
-                <span><b data-pbmac-summary-color>—</b> · <em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em></span>
+                <span class="pbmac-customization-summary__line">
+                  <b data-pbmac-summary-color>Light Green</b>
+                  <i data-pbmac-summary-separator>·</i>
+                  <em data-pbmac-summary-text>{{ section.settings.customization_summary_empty | escape }}</em>
+                </span>
               </div>
             </div>
           {% endif %}
@@ -5113,6 +5116,162 @@
     background: #5B3B2A !important;
   }
 
+
+  /* ==========================================================
+     AUTO COLOR — native Shopify Color option only
+     These classes provide swatches when Shopify swatch metadata
+     is not configured for the variant value.
+     ========================================================== */
+  #PBMac-{{ section.id }} .pbmac-color--red { background: #EF2B2D !important; }
+  #PBMac-{{ section.id }} .pbmac-color--orange { background: #FF8500 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--yellow { background: #FFD400 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--beige { background: #E9D8AF !important; }
+  #PBMac-{{ section.id }} .pbmac-color--gold { background: #D79B00 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--brown { background: #9D5E3B !important; }
+  #PBMac-{{ section.id }} .pbmac-color--green { background: #0AAE4F !important; }
+  #PBMac-{{ section.id }} .pbmac-color--blue { background: #126BD1 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--navy { background: #292C97 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--grey,
+  #PBMac-{{ section.id }} .pbmac-color--gray { background: #909497 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--purple { background: #A250D6 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--black { background: #050607 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--white { background: #FFFFFF !important; }
+  #PBMac-{{ section.id }} .pbmac-color--turquoise { background: #42CDC8 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--olive { background: #7A7F0B !important; }
+  #PBMac-{{ section.id }} .pbmac-color--light-pink { background: #F7B7C3 !important; }
+  #PBMac-{{ section.id }} .pbmac-color--cyan { background: #16D8DF !important; }
+  #PBMac-{{ section.id }} .pbmac-color--light-purple { background: #A34FD3 !important; }
+
+
+  /* V31 — FIX CUSTOMIZATION SUMMARY LINE */
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line {
+    display: flex !important;
+    align-items: baseline !important;
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    color: #8b7669 !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line b,
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line em,
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line i {
+    display: inline !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line b {
+    color: #9A6848 !important;
+    font-weight: 600 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line i {
+    color: #9A8477 !important;
+    font-style: normal !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-customization-summary__line em {
+    color: #8b7669 !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+
+  /* ==========================================================
+     V32 — NATIVE COLOR NAME FIXES
+     Shopify option value "Pink" generates class .pbmac-color--pink.
+     ========================================================== */
+
+  #PBMac-{{ section.id }} .pbmac-color--pink {
+    background: #F4A7B9 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--light-pink {
+    background: #F7B7C3 !important;
+  }
+
+  /* Extra common pink names for future products */
+  #PBMac-{{ section.id }} .pbmac-color--baby-pink {
+    background: #F6C1CF !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--blush-pink {
+    background: #EFB7B7 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--hot-pink {
+    background: #F45CA5 !important;
+  }
+
+
+  /* ==========================================================
+     V33 — DOOR COLOR SWATCH MAPPINGS
+     Exact Shopify option values:
+     Black, Navy Blue, Forest Green, Sage Green,
+     Natural Wood, Deep Red, Burgundy Gray, Charcoal White
+     ========================================================== */
+
+  #PBMac-{{ section.id }} .pbmac-color--black {
+    background: #111111 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--navy-blue {
+    background: #17365D !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--forest-green {
+    background: #28533E !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--sage-green {
+    background: #9CAF88 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--natural-wood {
+    background: #C89B6D !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--deep-red {
+    background: #8E2F35 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--burgundy-gray {
+    background: #72565D !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-color--charcoal-white {
+    background: #D9D7D4 !important;
+  }
+
+
+  /* ==========================================================
+     PLASTBAT CAR NEW — FIXED CAR COLOR PALETTE
+     ========================================================== */
+  #PBMac-{{ section.id }} .pbmac-car-color--light-green{background:#89C99A!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--green{background:#16A356!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--black{background:#080808!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--white{background:#FFFFFF!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--red{background:#D92F35!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--blue{background:#176CCF!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--light-blue{background:#8FCBE8!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--light-pink{background:#F7B7C3!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--pink{background:#F4A7B9!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--light-purple{background:#BD83E3!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--purple{background:#9B51D1!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--brown{background:#9D5E3B!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--navy{background:#17365D!important}
+  #PBMac-{{ section.id }} .pbmac-car-color--other-color-pm-me{
+    background:linear-gradient(135deg,#EF2B2D 0 20%,#FFD400 20% 40%,#16A356 40% 60%,#176CCF 60% 80%,#9B51D1 80% 100%)!important
+  }
+
 </style>
 
 <script>
@@ -5182,11 +5341,8 @@
       history.replaceState({},'',u);
     }catch(e){}
   };const colorSelectedLabel=root.querySelector('[data-pbmac-color-selected]');
-  const customColorSelectedLabel=root.querySelector('[data-pbmac-custom-color-selected]');
-  const customColorInputs=[...root.querySelectorAll('[data-pbmac-custom-color]')];
-  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value;const c=customColorInputs.find(i=>i.checked);if(customColorSelectedLabel&&c)customColorSelectedLabel.textContent=c.value};
+  const syncColorSelected=()=>{const s=root.querySelector('[data-pbmac-color-value]:checked');if(colorSelectedLabel&&s)colorSelectedLabel.textContent=s.value};
   root.querySelectorAll('[data-pbmac-option-value]').forEach(i=>i.addEventListener('change',()=>{render(find());syncColorSelected()}));
-  customColorInputs.forEach(i=>i.addEventListener('change',syncColorSelected));
   syncColorSelected();render(find());
 
   // Final cart safeguard: never submit an empty variant id on a simple product.
@@ -5209,6 +5365,8 @@
   const pers=root.querySelector('[data-pbmac-personalization]');
   const persCount=root.querySelector('[data-pbmac-personalization-count]');
   const summaryColor=root.querySelector('[data-pbmac-summary-color]');
+  const carColorSelected=root.querySelector('[data-pbmac-car-color-selected]');
+  const carColorInputs=[...root.querySelectorAll('[data-pbmac-car-color]')];
   const summaryText=root.querySelector('[data-pbmac-summary-text]');
   const summaryEmpty={{ section.settings.customization_summary_empty | json }};
   const optionValueByName=(needle)=>{
@@ -5220,10 +5378,9 @@
   const syncPersCount=()=>{if(pers&&persCount)persCount.textContent=pers.value.length};
   const syncSummary=()=>{
     if(summaryColor){
-      const nativeColor=optionValueByName('color');
-      const customColor=root.querySelector('[data-pbmac-custom-color]:checked')?.value||'';
-      const fallbackColor={{ section.settings.default_color_label | json }};
-      summaryColor.textContent=(customColor||nativeColor||fallbackColor||'—');
+      const carColor=carColorInputs.find(el=>el.checked)?.value||'Light Green';
+      summaryColor.textContent=carColor;
+      if(carColorSelected)carColorSelected.textContent=carColor;
     }
     if(summaryText){
       const txt=(pers?.value||'').trim();
@@ -5231,7 +5388,8 @@
     }
   };
   pers?.addEventListener('input',()=>{syncPersCount();syncSummary()});
-  root.querySelectorAll('[data-pbmac-option-value],[data-pbmac-custom-color],[data-pbmac-custom-size]').forEach(el=>el.addEventListener('change',syncSummary));
+  root.querySelectorAll('[data-pbmac-option-value],[data-pbmac-custom-size]').forEach(el=>el.addEventListener('change',syncSummary));
+  carColorInputs.forEach(el=>el.addEventListener('change',syncSummary));
   syncPersCount();
   syncSummary();
 })();
@@ -5381,7 +5539,7 @@
 
 {% schema %}
 {
-  "name": "Plastbat PDP V27",
+  "name": "Bookcounter Reviews",
   "tag": "section",
   "class": "section",
   "enabled_on": {
@@ -5424,12 +5582,6 @@
       "type": "checkbox",
       "id": "show_style_option",
       "label": "Show Style",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_color_option",
-      "label": "Show Color",
       "default": true
     },
     {
@@ -5489,9 +5641,9 @@
       "id": "personalization_max",
       "label": "Maximum characters",
       "min": 5,
-      "max": 50,
-      "step": 1,
-      "default": 10
+      "max": 250,
+      "step": 5,
+      "default": 250
     },
     {
       "type": "checkbox",
@@ -5526,12 +5678,6 @@
       "id": "customization_summary_empty",
       "label": "Customization summary empty text",
       "default": "Add your text above"
-    },
-    {
-      "type": "text",
-      "id": "default_color_label",
-      "label": "Default color label",
-      "default": "Selected color"
     },
     {
       "type": "text",
@@ -5781,8 +5927,341 @@
   ],
   "presets": [
     {
-      "name": "Plastbat PDP V27"
+      "name": "Bookcounter Reviews",
+      "blocks": [
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Megan Carter",
+            "rating": 5,
+            "date": "10/28/2026",
+            "verified": false,
+            "title": "Cute little way to keep track of my reading. The number blocks are easy to change and it looks nice on my shelf.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Daniel Brooks",
+            "rating": 5,
+            "date": "10/27/2026",
+            "verified": false,
+            "title": "I ordered mine with a custom name and it came out clean. It fits well next to my books without taking up too much space.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ashley Turner",
+            "rating": 5,
+            "date": "10/26/2026",
+            "verified": false,
+            "title": "The tracker is smaller than I pictured, but that actually works better for my bookshelf. I like changing the numbers after I finish a book.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Ryan Mitchell",
+            "rating": 5,
+            "date": "10/25/2026",
+            "verified": false,
+            "title": "Bought this for my daughter because she reads constantly. She liked the personalized name more than I expected.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Lauren Hayes",
+            "rating": 5,
+            "date": "10/24/2026",
+            "verified": false,
+            "title": "The little accessories are a nice touch. I picked the plant and lamp and they make it feel more like a tiny bookshelf.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Kevin Foster",
+            "rating": 5,
+            "date": "10/23/2026",
+            "verified": false,
+            "title": "Simple, cute, and easy to use. I have been using it for my yearly reading goal.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Emily Parker",
+            "rating": 5,
+            "date": "10/22/2026",
+            "verified": false,
+            "title": "The number cubes turn easily and stay in place once set. It is a fun way to keep the count visible.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Jason Reed",
+            "rating": 5,
+            "date": "10/21/2026",
+            "verified": false,
+            "title": "Got this as a gift for a friend in my book club. She put it on her shelf right away.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Nicole Bennett",
+            "rating": 5,
+            "date": "10/20/2026",
+            "verified": false,
+            "title": "I like that it is both decor and a reading tracker. The personalized name makes it feel more special without being too much.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Aaron Collins",
+            "rating": 5,
+            "date": "10/19/2026",
+            "verified": false,
+            "title": "The print lines are visible up close, which I expected with a 3D printed item. From normal shelf distance it looks really nice.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Samantha Price",
+            "rating": 5,
+            "date": "10/18/2026",
+            "verified": false,
+            "title": "This has been a fun addition to my reading corner. I update it every time I finish a book.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Brandon Cooper",
+            "rating": 5,
+            "date": "10/17/2026",
+            "verified": false,
+            "title": "The size is good for a desk or bookshelf. It does not take up much room and the numbers are still easy to read.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Rachel Morgan",
+            "rating": 5,
+            "date": "10/16/2026",
+            "verified": false,
+            "title": "I chose a cat accessory and it turned out cute. The custom name was spelled correctly too.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Tyler Ward",
+            "rating": 5,
+            "date": "10/15/2026",
+            "verified": false,
+            "title": "Nice gift for someone who already has too many books. It is useful without being another book to find space for.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Hannah Lewis",
+            "rating": 5,
+            "date": "10/14/2026",
+            "verified": false,
+            "title": "The tracker arrived as described. The colors looked close to the listing photos and the pieces felt lightweight.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Andrew Kelly",
+            "rating": 5,
+            "date": "10/13/2026",
+            "verified": false,
+            "title": "I use the different blocks for this month and this year. It makes tracking my reading a little more fun.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Olivia Scott",
+            "rating": 5,
+            "date": "10/12/2026",
+            "verified": false,
+            "title": "The personalization looks neat and the overall design is simple. Exactly the kind of bookish decor I wanted.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Nathan Gray",
+            "rating": 5,
+            "date": "10/11/2026",
+            "verified": false,
+            "title": "Bought this for my sister and she really liked the tiny accessories. It looks good on her reading shelf.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Jessica Adams",
+            "rating": 5,
+            "date": "10/10/2026",
+            "verified": false,
+            "title": "The numbers are easy to adjust. I was worried they might be loose, but mine stay where I set them.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Eric Nelson",
+            "rating": 5,
+            "date": "10/09/2026",
+            "verified": false,
+            "title": "A cute way to keep my reading goal in sight. I probably would not use an app every day, so this works better for me.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Madison Clark",
+            "rating": 5,
+            "date": "10/08/2026",
+            "verified": false,
+            "title": "The item is lightweight but sits fine on the shelf. I like being able to see my book count without opening anything.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Justin Baker",
+            "rating": 5,
+            "date": "10/07/2026",
+            "verified": false,
+            "title": "The custom name is my favorite part. It makes the tracker feel like it belongs in my little home library.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Chloe Evans",
+            "rating": 5,
+            "date": "10/06/2026",
+            "verified": false,
+            "title": "I picked a simple color and it blends in nicely with my books. The tracker itself is easy to figure out.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Derek Hill",
+            "rating": 5,
+            "date": "10/05/2026",
+            "verified": false,
+            "title": "This was a nice birthday gift for a reader. Not overly fancy, just a thoughtful little shelf piece.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Sophia Morris",
+            "rating": 5,
+            "date": "10/04/2026",
+            "verified": false,
+            "title": "The small plant accessory is adorable. I like that you can choose the details instead of getting the exact same setup as everyone else.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Adam Russell",
+            "rating": 5,
+            "date": "10/03/2026",
+            "verified": false,
+            "title": "I have been using it for a few weeks and still enjoy updating the count. It is a small thing but makes finishing a book feel satisfying.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Grace Phillips",
+            "rating": 5,
+            "date": "10/02/2026",
+            "verified": false,
+            "title": "The 3D printed texture is noticeable if you look closely, but it does not bother me. Overall it looks cute on the shelf.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Cole Sanders",
+            "rating": 5,
+            "date": "10/01/2026",
+            "verified": false,
+            "title": "Good size for my nightstand. The numbers are large enough to read and the personalized text came out clear.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Lily Jenkins",
+            "rating": 4,
+            "date": "09/30/2026",
+            "verified": false,
+            "title": "I bought it mainly for the reading tracker, but it ended up being nice decor too. The little lamp was a good choice.",
+            "body": ""
+          }
+        },
+        {
+          "type": "manual_review",
+          "settings": {
+            "author": "Trevor Hughes",
+            "rating": 4,
+            "date": "09/29/2026",
+            "verified": false,
+            "title": "A fun book lover gift. The design is straightforward and I like that I can reuse it each year.",
+            "body": ""
+          }
+        }
+      ]
     }
-  ]
+  ],
+  "max_blocks": 50
 }
 {% endschema %}

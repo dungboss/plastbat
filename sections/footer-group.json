@@ -1,1 +1,75 @@
-{"name":"t:sections.footer.name","type":"footer","sections":{"footer":{"type":"footer","blocks":{"link_list_Myq89J":{"type":"link_list","settings":{"heading":"Support","menu":"footer","width_desktop":4,"width_mobile":"2"}},"brand_information_GKeycG":{"type":"brand_information","settings":{"show_social":true,"width_desktop":4,"width_mobile":"2"}},"email_signup_k9xExW":{"type":"email_signup","settings":{"heading":"Join The Plastbat Club","subtext":"<p>New personalized designs, seasonal launches and limited drops.<\/p>","button_type":"solid","button_label":"JOIN THE CLUB","button_style_secondary":false,"width_desktop":4,"width_mobile":"2"}}},"block_order":["link_list_Myq89J","brand_information_GKeycG","email_signup_k9xExW"],"settings":{"color_scheme":"scheme-3","enable_follow_on_shop":false,"show_social":false,"enable_country_selector":true,"enable_language_selector":true,"payment_enable":true,"enabled_payment_types":"","show_policy":false,"branding_text":"Plastbat — Small Objects, Smart Design","margin_top":0,"padding_top":40,"padding_bottom":24}}},"order":["footer"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "link_list_Myq89J": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Support",
+            "menu": "footer",
+            "width_desktop": 4,
+            "width_mobile": "2"
+          }
+        },
+        "brand_information_GKeycG": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true,
+            "width_desktop": 4,
+            "width_mobile": "2"
+          }
+        },
+        "email_signup_k9xExW": {
+          "type": "email_signup",
+          "settings": {
+            "heading": "Follow Plastbat",
+            "subtext": "<p><a href=\"https://\thttps://www.facebook.com/plastbat3d/\" target=\"_blank\" title=\"https://\thttps://www.facebook.com/plastbat3d/\"><strong>Facebook</strong></a><strong> · </strong><a href=\"https://\thttps://www.instagram.com/plastbat3d/\" target=\"_blank\" title=\"https://\thttps://www.instagram.com/plastbat3d/\"><strong>Instagram</strong></a><strong> · </strong><a href=\"https://\thttps://www.youtube.com/@plastbat\" target=\"_blank\" title=\"https://\thttps://www.youtube.com/@plastbat\"><strong>YouTube</strong></a></p><p></p>",
+            "button_type": "solid",
+            "button_label": "JOIN THE CLUB",
+            "button_style_secondary": false,
+            "width_desktop": 4,
+            "width_mobile": "2"
+          }
+        }
+      },
+      "block_order": [
+        "link_list_Myq89J",
+        "brand_information_GKeycG",
+        "email_signup_k9xExW"
+      ],
+      "custom_css": [
+        ".footer__newsletter {display: none;}",
+        ".footer-block__details-content-mb a {color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 4px;}"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "enable_follow_on_shop": false,
+        "show_social": false,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "enabled_payment_types": "",
+        "show_policy": false,
+        "branding_text": "Plastbat — Small Objects, Smart Design",
+        "margin_top": 0,
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

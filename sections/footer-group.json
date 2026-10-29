@@ -49,10 +49,7 @@
         "brand_information_GKeycG",
         "email_signup_k9xExW"
       ],
-      "custom_css": [
-        ".footer__newsletter {display: none;}",
-        ".footer-block__details-content-mb a {color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 4px;}"
-      ],
+      "custom_css": [],
       "settings": {
         "color_scheme": "scheme-3",
         "enable_follow_on_shop": false,

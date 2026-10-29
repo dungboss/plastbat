@@ -35,7 +35,7 @@
           "type": "email_signup",
           "settings": {
             "heading": "Follow Plastbat",
-            "subtext": "<p><a href=\"https://\thttps://www.facebook.com/plastbat3d/\" target=\"_blank\" title=\"https://\thttps://www.facebook.com/plastbat3d/\"><strong>Facebook</strong></a><strong> · </strong><a href=\"https://\thttps://www.instagram.com/plastbat3d/\" target=\"_blank\" title=\"https://\thttps://www.instagram.com/plastbat3d/\"><strong>Instagram</strong></a><strong> · </strong><a href=\"https://\thttps://www.youtube.com/@plastbat\" target=\"_blank\" title=\"https://\thttps://www.youtube.com/@plastbat\"><strong>YouTube</strong></a></p><p></p>",
+            "subtext": "<p><a href=\"https://www.facebook.com/plastbat3d/\" target=\"_blank\" title=\"https://www.facebook.com/plastbat3d/\"><strong>Facebook</strong></a><strong> · </strong><a href=\"https://www.instagram.com/plastbat3d/\" target=\"_blank\" title=\"https://www.instagram.com/plastbat3d/\"><strong>Instagram</strong></a><strong> · </strong><a href=\"https://www.youtube.com/@plastbat/shorts\" target=\"_blank\" title=\"https://www.youtube.com/@plastbat/shorts\"><strong>YouTube</strong></a></p><p></p>",
             "button_type": "solid",
             "button_label": "JOIN THE CLUB",
             "button_style_secondary": false,

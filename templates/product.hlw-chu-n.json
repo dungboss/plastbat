@@ -218,7 +218,7 @@
         "show_description": false,
         "description_style": "body",
         "color_scheme": "background-1",
-        "collection": "frontpage",
+        "collection": "halloween-decor",
         "products_to_show": 4,
         "columns_desktop": 4,
         "product_cards_stretch": false,
